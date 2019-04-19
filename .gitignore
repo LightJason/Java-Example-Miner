@@ -12,9 +12,12 @@
 !*.md
 !*.png
 !*.properties
+!package.json
+!webpack.config.js
 
-!src/main/resources/static/*.html
-!src/main/resources/*.yml
+!src/main/js/*.js
+!src/main/resources/templates/index.html
+!src/main/resources/application.yml
 
 !src/site/*.doxyfile
 !src/site/*.css
@@ -25,4 +28,4 @@
 !src/analysis/**/*.txt
 
 target/**
-
+node_modules/**

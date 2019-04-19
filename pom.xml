@@ -361,7 +361,7 @@
                         <fileset>
                             <directory>.</directory>
                             <includes>
-                                <include>${project.basedir}/src/main/antlr4/**/*.tokens</include>
+                                <include>node_modules</include>
                             </includes>
                         </fileset>
                     </filesets>
@@ -474,6 +474,43 @@
                         </configuration>
                     </execution>
                     -->
+                </executions>
+            </plugin>
+
+            <!-- frontend plugin -->
+            <plugin>
+                <groupId>com.github.eirslett</groupId>
+                <artifactId>frontend-maven-plugin</artifactId>
+                <version>1.7.5</version>
+                <configuration>
+                    <installDirectory>target</installDirectory>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>install node and npm</id>
+                        <goals>
+                            <goal>install-node-and-npm</goal>
+                        </goals>
+                        <configuration>
+                            <nodeVersion>v11.13.0</nodeVersion>
+                            <npmVersion>6.7.0</npmVersion>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>npm install</id>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>install</arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>webpack build</id>
+                        <goals>
+                            <goal>webpack</goal>
+                        </goals>
+                    </execution>
                 </executions>
             </plugin>
 
