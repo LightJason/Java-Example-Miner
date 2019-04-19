@@ -37,7 +37,7 @@ import org.springframework.http.MediaType;
  */
 @RestController
 @RequestMapping( "/agentspeak" )
-public final class CAgentSpeak
+public final class CAgentSpeakController
 {
 
     /**

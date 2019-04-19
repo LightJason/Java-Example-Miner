@@ -31,6 +31,11 @@
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-websocket</artifactId>
         </dependency>
 
@@ -253,23 +258,6 @@
                 </configuration>
             </plugin>
 
-            <!-- on the command "mvn clean" we clean-up some additional files -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-clean-plugin</artifactId>
-                <version>3.0.0</version>
-                <configuration>
-                    <filesets>
-                        <fileset>
-                            <directory>.</directory>
-                            <includes>
-                                <include>dependency-reduced-pom.xml</include>
-                            </includes>
-                        </fileset>
-                    </filesets>
-                </configuration>
-            </plugin>
-
             <!-- Doxygen -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -355,13 +343,15 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-clean-plugin</artifactId>
-                <version>3.1.0</version>
+                <version>3.0.0</version>
                 <configuration>
                     <filesets>
                         <fileset>
                             <directory>node_modules</directory>
+                            <directory>src/main/resources/static</directory>
                             <includes>
-                                <include>${project.basedir}/package-lock.json</include>
+                                <include>dependency-reduced-pom.xml</include>
+                                <include>package-lock.json</include>
                             </includes>
                         </fileset>
                     </filesets>
