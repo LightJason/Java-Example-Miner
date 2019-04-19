@@ -52,5 +52,13 @@ public class CApplication
     }
     //Checkstyle:ON:UncommentedMain
 
+
+    // https://www.baeldung.com/spring-session
+    // https://elements.heroku.com/addons/rediscloud
+    // https://spring.io/projects/spring-session
+    // https://www.javadevjournal.com/spring/spring-session/
+    // https://codeboje.de/spring-session-tutorial/
+    // https://docs.spring.io/spring-session/docs/current/reference/html5/guides/boot-redis.html
+
 }
 //Checkstyle:ON:HideUtilityClassConstructor
