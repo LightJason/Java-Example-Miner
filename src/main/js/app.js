@@ -3,14 +3,10 @@ const ReactDOM = require('react-dom');
 
 
 class App extends React.Component {
-
-	constructor(props) {
-		super(props);
-	}
-
 	render() {
-		return (
-			<span>Test</span>
-		)
+		return (<p><strong>LightJason - Miner</strong></p>);
 	}
 }
+
+
+ReactDOM.render( <App />, document.getElementById('react') )
