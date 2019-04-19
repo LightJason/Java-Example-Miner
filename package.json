@@ -17,6 +17,7 @@
     "react-dom": "^16.8.6",
     "reactstrap": "^8.0.0",
     "react-stomp": "^4.1.0",
+    "react-router": "^5.0.0",
     "react-codemirror2": "^5.1.0",
     "rest": "^2.0.0"
   },
