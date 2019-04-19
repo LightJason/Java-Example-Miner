@@ -359,9 +359,9 @@
                 <configuration>
                     <filesets>
                         <fileset>
-                            <directory>.</directory>
+                            <directory>node_modules</directory>
                             <includes>
-                                <include>node_modules</include>
+                                <include>${project.basedir}/package-lock.json</include>
                             </includes>
                         </fileset>
                     </filesets>
