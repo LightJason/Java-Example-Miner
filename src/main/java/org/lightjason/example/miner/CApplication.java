@@ -60,5 +60,8 @@ public class CApplication
     // https://codeboje.de/spring-session-tutorial/
     // https://docs.spring.io/spring-session/docs/current/reference/html5/guides/boot-redis.html
 
+    // https://reactstrap.github.io/s
+    // https://spring.io/guides/tutorials/react-and-spring-data-rest/
+
 }
 //Checkstyle:ON:HideUtilityClassConstructor
