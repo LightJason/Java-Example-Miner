@@ -347,11 +347,12 @@
                 <configuration>
                     <filesets>
                         <fileset>
-                            <directory>node_modules</directory>
-                            <directory>src/main/resources/static</directory>
+                            <directory>.</directory>
                             <includes>
                                 <include>dependency-reduced-pom.xml</include>
                                 <include>package-lock.json</include>
+                                <include>node_modules/**</include>
+                                <indlcude>src/main/resources/static/**</indlcude>
                             </includes>
                         </fileset>
                     </filesets>
