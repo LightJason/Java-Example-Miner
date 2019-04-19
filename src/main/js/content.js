@@ -7,8 +7,7 @@ class Content extends React.Component {
 	render() {
 		return (
             <Container>
-                <Row>LightJason Application</Row>
-                <Row><Screen/></Row>
+                <Screen/>
             </Container>
 		);
 	}
