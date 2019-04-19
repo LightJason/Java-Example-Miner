@@ -352,7 +352,7 @@
                                 <include>dependency-reduced-pom.xml</include>
                                 <include>package-lock.json</include>
                                 <include>node_modules/**</include>
-                                <indlcude>src/main/resources/static/**</indlcude>
+                                <indlcude>src/main/resources/static/built/**</indlcude>
                             </includes>
                         </fileset>
                     </filesets>

@@ -7,8 +7,8 @@ class App extends React.Component {
 	render() {
 		return (
 		    <div>
-		        <Navbar light color="light" expand="w-100">
-                    <NavbarBrand>LightJason - Miner</NavbarBrand>
+		        <Navbar dark color="dark" expand="w-100">
+                    <NavbarBrand href="#">LightJason - Miner</NavbarBrand>
                 </Navbar>
                 <Container>
                     <Row>LightJason Application</Row>

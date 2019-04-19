@@ -16,6 +16,7 @@
 !webpack.config.js
 
 !src/main/js/*.js
+!src/main/resources/static/layout.css
 !src/main/resources/templates/index.html
 !src/main/resources/application.yml
 

@@ -1,0 +1,10 @@
+html, body {
+    font-family: 'Rubik', sans-serif;
+    font-size: 18px;
+    color: #555;
+}
+
+.navbar-brand.a {
+    color: #fff;
+    font-size: 24px;
+}
