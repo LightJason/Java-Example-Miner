@@ -1,10 +1,11 @@
-const React = require('react');
-const ReactDOM = require('react-dom');
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { Container, Row, Col } from 'reactstrap';
 
 
 class App extends React.Component {
 	render() {
-		return (<p><strong>LightJason - Miner</strong></p>);
+		return (<Container><Row>LightJason Application</Row></Container>);
 	}
 }
 
