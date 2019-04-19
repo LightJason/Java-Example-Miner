@@ -4,7 +4,8 @@ html, body {
     color: #555;
 }
 
-.navbar-brand.a {
+#title {
     color: #fff;
     font-size: 24px;
+    white-space: nowrap;
 }

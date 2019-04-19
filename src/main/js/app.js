@@ -1,22 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Navbar, NavbarBrand, Container, Row, Col } from 'reactstrap';
-
+import Header from ".//header.js"
+import Content from "./content.js"
 
 class App extends React.Component {
 	render() {
 		return (
 		    <div>
-		        <Navbar dark color="dark" expand="w-100">
-                    <NavbarBrand href="#">LightJason - Miner</NavbarBrand>
-                </Navbar>
-                <Container>
-                    <Row>LightJason Application</Row>
-                </Container>
+                <Header/>
+                <Content/>
             </div>
 		);
 	}
 }
 
-
-ReactDOM.render( <App />, document.getElementById('react') )
+ReactDOM.render( <App />, document.getElementById('react') );
