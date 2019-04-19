@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Collection;
 import java.util.Collections;
 
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import org.springframework.http.MediaType;
 
 
 /**
@@ -45,7 +45,7 @@ public final class CAgentSpeak
      *
      * @return action name
      */
-    @RequestMapping( value = "/action/miner", produces = APPLICATION_JSON_VALUE )
+    @RequestMapping( value = "/action/miner", produces = MediaType.APPLICATION_JSON_VALUE )
     public Collection<String> mineractions()
     {
         return Collections.emptySet();
@@ -56,7 +56,7 @@ public final class CAgentSpeak
      *
      * @return action name
      */
-    @RequestMapping( value = "/action/world", produces = APPLICATION_JSON_VALUE )
+    @RequestMapping( value = "/action/world", produces = MediaType.APPLICATION_JSON_VALUE )
     public Collection<String> worldactions()
     {
         return Collections.emptySet();
