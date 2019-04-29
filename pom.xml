@@ -243,21 +243,6 @@
                 </executions>
             </plugin>
 
-            <!-- enable compiler warnings -->
-            <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.6.1</version>
-                <configuration>
-                    <showWarnings>true</showWarnings>
-                    <showDeprecation>true</showDeprecation>
-                    <failOnWarning>true</failOnWarning>
-                    <compilerArgs>
-                        <arg>-Xlint:all</arg>
-                        <bootclasspath>${env.JAVA5_HOME}</bootclasspath>
-                    </compilerArgs>
-                </configuration>
-            </plugin>
-
             <!-- Doxygen -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

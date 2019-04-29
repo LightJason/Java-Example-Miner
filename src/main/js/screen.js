@@ -3,17 +3,12 @@ import React from 'react';
 class Screen extends React.Component {
 
     componentDidMount() {
-        new Phaser.Game( 800, 400, Phaser.AUTO, "phaser-container", {
-            preload: this.enginepreload,
-            create: this.enginecreate,
+        // https://tutorialzine.com/2015/06/making-your-first-html5-game-with-phaser
+        // https://phaser.io/examples/v2/category/tilemaps
+
+        let l_game = new Phaser.Game( 800, 800, Phaser.AUTO, "phaser-container", {
             transparent: true
         } );
-    }
-
-    enginepreload() {}
-
-    enginecreate() {
-        this.stage.backgroundColor = "#eeeeee";
     }
 
 	render() {
