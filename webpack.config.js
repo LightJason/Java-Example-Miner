@@ -1,4 +1,6 @@
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const TerserJSPlugin = require('terser-webpack-plugin');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 module.exports = {
     cache: true,
@@ -18,6 +20,9 @@ module.exports = {
             filename: "./src/main/resources/static/[name].css"
         })
     ],
+    optimization: {
+        minimizer: [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({})],
+    },
     module: {
         rules: [
 
@@ -35,7 +40,7 @@ module.exports = {
 
             {
                 test: /\.scss$/,
-                use: [ "style-loader", MiniCssExtractPlugin.loader, "css-loader", "sass-loader" ]
+                use: [ MiniCssExtractPlugin.loader, "css-loader", "sass-loader" ]
             }
         ]
     }
