@@ -1,20 +1,29 @@
-var path = require("path");
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
-    entry: ["./src/main/js/app.js", "./src/main/js/scss/app.scss"],
-    devtool: "sourcemaps",
     cache: true,
     mode: "production",
+    devtool: "sourcemaps",
+    entry: {
+        app: "./src/main/js/app.js",
+        styles: "./src/main/js/app.scss"
+    },
     output: {
         path: __dirname,
-        filename: "./src/main/resources/static/built/bundle.js"
+        filename: "./src/main/resources/static/[name].js"
     },
+    plugins: [
+        new MiniCssExtractPlugin({
+            path: __dirname,
+            filename: "./src/main/resources/static/[name].css"
+        })
+    ],
     module: {
         rules: [
 
             // react build
             {
-                test: path.join(__dirname, "."),
+                test: /\.js$/,
                 exclude: /(node_modules)/,
                 use: [{
                     loader: "babel-loader",
@@ -26,7 +35,7 @@ module.exports = {
 
             {
                 test: /\.scss$/,
-                use: [ "style-loader", "css-loader", "sass-loader" ]
+                use: [ "style-loader", MiniCssExtractPlugin.loader, "css-loader", "sass-loader" ]
             }
         ]
     }

@@ -171,6 +171,10 @@
             <resource>
                 <directory>src/main/resources</directory>
                 <filtering>true</filtering>
+                <excludes>
+                    <exclude>**/*.map</exclude>
+                    <exclude>**/styles.js</exclude>
+                </excludes>
             </resource>
         </resources>
 
