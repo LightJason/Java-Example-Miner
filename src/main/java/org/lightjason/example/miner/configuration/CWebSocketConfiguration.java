@@ -35,7 +35,7 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
  */
 @Configuration
 @EnableWebSocketMessageBroker
-public final class CWebSocketConfiguration implements WebSocketMessageBrokerConfigurer
+public class CWebSocketConfiguration implements WebSocketMessageBrokerConfigurer
 {
     /**
      * beliefbase channel
@@ -58,10 +58,8 @@ public final class CWebSocketConfiguration implements WebSocketMessageBrokerConf
     @Override
     public void configureMessageBroker( final MessageBrokerRegistry p_config )
     {
-        p_config.setApplicationDestinationPrefixes( MINER );
-        p_config.setApplicationDestinationPrefixes( WORLD );
-        p_config.setApplicationDestinationPrefixes( MESSAGE );
-        p_config.setApplicationDestinationPrefixes( BELIEFBASE );
+        p_config.enableSimpleBroker( MESSAGE, WORLD, MINER, BELIEFBASE );
+        p_config.setApplicationDestinationPrefixes( "/" );
     }
 
     @Override

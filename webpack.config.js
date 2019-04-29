@@ -1,25 +1,32 @@
-var path = require('path');
+var path = require("path");
 
 module.exports = {
-    entry: './src/main/js/app.js',
-    devtool: 'sourcemaps',
+    entry: ["./src/main/js/app.js", "./src/main/js/scss/app.scss"],
+    devtool: "sourcemaps",
     cache: true,
-    mode: 'production',
+    mode: "production",
     output: {
         path: __dirname,
-        filename: './src/main/resources/static/built/bundle.js'
+        filename: "./src/main/resources/static/built/bundle.js"
     },
     module: {
         rules: [
+
+            // react build
             {
-                test: path.join(__dirname, '.'),
+                test: path.join(__dirname, "."),
                 exclude: /(node_modules)/,
                 use: [{
-                    loader: 'babel-loader',
+                    loader: "babel-loader",
                     options: {
                         presets: ["@babel/preset-env", "@babel/preset-react"]
                     }
                 }]
+            },
+
+            {
+                test: /\.scss$/,
+                use: [ "style-loader", "css-loader", "sass-loader" ]
             }
         ]
     }

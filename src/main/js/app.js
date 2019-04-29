@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Header from ".//header.js"
+import Header from "./header.js"
 import Content from "./content.js"
 
 class App extends React.Component {
