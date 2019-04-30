@@ -3,7 +3,7 @@ import { Navbar, NavbarBrand, NavbarToggler, Nav, NavItem, NavLink, Collapse, Un
 
 // https://reactstrap.github.io/components/navbar/
 
-class Header extends React.Component {
+export default class Menu extends React.Component {
 
     constructor(props) {
         super(props);
@@ -22,9 +22,18 @@ class Header extends React.Component {
 
 	render() {
 		return (
-            <Navbar dark color="dark" expand="w-100">
-                <NavbarBrand><span id="title">LightJason - Miner</span></NavbarBrand>
-                <NavbarToggler onClick={this.toggle} />
+            <Navbar bg="dark" variant="dark">
+                <Navbar.Brand>
+                  <img
+                    alt="LightJason Logo"
+                    src="assets/logo.png"
+                    width="30"
+                    height="30"
+                    className="d-inline-block align-top"
+                  />
+                  {' LightJason - Miner '}
+                  <NavbarToggler onClick={this.toggle} />
+                </Navbar.Brand>
                 <Collapse isOpen={this.state.isOpen} navbar>
                     <Nav className="ml-auto" navbar>
                         <NavItem>
@@ -48,5 +57,3 @@ class Header extends React.Component {
 		);
 	}
 }
-
-export default Header;

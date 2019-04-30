@@ -12,12 +12,12 @@ module.exports = {
     },
     output: {
         path: __dirname,
-        filename: "./src/main/resources/static/[name].js"
+        filename: "./src/main/resources/static/app/[name].js"
     },
     plugins: [
         new MiniCssExtractPlugin({
             path: __dirname,
-            filename: "./src/main/resources/static/[name].css"
+            filename: "./src/main/resources/static/app/[name].css"
         })
     ],
     optimization: {

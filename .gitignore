@@ -15,11 +15,12 @@
 !package.json
 !webpack.config.js
 
-!src/main/js/*.js
+!src/main/js/**/*.js
 !src/main/js/*.scss
 
-!src/main/resources/templates/index.html
 !src/main/resources/application.yml
+!src/main/resources/static/assets/*.png
+!src/main/resources/templates/index.html
 
 !src/site/*.doxyfile
 !src/site/*.css
