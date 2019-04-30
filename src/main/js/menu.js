@@ -1,7 +1,12 @@
 import React from 'react';
-import { Navbar, NavbarBrand, NavbarToggler, Nav, NavItem, NavLink, Collapse, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import { Navbar, NavbarBrand } from 'reactstrap';
+import { scaleRotate as NavMenu } from 'react-burger-menu'
 
 // https://reactstrap.github.io/components/navbar/
+// https://bootstrapious.com/p/bootstrap-sidebar
+// https://stackoverflow.com/questions/39974486/accordion-sidebar-menu-using-nav-components-with-react-bootstrap
+// https://reactjsexample.com/a-ready-to-use-menu-component-for-react/
+// http://negomi.github.io/react-burger-menu/
 
 export default class Menu extends React.Component {
 
@@ -22,38 +27,27 @@ export default class Menu extends React.Component {
 
 	render() {
 		return (
-            <Navbar bg="dark" variant="dark">
-                <NavbarBrand>
-                  <img
-                    alt="LightJason Logo"
-                    src="assets/logo.png"
-                    width="30"
-                    height="30"
-                    className="d-inline-block align-top"
-                  />
-                  {' LightJason - Miner '}
-                  <NavbarToggler onClick={this.toggle} />
-                </NavbarBrand>
-                <Collapse isOpen={this.state.isOpen} navbar>
-                    <Nav className="ml-auto" navbar>
-                        <NavItem>
-                            <NavLink href="/components/">Components</NavLink>
-                        </NavItem>
-                        <NavItem>
-                            <NavLink href="https://github.com/reactstrap/reactstrap">GitHub</NavLink>
-                        </NavItem>
-                        <UncontrolledDropdown nav inNavbar>
-                            <DropdownToggle nav caret>Options</DropdownToggle>
-                                <DropdownMenu right>
-                                <DropdownItem>Option 1</DropdownItem>
-                                <DropdownItem>Option 2</DropdownItem>
-                                <DropdownItem divider />
-                                <DropdownItem>Reset</DropdownItem>
-                            </DropdownMenu>
-                      </UncontrolledDropdown>
-                    </Nav>
-                </Collapse>
-            </Navbar>
+		/*
+		    <div id="navigation">
+		        <Navbar bg="dark" variant="dark">
+                    <NavbarBrand>
+                      <img
+                        alt="LightJason Logo"
+                        src="assets/logo.png"
+                        width="30"
+                        height="30"
+                        className="d-inline-block align-top"
+                      />
+                      {' LightJason - Miner'}
+                     </NavbarBrand>
+                </Navbar>
+                */
+                <NavMenu pageWrapId={ "content" } outerContainerId={ "app" }>
+                    <a id="about" className="menu-item" href="/about">About</a>
+                    <a id="contact" className="menu-item" href="https://lightjason.org/contact/">Contact</a>
+                    <a onClick={ this.showSettings } className="menu-item--small" href="">Settings</a>
+                </NavMenu>
+		    //</div>
 		);
 	}
 }

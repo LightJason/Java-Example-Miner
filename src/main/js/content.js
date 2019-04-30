@@ -6,9 +6,9 @@ import Screen from "./screen.js"
 export default class Content extends React.Component {
 	render() {
 		return (
-            <Container>
+            <main id="content">
                 <Screen/>
-            </Container>
+            </main>
 		);
 	}
 }
