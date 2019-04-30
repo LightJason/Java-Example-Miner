@@ -23,7 +23,7 @@ export default class Menu extends React.Component {
 	render() {
 		return (
             <Navbar bg="dark" variant="dark">
-                <Navbar.Brand>
+                <NavbarBrand>
                   <img
                     alt="LightJason Logo"
                     src="assets/logo.png"
@@ -33,7 +33,7 @@ export default class Menu extends React.Component {
                   />
                   {' LightJason - Miner '}
                   <NavbarToggler onClick={this.toggle} />
-                </Navbar.Brand>
+                </NavbarBrand>
                 <Collapse isOpen={this.state.isOpen} navbar>
                     <Nav className="ml-auto" navbar>
                         <NavItem>

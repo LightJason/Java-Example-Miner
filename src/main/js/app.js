@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Header from "./menu.js"
+import Menu from "./menu.js"
 import Content from "./content.js"
 
 
