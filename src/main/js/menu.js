@@ -43,8 +43,7 @@ export default class Menu extends React.Component {
                 </Navbar>
                 */
                 <NavMenu pageWrapId={ "content" } outerContainerId={ "app" }>
-                    <a id="about" className="menu-item" href="/about">About</a>
-                    <a id="contact" className="menu-item" href="https://lightjason.org/contact/">Contact</a>
+                    <a id="contact" className="menu-item" href="https://lightjason.org/contact/"><i className="fas fa-envelope"></i> Contact</a>
                     <a onClick={ this.showSettings } className="menu-item--small" href="">Settings</a>
                 </NavMenu>
 		    //</div>

@@ -1,5 +1,13 @@
 @import "~bootstrap/scss/bootstrap";
 
+$fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
+@import "~@fortawesome/fontawesome-free/scss/fontawesome.scss";
+@import "~@fortawesome/fontawesome-free/scss/solid.scss";
+
+/* https://fontawesome.com/how-to-use/on-the-web/using-with/sass */
+/* https://stackoverflow.com/questions/33649761/how-do-i-load-font-awesome-using-scss-sass-in-webpack-using-relative-paths */
+
+
 html, body {
     font-family: 'Rubik', sans-serif;
     font-size: 18px;
@@ -9,7 +17,10 @@ html, body {
 
 main {
     padding-left: 100px;
-    height: 100vh;
+}
+
+a, a:hover {
+    color: #00ff99
 }
 
 
@@ -33,7 +44,7 @@ main {
 /* Color/shape of burger icon bars on hover*/
 /* Color/shape of close button cross */
 .bm-burger-bars-hover, .bm-cross {
-    background: #3399FF;
+    background: #00ff99;
 }
 
 /* Position and sizing of clickable cross button */
