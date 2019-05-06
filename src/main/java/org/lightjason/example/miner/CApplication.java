@@ -27,6 +27,10 @@ package org.lightjason.example.miner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.web.context.WebApplicationContext;
 
 import javax.annotation.Nonnull;
 
@@ -52,7 +56,6 @@ public class CApplication
     }
     //Checkstyle:ON:UncommentedMain
 
-
     // https://www.baeldung.com/spring-session
     // https://elements.heroku.com/addons/rediscloud
     // https://spring.io/projects/spring-session
@@ -66,6 +69,8 @@ public class CApplication
 
     // https://www.baeldung.com/spring-security-session
     // https://www.novatec-gmbh.de/en/blog/session-handling-with-spring/
+    // https://www.baeldung.com/spring-bean-scopes
+    // https://www.baeldung.com/spring-mvc-session-attributes
 
 }
 //Checkstyle:ON:HideUtilityClassConstructor
