@@ -64,5 +64,8 @@ public class CApplication
     // https://spring.io/guides/tutorials/react-and-spring-data-rest/
     // https://codeboje.de/spring-session-tutorial/
 
+    // https://www.baeldung.com/spring-security-session
+    // https://www.novatec-gmbh.de/en/blog/session-handling-with-spring/
+
 }
 //Checkstyle:ON:HideUtilityClassConstructor
