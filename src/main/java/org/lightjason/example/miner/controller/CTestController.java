@@ -22,47 +22,32 @@
  */
 
 
-package org.lightjason.example.miner;
+package org.lightjason.example.miner.controller;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.Nonnull;
+import javax.servlet.http.HttpSession;
 
 
 /**
- * main application
+ * test rest controller
  */
-//Checkstyle:OFF:HideUtilityClassConstructor
-@SpringBootApplication
-@EnableAutoConfiguration
-public class CApplication
+@RestController
+@RequestMapping( "/test" )
+public final class CTestController
 {
-
     /**
-     * main method
+     * session result
      *
-     * @param p_args arguments
+     * @param p_session session result
+     * @return session
      */
-    //Checkstyle:OFF:UncommentedMain
-    public static void main( @Nonnull final String[] p_args )
+    @GetMapping( "/session" )
+    String uid( final HttpSession p_session )
     {
-        SpringApplication.run( CApplication.class, p_args );
+        return p_session.getId();
     }
-    //Checkstyle:ON:UncommentedMain
-
-
-    // https://www.baeldung.com/spring-session
-    // https://elements.heroku.com/addons/rediscloud
-    // https://spring.io/projects/spring-session
-    // https://www.javadevjournal.com/spring/spring-session/
-    // https://codeboje.de/spring-session-tutorial/
-    // https://docs.spring.io/spring-session/docs/current/reference/html5/guides/boot-redis.html
-
-    // https://reactstrap.github.io/s
-    // https://spring.io/guides/tutorials/react-and-spring-data-rest/
-    // https://codeboje.de/spring-session-tutorial/
 
 }
-//Checkstyle:ON:HideUtilityClassConstructor

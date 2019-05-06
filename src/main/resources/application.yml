@@ -9,10 +9,11 @@ spring:
             namespace: spring:session
 
     redis:
-        host: localhost
-        port: 6379
+        host: ${HOST}
+        port: ${PORT}
+        password: ${PASSWORD}
 
 server:
     servlet:
         session:
-            timeout: 10800
+            timeout: ${SESSIONTIMEOUT}
