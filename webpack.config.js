@@ -38,7 +38,7 @@ module.exports = {
                 }]
             },
 
-            / scss build
+            // scss build
             {
                 test: /\.scss$/,
                 use: [ MiniCssExtractPlugin.loader, "css-loader", "sass-loader" ]
