@@ -477,8 +477,8 @@
                             <goal>install-node-and-npm</goal>
                         </goals>
                         <configuration>
-                            <nodeVersion>v11.13.0</nodeVersion>
-                            <npmVersion>6.7.0</npmVersion>
+                            <nodeVersion>v12.1.0</nodeVersion>
+                            <npmVersion>6.9.0</npmVersion>
                         </configuration>
                     </execution>
                     <execution>

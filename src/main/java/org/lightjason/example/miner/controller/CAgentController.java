@@ -24,6 +24,7 @@
 package org.lightjason.example.miner.controller;
 
 import org.lightjason.example.miner.configuration.CSessionAgentSource;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -31,13 +32,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
-
-import org.springframework.http.MediaType;
-
-import javax.annotation.Resource;
 
 
 /**
@@ -51,7 +49,7 @@ public final class CAgentController
      * agent source session
      */
     @Resource( name = "sessionAgent" )
-    CSessionAgentSource m_sessionagent;
+    private CSessionAgentSource m_sessionagent;
 
     /**
      * returns a list with miner names
@@ -92,7 +90,7 @@ public final class CAgentController
      * @return map with miners and asl code
      */
     @GetMapping( value = "/source/miner/{name}", produces = MediaType.APPLICATION_JSON_VALUE )
-    public String getSourceMiners( @PathVariable( name = "name" ) String p_name )
+    public String getSourceMiners( @PathVariable( name = "name" ) final String p_name )
     {
         return m_sessionagent.getMiners().get( p_name );
     }
@@ -114,7 +112,7 @@ public final class CAgentController
      * @param p_source environemnt source
      */
     @PutMapping( value = "/source/environment", produces = MediaType.TEXT_PLAIN_VALUE )
-    public void setSourceEnvironment( @RequestBody String p_source )
+    public void setSourceEnvironment( @RequestBody final String p_source )
     {
         m_sessionagent.setEnvironment( p_source );
     }
@@ -126,7 +124,7 @@ public final class CAgentController
      * @param p_source miner source
      */
     @PutMapping( value = "/source/miner/{name}", consumes = MediaType.TEXT_PLAIN_VALUE )
-    public void setSourceEnvironment( @PathVariable( name = "name" ) String p_name, @RequestBody String p_source )
+    public void setSourceEnvironment( @PathVariable( name = "name" ) final String p_name, @RequestBody final String p_source )
     {
         m_sessionagent.getMiners().put( p_name, p_source );
     }

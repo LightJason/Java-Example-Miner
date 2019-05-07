@@ -24,16 +24,20 @@
 package org.lightjason.example.miner.configuration;
 
 import javax.annotation.Nonnull;
+import java.io.Serializable;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicReference;
 
 
 /**
  * session agent asl source code storage
  */
-public class CSessionAgentSource
+public class CSessionAgentSource implements Serializable
 {
+    /**
+     * serial id
+     */
+    private static final long serialVersionUID = -8840787108768940215L;
     /**
      * asl code of the environment agent
      */
@@ -42,6 +46,7 @@ public class CSessionAgentSource
      * asl source code of the miner agents
      */
     private Map<String, String> m_miners = new ConcurrentHashMap<>();
+
 
     /**
      * ctor
@@ -76,7 +81,7 @@ public class CSessionAgentSource
      *
      * @param p_source source
      */
-    public void setEnvironment( @Nonnull String p_source )
+    public void setEnvironment( @Nonnull final String p_source )
     {
         m_evironment = p_source;
     }
