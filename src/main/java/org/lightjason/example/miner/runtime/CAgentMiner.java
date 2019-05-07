@@ -24,8 +24,13 @@
 package org.lightjason.example.miner.runtime;
 
 import org.lightjason.agentspeak.configuration.IAgentConfiguration;
+import org.lightjason.agentspeak.generator.IActionGenerator;
+import org.lightjason.agentspeak.generator.ILambdaStreamingGenerator;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.io.IOException;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 
 
@@ -45,8 +50,37 @@ public final class CAgentMiner extends IBaseScenarioAgent<CAgentMiner>
      * @param p_configuration agent configuration
      * @param p_execution execution service
      */
-    public CAgentMiner( @Nonnull final IAgentConfiguration<CAgentMiner> p_configuration, @Nonnull final ExecutorService p_execution )
+    private CAgentMiner( @Nonnull final IAgentConfiguration<CAgentMiner> p_configuration, @Nonnull final ExecutorService p_execution )
     {
         super( p_configuration, p_execution );
+    }
+
+
+    /**
+     * agent generator
+     */
+    public static final class CGenerator extends IBaseScenarioAgentGenerator<CAgentMiner>
+    {
+
+        /**
+         * ctor
+         *
+         * @param p_asl asl string
+         * @param p_actions actions
+         * @param p_lambda lambdas
+         * @throws IOException on encoding error
+         */
+        public CGenerator( @Nonnull final String p_asl, @Nonnull final IActionGenerator p_actions,
+                           @Nonnull final ILambdaStreamingGenerator p_lambda ) throws IOException
+        {
+            super( p_asl, p_actions, p_lambda );
+        }
+
+        @Nullable
+        @Override
+        public CAgentMiner generatesingle( @Nullable final Object... p_objects )
+        {
+            return new CAgentMiner( m_configuration, (ExecutorService) Objects.requireNonNull( p_objects )[0] );
+        }
     }
 }

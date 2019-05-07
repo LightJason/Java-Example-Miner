@@ -23,10 +23,15 @@
 
 package org.lightjason.example.miner.runtime;
 
+import org.apache.commons.io.IOUtils;
 import org.lightjason.agentspeak.agent.IBaseAgent;
 import org.lightjason.agentspeak.configuration.IAgentConfiguration;
+import org.lightjason.agentspeak.generator.IActionGenerator;
+import org.lightjason.agentspeak.generator.IBaseAgentGenerator;
+import org.lightjason.agentspeak.generator.ILambdaStreamingGenerator;
 
 import javax.annotation.Nonnull;
+import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 
 
@@ -35,7 +40,7 @@ import java.util.concurrent.ExecutorService;
  *
  * @tparam T agent type
  */
-public abstract class IBaseScenarioAgent<T extends IBaseScenarioAgent<?>> extends IBaseAgent<T>
+public abstract class IBaseScenarioAgent<U extends IBaseScenarioAgent<?>> extends IBaseAgent<U>
 {
     /**
      * serial id
@@ -53,7 +58,7 @@ public abstract class IBaseScenarioAgent<T extends IBaseScenarioAgent<?>> extend
      * @param p_configuration agent configuration
      * @param p_execution execution service
      */
-    public IBaseScenarioAgent( @Nonnull final IAgentConfiguration<T> p_configuration, @Nonnull final ExecutorService p_execution )
+    public IBaseScenarioAgent( @Nonnull final IAgentConfiguration<U> p_configuration, @Nonnull final ExecutorService p_execution )
     {
         super( p_configuration );
         m_execution = p_execution;
@@ -61,13 +66,36 @@ public abstract class IBaseScenarioAgent<T extends IBaseScenarioAgent<?>> extend
 
     @Override
     @SuppressWarnings( "unchecked" )
-    public final T call() throws Exception
+    public final U call() throws Exception
     {
         super.call();
 
         if ( !this.runningplans().isEmpty() )
             m_execution.submit( this );
 
-        return (T) this;
+        return (U) this;
+    }
+
+    /**
+     * agent generator
+     *
+     * @tparam V agent type
+     */
+    protected abstract static class IBaseScenarioAgentGenerator<V extends IBaseScenarioAgent<?>> extends IBaseAgentGenerator<V>
+    {
+        /**
+         * ctor
+         *
+         * @param p_asl asl string
+         * @param p_actions actions
+         * @param p_lambda lambdas
+         *
+         * @throws IOException on encoding error
+         */
+        protected IBaseScenarioAgentGenerator( @Nonnull final String p_asl, @Nonnull final IActionGenerator p_actions,
+                                               @Nonnull final ILambdaStreamingGenerator p_lambda ) throws IOException
+        {
+            super( IOUtils.toInputStream( p_asl, "UTF-8" ), p_actions, p_lambda );
+        }
     }
 }
