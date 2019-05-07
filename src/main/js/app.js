@@ -6,6 +6,9 @@ import Content from "./content.js"
 // https://spring.io/guides/tutorials/react-and-spring-data-rest/
 
 
+/**
+ * main application
+ */
 class App extends React.Component {
 
 	render() {

@@ -1,5 +1,8 @@
 import React from 'react';
 
+/**
+ * screen with phaser
+ **/
 export default class Screen extends React.Component {
 
     componentDidMount() {

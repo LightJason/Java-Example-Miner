@@ -1,7 +1,7 @@
 import React from 'react';
 import { Navbar, NavbarBrand } from 'reactstrap';
 import { scaleRotate as NavMenu } from 'react-burger-menu'
-import Agents from './game/agents.js'
+import Agents from './agents.js'
 
 // https://reactstrap.github.io/components/navbar/
 // https://bootstrapious.com/p/bootstrap-sidebar
@@ -9,6 +9,9 @@ import Agents from './game/agents.js'
 // https://reactjsexample.com/a-ready-to-use-menu-component-for-react/
 // http://negomi.github.io/react-burger-menu/
 
+/**
+ * menu structure
+ */
 export default class Menu extends React.Component {
 
     constructor(props) {
@@ -45,8 +48,6 @@ export default class Menu extends React.Component {
         */
                 <NavMenu pageWrapId={ "content" } outerContainerId={ "app" }>
                     <Agents/>
-                    <a className="menu-item"><i className="fas fa-download"></i> Download Agents</a>
-                    <a className="menu-item"><i className="fas fa-upload"></i> Upload Agents</a>
                     <a className="menu-item" href="https://lightjason.org/contact/"><i className="fas fa-envelope"></i> Contact</a>
                 </NavMenu>
 		    //</div>

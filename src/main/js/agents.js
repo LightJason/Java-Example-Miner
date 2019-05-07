@@ -1,13 +1,13 @@
 import React from 'react';
+import AgentsGlobalAction from './agentsglobalaction.js'
 
 // https://blog.hellojs.org/fetching-api-data-with-react-js-460fe8bbf8f2
 // https://www.robinwieruch.de/react-fetching-data/
 
+/**
+ * agent submenu
+ */
 export default class Agents extends React.Component {
-
-    constructor(props) {
-        super(props);
-    }
 
     componentDidMount() {
         fetch('/agent/miners')
@@ -25,7 +25,10 @@ export default class Agents extends React.Component {
         if (this.state)
             return (
                 <>
-                    <span className="menu-item"><i className="fas fa-code"></i> Agents</span>
+                    <div>
+                        <span className="spacepadright menu-item"><i className="fas fa-code"></i> Agents</span>
+                        <AgentsGlobalAction/>
+                    </div>
                     <ul>
                         <li>Environment</li>
                         {Object.values(this.state).map(i => (<li>{i}</li>))}
@@ -33,7 +36,7 @@ export default class Agents extends React.Component {
                 </>
             );
 
-        return (<span className="menu-item"><i className="fas fa-code"></i> Agents</span>);
+        return (<div><span className="menu-item"><i className="fas fa-code"></i> Agents</span><AgentsGlobalAction/></div>);
     }
 
 }
