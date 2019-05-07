@@ -24,29 +24,53 @@
 
 package org.lightjason.example.miner.runtime;
 
+import org.lightjason.agentspeak.generator.IActionGenerator;
+import org.lightjason.agentspeak.generator.ILambdaStreamingGenerator;
+
 import javax.annotation.Nonnull;
+import java.io.IOException;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 
+/**
+ * runtime class
+ */
 public final class CRuntime
 {
     // https://docs.oracle.com/en/java/javase/12/docs/api/java.base/java/util/concurrent/ScheduledExecutorService.html
-
     // https://docs.oracle.com/en/java/javase/12/docs/api/java.base/java/util/concurrent/Executors.html
 
+    /**
+     * execution service
+     */
     private final ExecutorService m_runtime = Executors.newWorkStealingPool();
 
 
-
-    public CRuntime( @Nonnull final String p_aslenvironment, @Nonnull final Map<String, String> p_aslminer )
+    /**
+     * ctor
+     *
+     * @param p_aslenvironment environment asl
+     * @param p_aslminer miner map asl
+     * @param p_asltrader trader map asl
+     * @throws IOException on encoding error
+     */
+    public CRuntime( @Nonnull final String p_aslenvironment, @Nonnull final Map<String, String> p_aslminer,
+                     @Nonnull final Map<String, String> p_asltrader ) throws IOException
     {
         // build action list
         // build lambda list
-        // build generators by parsing source code
+        // build generators by parsing source code -> action for trader & miner generating
         // execute environment -> environment generates world and agents
-        // put generated agents into execution queue
+
+        // parser and run environment
+        m_runtime.submit(
+            Objects.requireNonNull(
+                new CAgentEnvironment.CGenerator( p_aslenvironment, IActionGenerator.EMPTY, ILambdaStreamingGenerator.EMPTY ).generatesingle()
+            )
+        );
     }
 
 }
