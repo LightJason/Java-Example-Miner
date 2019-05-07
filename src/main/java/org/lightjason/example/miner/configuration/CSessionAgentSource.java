@@ -21,45 +21,63 @@
  * @endcond
  */
 
-package org.lightjason.example.miner.controller;
+package org.lightjason.example.miner.configuration;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Collection;
-import java.util.Collections;
-
-import org.springframework.http.MediaType;
+import javax.annotation.Nonnull;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicReference;
 
 
 /**
- * agentspeak rest controller
+ * session agent asl source code storage
  */
-@RestController
-@RequestMapping( "/agentspeak" )
-public final class CAgentSpeakController
+public class CSessionAgentSource
 {
+    /**
+     * asl code of the environment agent
+     */
+    private String m_evironment = "!run. \\n +!run <- generic/print('i am the environment agent').";
+    /**
+     * asl source code of the miner agents
+     */
+    private Map<String, String> m_miners = new ConcurrentHashMap<>();
 
     /**
-     * returns a list with existing actions of the miner agent
-     *
-     * @return action name
+     * ctor
      */
-    @RequestMapping( value = "/action/miner", produces = MediaType.APPLICATION_JSON_VALUE )
-    public Collection<String> mineractions()
+    public CSessionAgentSource()
     {
-        return Collections.emptySet();
+        m_miners.put( "Defaultminier", "!do.\\n+!+do <- generic/print('hello, i am a miner')." );
     }
 
     /**
-     * returns a list with existing actions of the world agent
+     * returns the environment source
      *
-     * @return action name
+     * @return source
      */
-    @RequestMapping( value = "/action/world", produces = MediaType.APPLICATION_JSON_VALUE )
-    public Collection<String> worldactions()
+    public String getEnvironment()
     {
-        return Collections.emptySet();
+        return m_evironment;
     }
 
+    /**
+     * returns the miners source
+     *
+     * @return mapw ith miners and source
+     */
+    public Map<String, String> getMiners()
+    {
+        return m_miners;
+    }
+
+    /**
+     * sets the environment asl source code
+     *
+     * @param p_source source
+     */
+    public void setEnvironment( @Nonnull String p_source )
+    {
+        m_evironment = p_source;
+    }
 }

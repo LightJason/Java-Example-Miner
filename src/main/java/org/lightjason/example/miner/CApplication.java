@@ -24,9 +24,14 @@
 
 package org.lightjason.example.miner;
 
+import org.lightjason.example.miner.configuration.CSessionAgentSource;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.web.context.WebApplicationContext;
 
 import javax.annotation.Nonnull;
 
@@ -51,6 +56,18 @@ public class CApplication
         SpringApplication.run( CApplication.class, p_args );
     }
     //Checkstyle:ON:UncommentedMain
+
+    /**
+     * session storage of agent source code
+     *
+     * @return agent session object
+     */
+    @Bean
+    @Scope( value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS )
+    public CSessionAgentSource sessionAgent()
+    {
+        return new CSessionAgentSource();
+    }
 
     // https://www.baeldung.com/spring-session
     // https://elements.heroku.com/addons/rediscloud

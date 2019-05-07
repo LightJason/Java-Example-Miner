@@ -41,10 +41,18 @@ export default class Menu extends React.Component {
                       {' LightJason - Miner'}
                      </NavbarBrand>
                 </Navbar>
-                */
+        */
                 <NavMenu pageWrapId={ "content" } outerContainerId={ "app" }>
+
                     <a className="menu-item--small"><i className="fas fa-code"></i> Agents</a>
-                    <a className="menu-item--small"><i className="fas fa-sliders-h"></i> Settings</a>
+                    // list of agents
+
+
+                    <a className="menu-item--small"><i className="fas fa-download"></i> Download Agents</a>
+                    <a className="menu-item--small"><i className="fas fa-upload"></i> Upload Agents</a>
+
+                    // List of Visualizations e.g. consistency
+
                     <a className="menu-item" href="https://lightjason.org/contact/"><i className="fas fa-envelope"></i> Contact</a>
                 </NavMenu>
 		    //</div>
