@@ -7,6 +7,7 @@ import Content from "./content.js"
 
 
 class App extends React.Component {
+
 	render() {
 		return (
 		    <>
@@ -15,6 +16,7 @@ class App extends React.Component {
             </>
 		);
 	}
+
 }
 
 ReactDOM.render( <App />, document.getElementById('app') );

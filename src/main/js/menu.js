@@ -1,7 +1,7 @@
 import React from 'react';
 import { Navbar, NavbarBrand } from 'reactstrap';
 import { scaleRotate as NavMenu } from 'react-burger-menu'
-import Miners from './game/miners.js'
+import Agents from './game/agents.js'
 
 // https://reactstrap.github.io/components/navbar/
 // https://bootstrapious.com/p/bootstrap-sidebar
@@ -46,8 +46,7 @@ export default class Menu extends React.Component {
                 <NavMenu pageWrapId={ "content" } outerContainerId={ "app" }>
 
                     <a className="menu-item--small"><i className="fas fa-code"></i> Agents</a>
-                    // list of agents
-                    <Miners/>
+                    <Agents/>
 
 
                     <a className="menu-item--small"><i className="fas fa-download"></i> Download Agents</a>

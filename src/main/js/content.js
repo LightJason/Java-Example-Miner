@@ -4,6 +4,7 @@ import Screen from "./screen.js"
 
 
 export default class Content extends React.Component {
+
 	render() {
 		return (
             <main id="content">
@@ -11,4 +12,5 @@ export default class Content extends React.Component {
             </main>
 		);
 	}
+
 }
