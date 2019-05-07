@@ -1,5 +1,7 @@
 import React from 'react';
 
+// https://react-bootstrap.github.io/components/modal/
+
 /**
  * agent global actions icons
  */

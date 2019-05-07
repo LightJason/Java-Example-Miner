@@ -85,5 +85,8 @@ public class CApplication
     // https://www.baeldung.com/spring-bean-scopes
     // https://www.baeldung.com/spring-mvc-session-attributes
 
+    // https://www.baeldung.com/spring-boot-crud-thymeleaf
+    // https://stackoverflow.com/questions/36531131/i18n-in-spring-boot-thymeleaf
+
 }
 //Checkstyle:ON:HideUtilityClassConstructor

@@ -21,84 +21,32 @@
  * @endcond
  */
 
-package org.lightjason.example.miner.configuration;
+
+package org.lightjason.example.miner.runtime;
 
 import javax.annotation.Nonnull;
-import java.io.Serializable;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 
-/**
- * session agent asl source code storage
- */
-public class CSessionAgentSource implements Serializable
+public final class CRuntime
 {
-    /**
-     * serial id
-     */
-    private static final long serialVersionUID = -8840787108768940215L;
-    /**
-     * asl source of environment agent
-     */
-    private String m_evironment = "!run. \\n +!run <- generic/print('i am the environment agent').";
-    /**
-     * asl source of miner agents
-     */
-    private Map<String, String> m_miners = new ConcurrentHashMap<>();
-    /**
-     * asl source of trader agents
-     */
-    private Map<String, String> m_trader = new ConcurrentHashMap<>();
+    // https://docs.oracle.com/en/java/javase/12/docs/api/java.base/java/util/concurrent/ScheduledExecutorService.html
+
+    // https://docs.oracle.com/en/java/javase/12/docs/api/java.base/java/util/concurrent/Executors.html
+
+    private final ExecutorService m_runtime = Executors.newWorkStealingPool();
 
 
-    /**
-     * ctor
-     */
-    public CSessionAgentSource()
+
+    public CRuntime( @Nonnull final String p_aslenvironment, @Nonnull final Map<String, String> p_aslminer )
     {
-        m_miners.put( "Defaultminier", "!do.\\n+!+do <- generic/print('hello, i am a miner')." );
-        m_miners.put( "EmptyMiner", "" );
+        // build action list
+        // build lambda list
+        // build generators by parsing source code
+        // execute environment -> environment generates world and agents
+        // put generated agents into execution queue
     }
 
-    /**
-     * returns the environment source
-     *
-     * @return source
-     */
-    public String getEnvironment()
-    {
-        return m_evironment;
-    }
-
-    /**
-     * returns the traders source
-     *
-     * @return map ith miners and source
-     */
-    public Map<String, String> getTraders()
-    {
-        return m_trader;
-    }
-
-    /**
-     * returns the miners source
-     *
-     * @return map ith miners and source
-     */
-    public Map<String, String> getMiners()
-    {
-        return m_miners;
-    }
-
-
-    /**
-     * sets the environment asl source code
-     *
-     * @param p_source source
-     */
-    public void setEnvironment( @Nonnull final String p_source )
-    {
-        m_evironment = p_source;
-    }
 }

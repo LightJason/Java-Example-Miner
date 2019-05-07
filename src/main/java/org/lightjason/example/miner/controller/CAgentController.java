@@ -25,6 +25,7 @@ package org.lightjason.example.miner.controller;
 
 import org.lightjason.example.miner.configuration.CSessionAgentSource;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -52,6 +53,58 @@ public final class CAgentController
     @Resource( name = "sessionAgent" )
     private CSessionAgentSource m_sessionagent;
 
+
+
+    /**
+     * creates a new empty miner if not exist
+     *
+     * @param p_name name
+     */
+    @PutMapping( value = "/miner/{name}" )
+    public void createMiner( @PathVariable( name = "name" ) final String p_name )
+    {
+        m_sessionagent.getMiners().putIfAbsent( p_name, "" );
+    }
+
+    /**
+     * creates a new empty miner if not exist
+     *
+     * @param p_name name
+     */
+    @PutMapping( value = "/trader/{name}" )
+    public void createTrader( @PathVariable( name = "name" ) final String p_name )
+    {
+        m_sessionagent.getTraders().putIfAbsent( p_name, "" );
+    }
+
+
+
+    /**
+     * deletes a miner
+     *
+     * @param p_name name
+     * @todo error handling if only one agent exist
+     */
+    @DeleteMapping( value = "/miner/{name}" )
+    public void deleteMiner( @PathVariable( name = "name" ) final String p_name )
+    {
+        m_sessionagent.getMiners().remove( p_name );
+    }
+
+    /**
+     * deletes a trader
+     *
+     * @param p_name name
+     * @todo error handling if only one agent exist
+     */
+    @DeleteMapping( value = "/trader/{name}" )
+    public void deleteTrader( @PathVariable( name = "name" ) final String p_name )
+    {
+        m_sessionagent.getTraders().remove( p_name );
+    }
+
+
+
     /**
      * returns a list with miner names
      *
@@ -64,36 +117,73 @@ public final class CAgentController
     }
 
     /**
+     * returns a list with trader names
+     *
+     * @return list with trader names
+     */
+    @GetMapping( value = "/traders" )
+    public Set<String> getTraders()
+    {
+        return m_sessionagent.getTraders().keySet();
+    }
+
+
+
+    /**
      * returns a list with existing actions of the miner agent
      *
-     * @return action name
+     * @return action names
      */
     @RequestMapping( value = "/action/miner", produces = MediaType.APPLICATION_JSON_VALUE )
-    public Collection<String> mineractions()
+    public Collection<String> getActionsMiner()
     {
         return Collections.emptySet();
     }
 
     /**
-     * returns a list with existing actions of the world agent
+     * returns a list with existing actions of the trader agent
      *
-     * @return action name
+     * @return action names
      */
-    @RequestMapping( value = "/action/world", produces = MediaType.APPLICATION_JSON_VALUE )
-    public Collection<String> worldactions()
+    @RequestMapping( value = "/action/trader", produces = MediaType.APPLICATION_JSON_VALUE )
+    public Collection<String> getActionsTrader()
     {
         return Collections.emptySet();
     }
+
+    /**
+     * returns a list with existing actions of the environment agent
+     *
+     * @return action names
+     */
+    @RequestMapping( value = "/action/environment", produces = MediaType.APPLICATION_JSON_VALUE )
+    public Collection<String> getActionsEnvironment()
+    {
+        return Collections.emptySet();
+    }
+
+
 
     /**
      * returns the miners agent code
      *
-     * @return map with miners and asl code
+     * @return miners and asl code
      */
-    @GetMapping( value = "/source/miner/{name}", produces = MediaType.APPLICATION_JSON_VALUE )
+    @GetMapping( value = "/source/miner/{name}", produces = MediaType.TEXT_PLAIN_VALUE )
     public String getSourceMiners( @PathVariable( name = "name" ) final String p_name )
     {
         return m_sessionagent.getMiners().get( p_name );
+    }
+
+    /**
+     * returns the trader agent code
+     *
+     * @return trader and asl code
+     */
+    @GetMapping( value = "/source/trader/{name}", produces = MediaType.TEXT_PLAIN_VALUE )
+    public String getSourceTraders( @PathVariable( name = "name" ) final String p_name )
+    {
+        return m_sessionagent.getTraders().get( p_name );
     }
 
     /**
@@ -107,16 +197,7 @@ public final class CAgentController
         return m_sessionagent.getEnvironment();
     }
 
-    /**
-     * puts the source of the environment into the session
-     *
-     * @param p_source environemnt source
-     */
-    @PutMapping( value = "/source/environment", produces = MediaType.TEXT_PLAIN_VALUE )
-    public void setSourceEnvironment( @RequestBody final String p_source )
-    {
-        m_sessionagent.setEnvironment( p_source );
-    }
+
 
     /**
      * puts the source of a miner agent into the session
@@ -125,9 +206,32 @@ public final class CAgentController
      * @param p_source miner source
      */
     @PutMapping( value = "/source/miner/{name}", consumes = MediaType.TEXT_PLAIN_VALUE )
-    public void setSourceEnvironment( @PathVariable( name = "name" ) final String p_name, @RequestBody final String p_source )
+    public void setSourceMiner( @PathVariable( name = "name" ) final String p_name, @RequestBody final String p_source )
     {
         m_sessionagent.getMiners().put( p_name, p_source );
+    }
+
+    /**
+     * puts the source of a trader agent into the session
+     *
+     * @param p_name trader name
+     * @param p_source trader source
+     */
+    @PutMapping( value = "/source/trader/{name}", consumes = MediaType.TEXT_PLAIN_VALUE )
+    public void setSourceTrader( @PathVariable( name = "name" ) final String p_name, @RequestBody final String p_source )
+    {
+        m_sessionagent.getTraders().put( p_name, p_source );
+    }
+
+    /**
+     * puts the source of the environment into the session
+     *
+     * @param p_source environemnt source
+     */
+    @PutMapping( value = "/source/environment", consumes = MediaType.TEXT_PLAIN_VALUE )
+    public void setSourceEnvironment( @RequestBody final String p_source )
+    {
+        m_sessionagent.setEnvironment( p_source );
     }
 
 }

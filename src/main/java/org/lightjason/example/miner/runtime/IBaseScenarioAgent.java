@@ -21,84 +21,53 @@
  * @endcond
  */
 
-package org.lightjason.example.miner.configuration;
+package org.lightjason.example.miner.runtime;
+
+import org.lightjason.agentspeak.agent.IBaseAgent;
+import org.lightjason.agentspeak.configuration.IAgentConfiguration;
 
 import javax.annotation.Nonnull;
-import java.io.Serializable;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
 
 
 /**
- * session agent asl source code storage
+ * scenario base agent
+ *
+ * @tparam T agent type
  */
-public class CSessionAgentSource implements Serializable
+public abstract class IBaseScenarioAgent<T extends IBaseScenarioAgent<?>> extends IBaseAgent<T>
 {
     /**
      * serial id
      */
-    private static final long serialVersionUID = -8840787108768940215L;
-    /**
-     * asl source of environment agent
-     */
-    private String m_evironment = "!run. \\n +!run <- generic/print('i am the environment agent').";
-    /**
-     * asl source of miner agents
-     */
-    private Map<String, String> m_miners = new ConcurrentHashMap<>();
-    /**
-     * asl source of trader agents
-     */
-    private Map<String, String> m_trader = new ConcurrentHashMap<>();
+    private static final long serialVersionUID = 4159418649578529062L;
 
+    /**
+     * execution service
+     */
+    private final ExecutorService m_execution;
 
     /**
      * ctor
+     *
+     * @param p_configuration agent configuration
+     * @param p_execution execution service
      */
-    public CSessionAgentSource()
+    public IBaseScenarioAgent( @Nonnull final IAgentConfiguration<T> p_configuration, @Nonnull final ExecutorService p_execution )
     {
-        m_miners.put( "Defaultminier", "!do.\\n+!+do <- generic/print('hello, i am a miner')." );
-        m_miners.put( "EmptyMiner", "" );
+        super( p_configuration );
+        m_execution = p_execution;
     }
 
-    /**
-     * returns the environment source
-     *
-     * @return source
-     */
-    public String getEnvironment()
+    @Override
+    @SuppressWarnings( "unchecked" )
+    public final T call() throws Exception
     {
-        return m_evironment;
-    }
+        super.call();
 
-    /**
-     * returns the traders source
-     *
-     * @return map ith miners and source
-     */
-    public Map<String, String> getTraders()
-    {
-        return m_trader;
-    }
+        if ( !this.runningplans().isEmpty() )
+            m_execution.submit( this );
 
-    /**
-     * returns the miners source
-     *
-     * @return map ith miners and source
-     */
-    public Map<String, String> getMiners()
-    {
-        return m_miners;
-    }
-
-
-    /**
-     * sets the environment asl source code
-     *
-     * @param p_source source
-     */
-    public void setEnvironment( @Nonnull final String p_source )
-    {
-        m_evironment = p_source;
+        return (T) this;
     }
 }

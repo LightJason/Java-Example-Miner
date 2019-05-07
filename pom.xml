@@ -23,6 +23,12 @@
 
     <dependencies>
 
+        <dependency>
+            <groupId>org.lightjason</groupId>
+            <artifactId>agentspeak</artifactId>
+            <version>0.0.2-SNAPSHOT</version>
+        </dependency>
+
         <!-- UI webserver -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
