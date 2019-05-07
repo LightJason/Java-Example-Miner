@@ -15,9 +15,9 @@ export default class Menu extends React.Component {
         super(props);
 
         this.toggle = this.toggle.bind(this);
-        this.state = {
+        this.setState({
             isOpen: false
-        };
+        });
     }
 
     toggle() {
@@ -44,16 +44,9 @@ export default class Menu extends React.Component {
                 </Navbar>
         */
                 <NavMenu pageWrapId={ "content" } outerContainerId={ "app" }>
-
-                    <a className="menu-item--small"><i className="fas fa-code"></i> Agents</a>
                     <Agents/>
-
-
-                    <a className="menu-item--small"><i className="fas fa-download"></i> Download Agents</a>
-                    <a className="menu-item--small"><i className="fas fa-upload"></i> Upload Agents</a>
-
-                    // List of Visualizations e.g. consistency
-
+                    <a className="menu-item"><i className="fas fa-download"></i> Download Agents</a>
+                    <a className="menu-item"><i className="fas fa-upload"></i> Upload Agents</a>
                     <a className="menu-item" href="https://lightjason.org/contact/"><i className="fas fa-envelope"></i> Contact</a>
                 </NavMenu>
 		    //</div>

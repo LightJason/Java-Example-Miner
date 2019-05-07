@@ -37,6 +37,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
 
+// https://spring.io/guides/tutorials/rest/
 
 /**
  * agentspeak rest controller

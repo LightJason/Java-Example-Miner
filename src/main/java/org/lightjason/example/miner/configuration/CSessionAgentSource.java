@@ -54,6 +54,7 @@ public class CSessionAgentSource implements Serializable
     public CSessionAgentSource()
     {
         m_miners.put( "Defaultminier", "!do.\\n+!+do <- generic/print('hello, i am a miner')." );
+        m_miners.put( "EmptyMiner", "" );
     }
 
     /**
