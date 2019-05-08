@@ -45,7 +45,7 @@ public class CSessionAgentSource implements Serializable
     /**
      * asl source of miner agents
      */
-    private Map<String, String> m_miners = new ConcurrentHashMap<>();
+    private Map<String, String> m_miner = new ConcurrentHashMap<>();
     /**
      * asl source of trader agents
      */
@@ -57,8 +57,10 @@ public class CSessionAgentSource implements Serializable
      */
     public CSessionAgentSource()
     {
-        m_miners.put( "Defaultminier", "!do.\\n+!+do <- generic/print('hello, i am a miner')." );
-        m_miners.put( "EmptyMiner", "" );
+        m_miner.put( "Default", "!do.\\n+!+do <- generic/print('hello, i am a miner')." );
+        m_miner.put( "Empty", "" );
+
+        m_trader.put( "Default", "!do.\\n+!+do <- generic/print('hello, i am a trader')." );
     }
 
     /**
@@ -76,7 +78,7 @@ public class CSessionAgentSource implements Serializable
      *
      * @return map ith miners and source
      */
-    public Map<String, String> getTraders()
+    public Map<String, String> getTrader()
     {
         return m_trader;
     }
@@ -86,9 +88,9 @@ public class CSessionAgentSource implements Serializable
      *
      * @return map ith miners and source
      */
-    public Map<String, String> getMiners()
+    public Map<String, String> getMiner()
     {
-        return m_miners;
+        return m_miner;
     }
 
 

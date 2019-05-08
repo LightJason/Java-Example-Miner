@@ -37,6 +37,7 @@ import javax.annotation.Resource;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
+import java.util.stream.Stream;
 
 // https://spring.io/guides/tutorials/rest/
 
@@ -56,6 +57,76 @@ public final class CAgentController
 
 
     /**
+     * returns a list with existing actions of the miner agent
+     *
+     * @return action names
+     */
+    @GetMapping( value = "/action/miner", produces = MediaType.APPLICATION_JSON_VALUE )
+    public Collection<String> getActionsMiner()
+    {
+        return Collections.emptySet();
+    }
+
+    /**
+     * returns a list with existing actions of the trader agent
+     *
+     * @return action names
+     */
+    @GetMapping( value = "/action/trader", produces = MediaType.APPLICATION_JSON_VALUE )
+    public Collection<String> getActionsTrader()
+    {
+        return Collections.emptySet();
+    }
+
+    /**
+     * returns a list with existing actions of the environment agent
+     *
+     * @return action names
+     */
+    @GetMapping( value = "/action/environment", produces = MediaType.APPLICATION_JSON_VALUE )
+    public Collection<String> getActionsEnvironment()
+    {
+        return Collections.emptySet();
+    }
+
+
+
+    /**
+     * returns a list with miner names
+     *
+     * @return list with miner names
+     */
+    @GetMapping( value = "/miners" )
+    public Set<String> getMiners()
+    {
+        return m_sessionagent.getMiner().keySet();
+    }
+
+    /**
+     * returns a list with trader names
+     *
+     * @return list with trader names
+     */
+    @GetMapping( value = "/traders" )
+    public Set<String> getTraders()
+    {
+        return m_sessionagent.getTrader().keySet();
+    }
+
+    /**
+     * returns a list with environemnt names
+     *
+     * @return list with environments names
+     */
+    @GetMapping( value = "/environments" )
+    public String[] getEnvironments()
+    {
+        return Stream.of( "World" ).toArray( String[]::new );
+    }
+
+
+
+    /**
      * creates a new empty miner if not exist
      *
      * @param p_name name
@@ -63,7 +134,7 @@ public final class CAgentController
     @PutMapping( value = "/miner/{name}" )
     public void createMiner( @PathVariable( name = "name" ) final String p_name )
     {
-        m_sessionagent.getMiners().putIfAbsent( p_name, "" );
+        m_sessionagent.getMiner().putIfAbsent( p_name, "" );
     }
 
     /**
@@ -74,7 +145,7 @@ public final class CAgentController
     @PutMapping( value = "/trader/{name}" )
     public void createTrader( @PathVariable( name = "name" ) final String p_name )
     {
-        m_sessionagent.getTraders().putIfAbsent( p_name, "" );
+        m_sessionagent.getTrader().putIfAbsent( p_name, "" );
     }
 
 
@@ -88,7 +159,7 @@ public final class CAgentController
     @DeleteMapping( value = "/miner/{name}" )
     public void deleteMiner( @PathVariable( name = "name" ) final String p_name )
     {
-        m_sessionagent.getMiners().remove( p_name );
+        m_sessionagent.getMiner().remove( p_name );
     }
 
     /**
@@ -100,66 +171,7 @@ public final class CAgentController
     @DeleteMapping( value = "/trader/{name}" )
     public void deleteTrader( @PathVariable( name = "name" ) final String p_name )
     {
-        m_sessionagent.getTraders().remove( p_name );
-    }
-
-
-
-    /**
-     * returns a list with miner names
-     *
-     * @return list with miner names
-     */
-    @GetMapping( value = "/miners" )
-    public Set<String> getMiners()
-    {
-        return m_sessionagent.getMiners().keySet();
-    }
-
-    /**
-     * returns a list with trader names
-     *
-     * @return list with trader names
-     */
-    @GetMapping( value = "/traders" )
-    public Set<String> getTraders()
-    {
-        return m_sessionagent.getTraders().keySet();
-    }
-
-
-
-    /**
-     * returns a list with existing actions of the miner agent
-     *
-     * @return action names
-     */
-    @RequestMapping( value = "/action/miner", produces = MediaType.APPLICATION_JSON_VALUE )
-    public Collection<String> getActionsMiner()
-    {
-        return Collections.emptySet();
-    }
-
-    /**
-     * returns a list with existing actions of the trader agent
-     *
-     * @return action names
-     */
-    @RequestMapping( value = "/action/trader", produces = MediaType.APPLICATION_JSON_VALUE )
-    public Collection<String> getActionsTrader()
-    {
-        return Collections.emptySet();
-    }
-
-    /**
-     * returns a list with existing actions of the environment agent
-     *
-     * @return action names
-     */
-    @RequestMapping( value = "/action/environment", produces = MediaType.APPLICATION_JSON_VALUE )
-    public Collection<String> getActionsEnvironment()
-    {
-        return Collections.emptySet();
+        m_sessionagent.getTrader().remove( p_name );
     }
 
 
@@ -169,10 +181,10 @@ public final class CAgentController
      *
      * @return miners and asl code
      */
-    @GetMapping( value = "/source/miner/{name}", produces = MediaType.TEXT_PLAIN_VALUE )
+    @GetMapping( value = "/miner/{name}", produces = MediaType.TEXT_PLAIN_VALUE )
     public String getSourceMiners( @PathVariable( name = "name" ) final String p_name )
     {
-        return m_sessionagent.getMiners().get( p_name );
+        return m_sessionagent.getMiner().get( p_name );
     }
 
     /**
@@ -180,10 +192,10 @@ public final class CAgentController
      *
      * @return trader and asl code
      */
-    @GetMapping( value = "/source/trader/{name}", produces = MediaType.TEXT_PLAIN_VALUE )
+    @GetMapping( value = "/trader/{name}", produces = MediaType.TEXT_PLAIN_VALUE )
     public String getSourceTraders( @PathVariable( name = "name" ) final String p_name )
     {
-        return m_sessionagent.getTraders().get( p_name );
+        return m_sessionagent.getTrader().get( p_name );
     }
 
     /**
@@ -191,8 +203,8 @@ public final class CAgentController
      *
      * @return environment asl code
      */
-    @GetMapping( value = "/source/environment", produces = MediaType.TEXT_PLAIN_VALUE )
-    public String getSourceEnvironment()
+    @GetMapping( value = "/environment/{name}", produces = MediaType.TEXT_PLAIN_VALUE )
+    public String getSourceEnvironment( @PathVariable( name = "name" ) final String p_name )
     {
         return m_sessionagent.getEnvironment();
     }
@@ -205,10 +217,10 @@ public final class CAgentController
      * @param p_name miner name
      * @param p_source miner source
      */
-    @PutMapping( value = "/source/miner/{name}", consumes = MediaType.TEXT_PLAIN_VALUE )
+    @PutMapping( value = "/miner/{name}", consumes = MediaType.TEXT_PLAIN_VALUE )
     public void setSourceMiner( @PathVariable( name = "name" ) final String p_name, @RequestBody final String p_source )
     {
-        m_sessionagent.getMiners().put( p_name, p_source );
+        m_sessionagent.getMiner().put( p_name, p_source );
     }
 
     /**
@@ -217,10 +229,10 @@ public final class CAgentController
      * @param p_name trader name
      * @param p_source trader source
      */
-    @PutMapping( value = "/source/trader/{name}", consumes = MediaType.TEXT_PLAIN_VALUE )
+    @PutMapping( value = "/trader/{name}", consumes = MediaType.TEXT_PLAIN_VALUE )
     public void setSourceTrader( @PathVariable( name = "name" ) final String p_name, @RequestBody final String p_source )
     {
-        m_sessionagent.getTraders().put( p_name, p_source );
+        m_sessionagent.getTrader().put( p_name, p_source );
     }
 
     /**
@@ -228,8 +240,8 @@ public final class CAgentController
      *
      * @param p_source environemnt source
      */
-    @PutMapping( value = "/source/environment", consumes = MediaType.TEXT_PLAIN_VALUE )
-    public void setSourceEnvironment( @RequestBody final String p_source )
+    @PutMapping( value = "/environment/{name}", consumes = MediaType.TEXT_PLAIN_VALUE )
+    public void setSourceEnvironment( @PathVariable( name = "name" ) final String p_name, @RequestBody final String p_source )
     {
         m_sessionagent.setEnvironment( p_source );
     }

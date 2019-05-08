@@ -9,8 +9,12 @@ import AgentsGlobalAction from './agentsglobalaction.js'
  */
 export default class Agents extends React.Component {
 
+    constructor(props) {
+        super(props);
+    }
+
     componentDidMount() {
-        fetch('/agent/miners')
+        fetch(this.props.fetch)
         .then( result => { return result.json(); } )
         .then( data => {
             let l_list = Object.values( data );
@@ -26,11 +30,10 @@ export default class Agents extends React.Component {
             return (
                 <>
                     <div>
-                        <span className="spacepadright menu-item"><i className="fas fa-code"></i> Agents</span>
+                        <span className="spacepadright menu-item"><i className="fas fa-code"></i> {this.props.name}</span>
                         <AgentsGlobalAction/>
                     </div>
                     <ul>
-                        <li>Environment</li>
                         {Object.values(this.state).map(i => (<li>{i}</li>))}
                     </ul>
                 </>
