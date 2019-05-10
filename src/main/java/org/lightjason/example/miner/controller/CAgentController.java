@@ -36,6 +36,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -53,6 +54,29 @@ public final class CAgentController
      */
     @Resource( name = "sessionAgent" )
     private CSessionAgentSource m_sessionagent;
+
+
+    /**
+     * get all miners with source code
+     *
+     * @return map with name and source
+     */
+    @GetMapping( value = "/download/miner", produces = MediaType.APPLICATION_JSON_VALUE )
+    public Map<String, String> downloadminer()
+    {
+        return m_sessionagent.getMiner();
+    }
+
+    /**
+     * get all traders with source code
+     *
+     * @return map with name and source
+     */
+    @GetMapping( value = "/download/trader", produces = MediaType.APPLICATION_JSON_VALUE )
+    public Map<String, String> downloadtrader()
+    {
+        return m_sessionagent.getTrader();
+    }
 
 
 

@@ -20,7 +20,7 @@ main {
 }
 
 a, a:hover {
-    color: #00ff99;
+    color: white;
 }
 
 .spacepad {
@@ -52,7 +52,7 @@ a, a:hover {
 /* Color/shape of burger icon bars on hover*/
 /* Color/shape of close button cross */
 .bm-burger-bars-hover, .bm-cross {
-    background: #00ff99;
+    background: white;
 }
 
 /* Position and sizing of clickable cross button */
@@ -84,7 +84,6 @@ Note: Beware of modifying this element as it can break the animations - you shou
 
 /* Wrapper for item list */
 .bm-item-list {
-  color: #b8b7ad;
   padding: 0.8em;
 }
 
