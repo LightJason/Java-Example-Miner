@@ -42,6 +42,7 @@ import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.text.MessageFormat;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -117,7 +118,7 @@ public final class CRuntime
             m_miner,
             generators(
                 p_aslminer,
-                i -> new CAgentMiner.CGenerator( toInputStream( i ), IActionGenerator.EMPTY, ILambdaStreamingGenerator.EMPTY, m_runtime )
+                i -> new CAgentMiner.CGenerator( toInputStream( i ), IActionGenerator.EMPTY, ILambdaStreamingGenerator.EMPTY, m_miner, m_runtime )
             )
         );
 
@@ -126,7 +127,7 @@ public final class CRuntime
             m_trader,
             generators(
                 p_asltrader,
-                i -> new CAgentTrader.CGenerator( toInputStream( i ), IActionGenerator.EMPTY, ILambdaStreamingGenerator.EMPTY, m_runtime )
+                i -> new CAgentTrader.CGenerator( toInputStream( i ), IActionGenerator.EMPTY, ILambdaStreamingGenerator.EMPTY, m_trader, m_runtime )
             )
         );
 
@@ -138,6 +139,7 @@ public final class CRuntime
                     toInputStream( p_aslenvironment ),
                     IActionGenerator.EMPTY,
                     ILambdaStreamingGenerator.EMPTY,
+                    new HashSet<>(),
                     m_runtime
                 ).generatesingle()
             )

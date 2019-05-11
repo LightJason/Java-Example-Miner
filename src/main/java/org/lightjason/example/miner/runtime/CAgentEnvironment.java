@@ -32,6 +32,7 @@ import org.lightjason.agentspeak.generator.ILambdaStreamingGenerator;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.io.InputStream;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 
 
@@ -50,11 +51,13 @@ public final class CAgentEnvironment extends IBaseScenarioAgent
      * ctor
      *
      * @param p_configuration agent configuration
+     * @param p_agentstorage agent storage
      * @param p_runtime execution runtime
      */
-    private CAgentEnvironment( @Nonnull final IAgentConfiguration<IScenarioAgent> p_configuration, @Nonnull final ExecutorService p_runtime )
+    private CAgentEnvironment( @Nonnull final IAgentConfiguration<IScenarioAgent> p_configuration, @Nonnull final Set<IScenarioAgent> p_agentstorage,
+                               @Nonnull final ExecutorService p_runtime )
     {
-        super( p_configuration, p_runtime );
+        super( p_configuration, p_agentstorage, p_runtime );
     }
 
     /**
@@ -93,19 +96,21 @@ public final class CAgentEnvironment extends IBaseScenarioAgent
          * @param p_asl asl string
          * @param p_actions actions
          * @param p_lambda lambdas
+         * @param p_agentstorage agent storage
          * @param p_pool execution runtime
          */
         public CGenerator( @Nonnull final InputStream p_asl, @Nonnull final IActionGenerator p_actions,
-                           @Nonnull final ILambdaStreamingGenerator p_lambda, @Nonnull final ExecutorService p_pool )
+                           @Nonnull final ILambdaStreamingGenerator p_lambda, @Nonnull final Set<IScenarioAgent> p_agentstorage,
+                           @Nonnull final ExecutorService p_pool )
         {
-            super( p_asl, p_actions, p_lambda, p_pool );
+            super( p_asl, p_actions, p_lambda, p_agentstorage, p_pool );
         }
 
         @Nonnull
         @Override
         public IScenarioAgent generatesingle( @Nullable final Object... p_objects )
         {
-            return new CAgentEnvironment( m_configuration, m_runtime );
+            return new CAgentEnvironment( m_configuration, m_agentstorage, m_runtime );
         }
     }
 }
