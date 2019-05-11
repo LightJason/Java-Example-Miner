@@ -46,9 +46,9 @@ export default class Agents extends React.Component {
 
     render()
     {
-        const l_upload = this.props.upload ? <a onClick={this.uploadClick}><i className="spacepad fas fa-upload"></i></a> : <></>;
-        const l_download = this.props.download ? <a onClick={this.downloadClick}><i className="spacepad fas fa-download"></i></a> : <></>;
-        const l_create = this.props.create ? <a onClick={this.createClick}><i className="spacepad fas fa-plus-square"></i></a> : <></>;
+        const l_upload = this.props.upload ? <a onClick={this.uploadClick}><i className="spacepad clickable fas fa-upload"></i></a> : <></>;
+        const l_download = this.props.download ? <a onClick={this.downloadClick}><i className="spacepad clickable  fas fa-download"></i></a> : <></>;
+        const l_create = this.props.create ? <a onClick={this.createClick}><i className="spacepad clickable fas fa-plus-square"></i></a> : <></>;
 
         if (this.state)
             return (
@@ -60,7 +60,7 @@ export default class Agents extends React.Component {
                         {l_create}
                     </div>
                     <ul>
-                        {Object.values(this.state).map(i => (<li>{i}</li>))}
+                        {Object.values(this.state).map(i => (<li className="clickable">{i}</li>))}
                     </ul>
                 </>
             );
