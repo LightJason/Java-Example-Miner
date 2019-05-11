@@ -101,7 +101,7 @@ public final class CAgentEnvironment extends IBaseScenarioAgent
             super( p_asl, p_actions, p_lambda, p_pool );
         }
 
-        @Nullable
+        @Nonnull
         @Override
         public IScenarioAgent generatesingle( @Nullable final Object... p_objects )
         {

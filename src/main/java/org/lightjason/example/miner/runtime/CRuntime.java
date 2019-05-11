@@ -50,6 +50,7 @@ import java.util.TreeMap;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -98,30 +99,18 @@ public final class CRuntime
         new CAgentGenerator(
             CPath.of( "generate/miners" ),
             m_miner,
-            Collections.unmodifiableMap(
-                p_aslminer.entrySet().parallelStream().collect(
-                    Collectors.toMap(
-                        Map.Entry::getKey,
-                        i -> new CAgentMiner.CGenerator( toInputStream( i.getValue() ), IActionGenerator.EMPTY, ILambdaStreamingGenerator.EMPTY, m_runtime ),
-                        ( i, j ) -> i,
-                        () -> new TreeMap<>( String.CASE_INSENSITIVE_ORDER )
-                    )
-                )
+            generators(
+                p_aslminer,
+                i -> new CAgentMiner.CGenerator( toInputStream( i ), IActionGenerator.EMPTY, ILambdaStreamingGenerator.EMPTY, m_runtime )
             )
         );
 
         new CAgentGenerator(
             CPath.of( "generate/traders" ),
-            m_miner,
-            Collections.unmodifiableMap(
-                p_asltrader.entrySet().parallelStream().collect(
-                    Collectors.toMap(
-                        Map.Entry::getKey,
-                        i -> new CAgentTrader.CGenerator( toInputStream( i.getValue() ), IActionGenerator.EMPTY, ILambdaStreamingGenerator.EMPTY, m_runtime ),
-                        ( i, j ) -> i,
-                        () -> new TreeMap<>( String.CASE_INSENSITIVE_ORDER )
-                    )
-                )
+            m_trader,
+            generators(
+                p_asltrader,
+                i -> new CAgentTrader.CGenerator( toInputStream( i ), IActionGenerator.EMPTY, ILambdaStreamingGenerator.EMPTY, m_runtime )
             )
         );
 
@@ -129,7 +118,12 @@ public final class CRuntime
         // parser and run environment
         m_runtime.submit(
             Objects.requireNonNull(
-                new CAgentEnvironment.CGenerator( toInputStream( p_aslenvironment ), IActionGenerator.EMPTY, ILambdaStreamingGenerator.EMPTY, m_runtime ).generatesingle()
+                new CAgentEnvironment.CGenerator(
+                    toInputStream( p_aslenvironment ),
+                    IActionGenerator.EMPTY,
+                    ILambdaStreamingGenerator.EMPTY,
+                    m_runtime
+                ).generatesingle()
             )
         );
     }
@@ -151,6 +145,28 @@ public final class CRuntime
         {
             throw new UncheckedIOException( l_exception );
         }
+    }
+
+    /**
+     * create generators
+     *
+     * @param p_asl map with asl
+     * @param p_generator generator function
+     * @return map
+     */
+    private Map<String, IBaseAgentGenerator<IScenarioAgent>> generators( @Nonnull final Map<String, String> p_asl,
+                                                                         @Nonnull final Function<String, IBaseAgentGenerator<IScenarioAgent>> p_generator )
+    {
+        return Collections.unmodifiableMap(
+            p_asl.entrySet().parallelStream().collect(
+                Collectors.toMap(
+                    Map.Entry::getKey,
+                    i -> p_generator.apply( i.getValue() ),
+                    ( i, j ) -> i,
+                    () -> new TreeMap<>( String.CASE_INSENSITIVE_ORDER )
+                )
+            )
+        );
     }
 
     /**

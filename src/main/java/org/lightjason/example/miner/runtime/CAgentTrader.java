@@ -74,9 +74,9 @@ public final class CAgentTrader extends IBaseScenarioAgent
             super( p_asl, p_actions, p_lambda, p_pool );
         }
 
-        @Nullable
+        @Nonnull
         @Override
-        public CAgentTrader generatesingle( @Nullable final Object... p_objects )
+        public IScenarioAgent generatesingle( @Nullable final Object... p_objects )
         {
             return new CAgentTrader( m_configuration, m_runtime );
         }
