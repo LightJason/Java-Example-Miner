@@ -24,15 +24,27 @@
 
 package org.lightjason.example.miner.runtime;
 
+import org.lightjason.agentspeak.action.IBaseAction;
+import org.lightjason.agentspeak.common.CPath;
+import org.lightjason.agentspeak.common.IPath;
 import org.lightjason.agentspeak.generator.IActionGenerator;
 import org.lightjason.agentspeak.generator.ILambdaStreamingGenerator;
+import org.lightjason.agentspeak.language.CRawTerm;
+import org.lightjason.agentspeak.language.ITerm;
+import org.lightjason.agentspeak.language.execution.IContext;
+import org.lightjason.agentspeak.language.fuzzy.IFuzzyValue;
 
 import javax.annotation.Nonnull;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
+import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.stream.Stream;
 
 
 /**
@@ -47,6 +59,14 @@ public final class CRuntime
      * execution service
      */
     private final ExecutorService m_runtime = Executors.newWorkStealingPool();
+    /**
+     * trader
+     */
+    private final Set<IEnergyAgent> m_trader = new CopyOnWriteArraySet<>();
+    /**
+     * miner
+     */
+    private final Set<IEnergyAgent> m_miner = new CopyOnWriteArraySet<>();
 
 
     /**
@@ -63,7 +83,10 @@ public final class CRuntime
         // build action list
         // build lambda list
         // build generators by parsing source code -> action for trader & miner generating
-        // execute environment -> environment generates world and agents
+        // execute environment -> environment generates world and m_agents
+
+        new CActionAgents( CPath.of( "traders" ), m_trader );
+        new CActionAgents( CPath.of( "miners" ), m_miner );
 
         // parser and run environment
         m_runtime.submit(
@@ -71,6 +94,49 @@ public final class CRuntime
                 new CAgentEnvironment.CGenerator( p_aslenvironment, IActionGenerator.EMPTY, ILambdaStreamingGenerator.EMPTY ).generatesingle()
             )
         );
+    }
+
+    /**
+     * action returns the agent list
+     */
+    private static final class CActionAgents extends IBaseAction
+    {
+        /**
+         * action name
+         */
+        private final IPath m_name;
+        /**
+         * agent set
+         */
+        private final Set<IEnergyAgent> m_agents;
+
+        /**
+         * ctor
+         *
+         * @param p_name action name
+         * @param p_agents agent set
+         */
+        CActionAgents( @Nonnull final IPath p_name, @Nonnull final Set<IEnergyAgent> p_agents )
+        {
+            m_name = p_name;
+            m_agents = p_agents;
+        }
+
+        @Nonnull
+        @Override
+        public IPath name()
+        {
+            return m_name;
+        }
+
+        @Nonnull
+        @Override
+        public Stream<IFuzzyValue<?>> execute( final boolean p_parallel, @Nonnull final IContext p_context, @Nonnull final List<ITerm> p_arguments,
+                                               @Nonnull final List<ITerm> p_return )
+        {
+            p_return.add( CRawTerm.of( Collections.unmodifiableSet( m_agents ) ) );
+            return Stream.of();
+        }
     }
 
 }

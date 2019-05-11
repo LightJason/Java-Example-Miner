@@ -33,6 +33,7 @@ import org.lightjason.agentspeak.generator.ILambdaStreamingGenerator;
 import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.atomic.AtomicReference;
 
 
 /**
@@ -40,13 +41,16 @@ import java.util.concurrent.ExecutorService;
  *
  * @tparam T agent type
  */
-public abstract class IBaseScenarioAgent<U extends IBaseScenarioAgent<?>> extends IBaseAgent<U>
+public abstract class IBaseScenarioAgent<U extends IBaseScenarioAgent<?>> extends IBaseAgent<U> implements IEnergyAgent
 {
     /**
      * serial id
      */
     private static final long serialVersionUID = 4159418649578529062L;
-
+    /**
+     * energy level
+     */
+    private final AtomicReference<Number> m_energy = new AtomicReference<>( 0 );
     /**
      * execution service
      */
@@ -74,6 +78,18 @@ public abstract class IBaseScenarioAgent<U extends IBaseScenarioAgent<?>> extend
             m_execution.submit( this );
 
         return (U) this;
+    }
+
+    @Override
+    public void accept( @Nonnull final Number p_number )
+    {
+        m_energy.set( p_number );
+    }
+
+    @Override
+    public Number get()
+    {
+        return m_energy.get();
     }
 
     /**
