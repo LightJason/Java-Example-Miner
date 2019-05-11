@@ -23,13 +23,16 @@
 
 package org.lightjason.example.miner.runtime;
 
+import org.lightjason.agentspeak.agent.IAgent;
+
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+import java.util.function.UnaryOperator;
 
 
 /**
  * energy data
  */
-public interface IEnergyAgent extends Supplier<Number>, Consumer<Number>
+public interface IScenarioAgent extends IAgent<IScenarioAgent>, Supplier<Number>, Consumer<UnaryOperator<Number>>
 {
 }

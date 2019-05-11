@@ -29,15 +29,14 @@ import org.lightjason.agentspeak.generator.ILambdaStreamingGenerator;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.io.IOException;
-import java.util.Objects;
+import java.io.InputStream;
 import java.util.concurrent.ExecutorService;
 
 
 /**
  * trader agent
  */
-public final class CAgentTrader extends IBaseScenarioAgent<CAgentTrader>
+public final class CAgentTrader extends IBaseScenarioAgent
 {
     /**
      * serial id
@@ -48,17 +47,17 @@ public final class CAgentTrader extends IBaseScenarioAgent<CAgentTrader>
      * ctor
      *
      * @param p_configuration agent configuration
-     * @param p_execution execution service
+     * @param p_runtime execution runtime
      */
-    private CAgentTrader( @Nonnull final IAgentConfiguration<CAgentTrader> p_configuration, @Nonnull final ExecutorService p_execution )
+    private CAgentTrader( @Nonnull final IAgentConfiguration<IScenarioAgent> p_configuration, @Nonnull final ExecutorService p_runtime )
     {
-        super( p_configuration, p_execution );
+        super( p_configuration, p_runtime );
     }
 
     /**
      * agent generator
      */
-    public static final class CGenerator extends IBaseScenarioAgentGenerator<CAgentTrader>
+    public static final class CGenerator extends IBaseScenarioAgentGenerator
     {
 
         /**
@@ -67,19 +66,19 @@ public final class CAgentTrader extends IBaseScenarioAgent<CAgentTrader>
          * @param p_asl asl string
          * @param p_actions actions
          * @param p_lambda lambdas
-         * @throws IOException on encoding error
+         * @param p_pool execution runtime
          */
-        public CGenerator( @Nonnull final String p_asl, @Nonnull final IActionGenerator p_actions,
-                           @Nonnull final ILambdaStreamingGenerator p_lambda ) throws IOException
+        public CGenerator( @Nonnull final InputStream p_asl, @Nonnull final IActionGenerator p_actions,
+                           @Nonnull final ILambdaStreamingGenerator p_lambda, @Nonnull final ExecutorService p_pool )
         {
-            super( p_asl, p_actions, p_lambda );
+            super( p_asl, p_actions, p_lambda, p_pool );
         }
 
         @Nullable
         @Override
         public CAgentTrader generatesingle( @Nullable final Object... p_objects )
         {
-            return new CAgentTrader( m_configuration, (ExecutorService) Objects.requireNonNull( p_objects )[0] );
+            return new CAgentTrader( m_configuration, m_runtime );
         }
     }
 }

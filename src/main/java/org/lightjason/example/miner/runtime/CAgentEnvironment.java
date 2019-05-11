@@ -23,21 +23,23 @@
 
 package org.lightjason.example.miner.runtime;
 
+import org.lightjason.agentspeak.action.binding.IAgentAction;
+import org.lightjason.agentspeak.action.binding.IAgentActionName;
 import org.lightjason.agentspeak.configuration.IAgentConfiguration;
 import org.lightjason.agentspeak.generator.IActionGenerator;
 import org.lightjason.agentspeak.generator.ILambdaStreamingGenerator;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.io.IOException;
-import java.util.Objects;
+import java.io.InputStream;
 import java.util.concurrent.ExecutorService;
 
 
 /**
  * environment agent
  */
-public final class CAgentEnvironment extends IBaseScenarioAgent<CAgentEnvironment>
+@IAgentAction
+public final class CAgentEnvironment extends IBaseScenarioAgent
 {
     /**
      * serial id
@@ -48,38 +50,62 @@ public final class CAgentEnvironment extends IBaseScenarioAgent<CAgentEnvironmen
      * ctor
      *
      * @param p_configuration agent configuration
-     * @param p_execution execution service
+     * @param p_runtime execution runtime
      */
-    private CAgentEnvironment( @Nonnull final IAgentConfiguration<CAgentEnvironment> p_configuration, @Nonnull final ExecutorService p_execution )
+    private CAgentEnvironment( @Nonnull final IAgentConfiguration<IScenarioAgent> p_configuration, @Nonnull final ExecutorService p_runtime )
     {
-        super( p_configuration, p_execution );
+        super( p_configuration, p_runtime );
+    }
+
+    /**
+     * gets from an agent the energy
+     *
+     * @param p_agent agent
+     * @return engery level
+     */
+    @IAgentActionName( name = "energy" )
+    private Number getEnergy( @Nonnull final IScenarioAgent p_agent )
+    {
+        return p_agent.get();
+    }
+
+    /**
+     * sets the energy level
+     *
+     * @param p_agent agent
+     * @param p_value value
+     */
+    @IAgentActionName( name = "takeenergy" )
+    private void setEnergy( @Nonnull final IScenarioAgent p_agent, @Nonnull final Number p_value )
+    {
+        p_agent.accept( i -> i.doubleValue() + p_value.doubleValue() );
+        this.accept( i -> i.doubleValue() + p_value.doubleValue() );
     }
 
     /**
      * agent generator
      */
-    public static final class CGenerator extends IBaseScenarioAgentGenerator<CAgentEnvironment>
+    public static final class CGenerator extends IBaseScenarioAgentGenerator
     {
-
         /**
          * ctor
          *
          * @param p_asl asl string
          * @param p_actions actions
          * @param p_lambda lambdas
-         * @throws IOException on encoding error
+         * @param p_pool execution runtime
          */
-        public CGenerator( @Nonnull final String p_asl, @Nonnull final IActionGenerator p_actions,
-                              @Nonnull final ILambdaStreamingGenerator p_lambda ) throws IOException
+        public CGenerator( @Nonnull final InputStream p_asl, @Nonnull final IActionGenerator p_actions,
+                           @Nonnull final ILambdaStreamingGenerator p_lambda, @Nonnull final ExecutorService p_pool )
         {
-            super( p_asl, p_actions, p_lambda );
+            super( p_asl, p_actions, p_lambda, p_pool );
         }
 
         @Nullable
         @Override
-        public CAgentEnvironment generatesingle( @Nullable final Object... p_objects )
+        public IScenarioAgent generatesingle( @Nullable final Object... p_objects )
         {
-            return new CAgentEnvironment( m_configuration, (ExecutorService) Objects.requireNonNull( p_objects )[0] );
+            return new CAgentEnvironment( m_configuration, m_runtime );
         }
     }
 }

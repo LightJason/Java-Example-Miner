@@ -25,8 +25,9 @@ package org.lightjason.example.miner.configuration;
 
 import javax.annotation.Nonnull;
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.TreeMap;
 
 
 /**
@@ -49,11 +50,11 @@ public class CSessionAgentSource implements Serializable
     /**
      * asl source of miner agents
      */
-    private Map<String, String> m_miner = new ConcurrentHashMap<>();
+    private Map<String, String> m_miner = Collections.synchronizedMap( new TreeMap<>( String.CASE_INSENSITIVE_ORDER ) );
     /**
      * asl source of trader agents
      */
-    private Map<String, String> m_trader = new ConcurrentHashMap<>();
+    private Map<String, String> m_trader = Collections.synchronizedMap( new TreeMap<>( String.CASE_INSENSITIVE_ORDER ) );
 
 
     /**

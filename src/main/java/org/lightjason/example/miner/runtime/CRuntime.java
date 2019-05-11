@@ -24,10 +24,12 @@
 
 package org.lightjason.example.miner.runtime;
 
+import org.apache.commons.io.IOUtils;
 import org.lightjason.agentspeak.action.IBaseAction;
 import org.lightjason.agentspeak.common.CPath;
 import org.lightjason.agentspeak.common.IPath;
 import org.lightjason.agentspeak.generator.IActionGenerator;
+import org.lightjason.agentspeak.generator.IBaseAgentGenerator;
 import org.lightjason.agentspeak.generator.ILambdaStreamingGenerator;
 import org.lightjason.agentspeak.language.CRawTerm;
 import org.lightjason.agentspeak.language.ITerm;
@@ -36,14 +38,19 @@ import org.lightjason.agentspeak.language.fuzzy.IFuzzyValue;
 
 import javax.annotation.Nonnull;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.UncheckedIOException;
+import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 
@@ -62,11 +69,11 @@ public final class CRuntime
     /**
      * trader
      */
-    private final Set<IEnergyAgent> m_trader = new CopyOnWriteArraySet<>();
+    private final Set<IScenarioAgent> m_trader = new CopyOnWriteArraySet<>();
     /**
      * miner
      */
-    private final Set<IEnergyAgent> m_miner = new CopyOnWriteArraySet<>();
+    private final Set<IScenarioAgent> m_miner = new CopyOnWriteArraySet<>();
 
 
     /**
@@ -75,32 +82,156 @@ public final class CRuntime
      * @param p_aslenvironment environment asl
      * @param p_aslminer miner map asl
      * @param p_asltrader trader map asl
-     * @throws IOException on encoding error
      */
     public CRuntime( @Nonnull final String p_aslenvironment, @Nonnull final Map<String, String> p_aslminer,
-                     @Nonnull final Map<String, String> p_asltrader ) throws IOException
+                     @Nonnull final Map<String, String> p_asltrader )
     {
         // build action list
         // build lambda list
         // build generators by parsing source code -> action for trader & miner generating
         // execute environment -> environment generates world and m_agents
 
-        new CActionAgents( CPath.of( "traders" ), m_trader );
-        new CActionAgents( CPath.of( "miners" ), m_miner );
+        new CActionAgentSet( CPath.of( "list/traders" ), m_trader );
+
+        new CActionAgentSet( CPath.of( "list/miners" ), m_miner );
+
+        new CAgentGenerator(
+            CPath.of( "generate/miners" ),
+            m_miner,
+            Collections.unmodifiableMap(
+                p_aslminer.entrySet().parallelStream().collect(
+                    Collectors.toMap(
+                        Map.Entry::getKey,
+                        i -> new CAgentMiner.CGenerator( toInputStream( i.getValue() ), IActionGenerator.EMPTY, ILambdaStreamingGenerator.EMPTY, m_runtime ),
+                        ( i, j ) -> i,
+                        () -> new TreeMap<>( String.CASE_INSENSITIVE_ORDER )
+                    )
+                )
+            )
+        );
+
+        new CAgentGenerator(
+            CPath.of( "generate/traders" ),
+            m_miner,
+            Collections.unmodifiableMap(
+                p_asltrader.entrySet().parallelStream().collect(
+                    Collectors.toMap(
+                        Map.Entry::getKey,
+                        i -> new CAgentTrader.CGenerator( toInputStream( i.getValue() ), IActionGenerator.EMPTY, ILambdaStreamingGenerator.EMPTY, m_runtime ),
+                        ( i, j ) -> i,
+                        () -> new TreeMap<>( String.CASE_INSENSITIVE_ORDER )
+                    )
+                )
+            )
+        );
+
 
         // parser and run environment
         m_runtime.submit(
             Objects.requireNonNull(
-                new CAgentEnvironment.CGenerator( p_aslenvironment, IActionGenerator.EMPTY, ILambdaStreamingGenerator.EMPTY ).generatesingle()
+                new CAgentEnvironment.CGenerator( toInputStream( p_aslenvironment ), IActionGenerator.EMPTY, ILambdaStreamingGenerator.EMPTY, m_runtime ).generatesingle()
             )
         );
     }
 
     /**
+     * convert string to input stream
+     *
+     * @param p_string string
+     * @return input stream
+     */
+    @Nonnull
+    private static InputStream toInputStream( @Nonnull final String p_string )
+    {
+        try
+        {
+            return IOUtils.toInputStream( p_string, "UTF-8" );
+        }
+        catch ( final IOException l_exception )
+        {
+            throw new UncheckedIOException( l_exception );
+        }
+    }
+
+    /**
+     * action to generate agents
+     */
+    private static final class CAgentGenerator extends IBaseAction
+    {
+        /**
+         * serial id
+         */
+        private static final long serialVersionUID = -3665565552914217150L;
+        /**
+         * action name
+         */
+        private final IPath m_name;
+        /**
+         * target set
+         */
+        private final Set<IScenarioAgent> m_target;
+        /**
+         * map with generators
+         */
+        private final Map<String, IBaseAgentGenerator<IScenarioAgent>> m_generator;
+
+
+        /**
+         * ctor
+         *
+         * @param p_name action name
+         * @param p_target target agent set
+         * @param p_generator map with generators
+         */
+        CAgentGenerator( @Nonnull final IPath p_name, @Nonnull final Set<IScenarioAgent> p_target,
+                         @Nonnull final Map<String, IBaseAgentGenerator<IScenarioAgent>> p_generator )
+        {
+            m_name = p_name;
+            m_target = p_target;
+            m_generator = p_generator;
+        }
+
+
+        @Nonnull
+        @Override
+        public IPath name()
+        {
+            return m_name;
+        }
+
+        @Override
+        public int minimalArgumentNumber()
+        {
+            return 1;
+        }
+
+        @Nonnull
+        @Override
+        public Stream<IFuzzyValue<?>> execute( final boolean p_parallel, @Nonnull final IContext p_context, @Nonnull final List<ITerm> p_arguments,
+                                               @Nonnull final List<ITerm> p_return )
+        {
+            final IBaseAgentGenerator<IScenarioAgent> l_generator = m_generator.get( p_arguments.get( 0 ).<String>raw() );
+            if ( Objects.isNull( l_generator ) )
+                throw new RuntimeException( MessageFormat.format( "agent [{0}] not found", p_arguments.get( 0 ).<String>raw() ) );
+
+            if ( p_arguments.size() == 0 )
+                m_target.add( l_generator.generatesingle() );
+            else
+                l_generator.generatemultiple( p_arguments.get( 1 ).<Number>raw().intValue() ).forEach( m_target::add );
+
+            return Stream.of();
+        }
+    }
+
+    /**
      * action returns the agent list
      */
-    private static final class CActionAgents extends IBaseAction
+    private static final class CActionAgentSet extends IBaseAction
     {
+        /**
+         * serial id
+         */
+        private static final long serialVersionUID = -3051651479352596295L;
         /**
          * action name
          */
@@ -108,7 +239,7 @@ public final class CRuntime
         /**
          * agent set
          */
-        private final Set<IEnergyAgent> m_agents;
+        private final Set<IScenarioAgent> m_agents;
 
         /**
          * ctor
@@ -116,7 +247,7 @@ public final class CRuntime
          * @param p_name action name
          * @param p_agents agent set
          */
-        CActionAgents( @Nonnull final IPath p_name, @Nonnull final Set<IEnergyAgent> p_agents )
+        CActionAgentSet( @Nonnull final IPath p_name, @Nonnull final Set<IScenarioAgent> p_agents )
         {
             m_name = p_name;
             m_agents = p_agents;

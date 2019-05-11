@@ -23,7 +23,6 @@
 
 package org.lightjason.example.miner.runtime;
 
-import org.apache.commons.io.IOUtils;
 import org.lightjason.agentspeak.agent.IBaseAgent;
 import org.lightjason.agentspeak.configuration.IAgentConfiguration;
 import org.lightjason.agentspeak.generator.IActionGenerator;
@@ -31,9 +30,10 @@ import org.lightjason.agentspeak.generator.IBaseAgentGenerator;
 import org.lightjason.agentspeak.generator.ILambdaStreamingGenerator;
 
 import javax.annotation.Nonnull;
-import java.io.IOException;
+import java.io.InputStream;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.UnaryOperator;
 
 
 /**
@@ -41,7 +41,7 @@ import java.util.concurrent.atomic.AtomicReference;
  *
  * @tparam T agent type
  */
-public abstract class IBaseScenarioAgent<U extends IBaseScenarioAgent<?>> extends IBaseAgent<U> implements IEnergyAgent
+public abstract class IBaseScenarioAgent extends IBaseAgent<IScenarioAgent> implements IScenarioAgent
 {
     /**
      * serial id
@@ -52,38 +52,37 @@ public abstract class IBaseScenarioAgent<U extends IBaseScenarioAgent<?>> extend
      */
     private final AtomicReference<Number> m_energy = new AtomicReference<>( 0 );
     /**
-     * execution service
+     * execution runtime
      */
-    private final ExecutorService m_execution;
+    private final ExecutorService m_runtime;
 
     /**
      * ctor
      *
      * @param p_configuration agent configuration
-     * @param p_execution execution service
+     * @param p_runtime execution runtime
      */
-    public IBaseScenarioAgent( @Nonnull final IAgentConfiguration<U> p_configuration, @Nonnull final ExecutorService p_execution )
+    public IBaseScenarioAgent( @Nonnull final IAgentConfiguration<IScenarioAgent> p_configuration, @Nonnull final ExecutorService p_runtime )
     {
         super( p_configuration );
-        m_execution = p_execution;
+        m_runtime = p_runtime;
     }
 
     @Override
-    @SuppressWarnings( "unchecked" )
-    public final U call() throws Exception
+    public IScenarioAgent call() throws Exception
     {
         super.call();
 
         if ( !this.runningplans().isEmpty() )
-            m_execution.submit( this );
+            m_runtime.submit( this );
 
-        return (U) this;
+        return this;
     }
 
     @Override
-    public void accept( @Nonnull final Number p_number )
+    public void accept( @Nonnull final UnaryOperator<Number> p_value )
     {
-        m_energy.set( p_number );
+        m_energy.getAndUpdate( p_value );
     }
 
     @Override
@@ -97,21 +96,26 @@ public abstract class IBaseScenarioAgent<U extends IBaseScenarioAgent<?>> extend
      *
      * @tparam V agent type
      */
-    protected abstract static class IBaseScenarioAgentGenerator<V extends IBaseScenarioAgent<?>> extends IBaseAgentGenerator<V>
+    protected abstract static class IBaseScenarioAgentGenerator extends IBaseAgentGenerator<IScenarioAgent>
     {
+        /**
+         * execution runtime
+         */
+        protected final ExecutorService m_runtime;
+
         /**
          * ctor
          *
-         * @param p_asl asl string
+         * @param p_asl asl
          * @param p_actions actions
          * @param p_lambda lambdas
-         *
-         * @throws IOException on encoding error
+         * @param p_runtime execution pool;
          */
-        protected IBaseScenarioAgentGenerator( @Nonnull final String p_asl, @Nonnull final IActionGenerator p_actions,
-                                               @Nonnull final ILambdaStreamingGenerator p_lambda ) throws IOException
+        protected IBaseScenarioAgentGenerator( @Nonnull final InputStream p_asl, @Nonnull final IActionGenerator p_actions,
+                                               @Nonnull final ILambdaStreamingGenerator p_lambda, @Nonnull final ExecutorService p_runtime )
         {
-            super( IOUtils.toInputStream( p_asl, "UTF-8" ), p_actions, p_lambda );
+            super( p_asl, p_actions, p_lambda );
+            m_runtime = p_runtime;
         }
     }
 }
