@@ -81,7 +81,7 @@ public final class CAgentEnvironment extends IBaseScenarioAgent
     @IAgentActionName( name = "takeenergy" )
     private void setEnergy( @Nonnull final IScenarioAgent p_agent, @Nonnull final Number p_value )
     {
-        p_agent.accept( i -> i.doubleValue() + p_value.doubleValue() );
+        p_agent.accept( i -> i.doubleValue() - p_value.doubleValue() );
         this.accept( i -> i.doubleValue() + p_value.doubleValue() );
     }
 
