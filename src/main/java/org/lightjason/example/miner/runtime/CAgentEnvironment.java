@@ -61,7 +61,7 @@ public final class CAgentEnvironment extends IBaseScenarioAgent
     }
 
     /**
-     * gets from an agent the energy
+     * get agent energy
      *
      * @param p_agent agent
      * @return engery level
@@ -73,16 +73,29 @@ public final class CAgentEnvironment extends IBaseScenarioAgent
     }
 
     /**
-     * sets the energy level
+     * take energy
      *
      * @param p_agent agent
      * @param p_value value
      */
     @IAgentActionName( name = "energy/take" )
-    private void setEnergy( @Nonnull final IScenarioAgent p_agent, @Nonnull final Number p_value )
+    private void takeEnergy( @Nonnull final IScenarioAgent p_agent, @Nonnull final Number p_value )
     {
         p_agent.accept( i -> i.doubleValue() - p_value.doubleValue() );
         this.accept( i -> i.doubleValue() + p_value.doubleValue() );
+    }
+
+    /**
+     * add energy
+     *
+     * @param p_agent agent
+     * @param p_value value
+     */
+    @IAgentActionName( name = "energy/add" )
+    private void addEnergy( @Nonnull final IScenarioAgent p_agent, @Nonnull final Number p_value )
+    {
+        this.accept( i -> i.doubleValue() - p_value.doubleValue() );
+        p_agent.accept( i -> i.doubleValue() + p_value.doubleValue() );
     }
 
     /**
