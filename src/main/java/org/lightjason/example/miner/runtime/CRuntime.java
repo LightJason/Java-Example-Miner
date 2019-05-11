@@ -64,9 +64,21 @@ public final class CRuntime
     // https://docs.oracle.com/en/java/javase/12/docs/api/java.base/java/util/concurrent/Executors.html
 
     /**
-     * execution service
+     * action name miner generator
      */
-    private final ExecutorService m_runtime = Executors.newWorkStealingPool();
+    private static final IPath MINERGENERATE = CPath.of( "miner/generate" );
+    /**
+     * action name trader generator
+     */
+    private static final IPath TRADERGENERATE = CPath.of( "trader/generate" );
+    /**
+     * action name trader list
+     */
+    private static final IPath TRADERLIST = CPath.of( "trader/list" );
+    /**
+     * action name miner list
+     */
+    private static final IPath MINERLIST = CPath.of( "miner/list" );
     /**
      * trader
      */
@@ -75,6 +87,10 @@ public final class CRuntime
      * miner
      */
     private final Set<IScenarioAgent> m_miner = new CopyOnWriteArraySet<>();
+    /**
+     * execution service
+     */
+    private final ExecutorService m_runtime = Executors.newWorkStealingPool();
 
 
     /**
@@ -92,12 +108,12 @@ public final class CRuntime
         // build generators by parsing source code -> action for trader & miner generating
         // execute environment -> environment generates world and m_agents
 
-        new CActionAgentSet( CPath.of( "list/traders" ), m_trader );
+        new CActionAgentSet( TRADERLIST, m_trader );
 
-        new CActionAgentSet( CPath.of( "list/miners" ), m_miner );
+        new CActionAgentSet( MINERLIST, m_miner );
 
         new CAgentGenerator(
-            CPath.of( "generate/miners" ),
+            MINERGENERATE,
             m_miner,
             generators(
                 p_aslminer,
@@ -106,7 +122,7 @@ public final class CRuntime
         );
 
         new CAgentGenerator(
-            CPath.of( "generate/traders" ),
+            TRADERGENERATE,
             m_trader,
             generators(
                 p_asltrader,
