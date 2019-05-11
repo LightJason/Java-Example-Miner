@@ -154,8 +154,8 @@ public final class CRuntime
      * @param p_generator generator function
      * @return map
      */
-    private Map<String, IBaseAgentGenerator<IScenarioAgent>> generators( @Nonnull final Map<String, String> p_asl,
-                                                                         @Nonnull final Function<String, IBaseAgentGenerator<IScenarioAgent>> p_generator )
+    private static Map<String, IBaseAgentGenerator<IScenarioAgent>> generators( @Nonnull final Map<String, String> p_asl,
+                                                                                @Nonnull final Function<String, IBaseAgentGenerator<IScenarioAgent>> p_generator )
     {
         return Collections.unmodifiableMap(
             p_asl.entrySet().parallelStream().collect(
