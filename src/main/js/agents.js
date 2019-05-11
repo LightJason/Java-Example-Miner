@@ -1,9 +1,12 @@
 import React from 'react';
+import FileSaver from 'file-saver';
 
 // https://blog.hellojs.org/fetching-api-data-with-react-js-460fe8bbf8f2
 // https://www.robinwieruch.de/react-fetching-data/
 // https://stackoverflow.com/questions/35206589/how-to-download-fetch-response-in-react-as-file
 // https://medium.com/yellowcode/download-api-files-with-react-fetch-393e4dae0d9e
+// https://jsfiddle.net/cowboy/hHZa9/
+// https://gist.github.com/yiwenl/8f2b735a2263bc93ee33
 
 /**
  * agent submenu
@@ -19,7 +22,7 @@ export default class Agents extends React.Component {
     }
 
     downloadClick() {
-        console.log("download");
+        FileSaver( this.props.download, this.props.name + ".json" );
     }
 
     uploadClick() {

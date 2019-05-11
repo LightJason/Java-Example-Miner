@@ -35,6 +35,10 @@ import java.util.concurrent.ConcurrentHashMap;
 public class CSessionAgentSource implements Serializable
 {
     /**
+     * name of the map key of the environment
+     */
+    public static final String ENVIRONMENTNAME = "World";
+    /**
      * serial id
      */
     private static final long serialVersionUID = -8840787108768940215L;

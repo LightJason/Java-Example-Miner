@@ -38,6 +38,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 // https://spring.io/guides/tutorials/rest/
@@ -62,7 +63,7 @@ public final class CAgentController
      * @return map with name and source
      */
     @GetMapping( value = "/download/miner", produces = MediaType.APPLICATION_JSON_VALUE )
-    public Map<String, String> downloadminer()
+    public Map<String, String> downloadMiner()
     {
         return m_sessionagent.getMiner();
     }
@@ -73,9 +74,20 @@ public final class CAgentController
      * @return map with name and source
      */
     @GetMapping( value = "/download/trader", produces = MediaType.APPLICATION_JSON_VALUE )
-    public Map<String, String> downloadtrader()
+    public Map<String, String> downloadTrader()
     {
         return m_sessionagent.getTrader();
+    }
+
+    /**
+     * get environment with source code
+     *
+     * @return map with name and source
+     */
+    @GetMapping( value = "/download/environment", produces = MediaType.APPLICATION_JSON_VALUE )
+    public Map<String, String> downloadEnvironment()
+    {
+        return Stream.of( m_sessionagent.getEnvironment() ).collect( Collectors.toMap( i -> CSessionAgentSource.ENVIRONMENTNAME, i -> i ) );
     }
 
 
@@ -145,7 +157,7 @@ public final class CAgentController
     @GetMapping( value = "/environments" )
     public String[] getEnvironments()
     {
-        return Stream.of( "World" ).toArray( String[]::new );
+        return Stream.of( CSessionAgentSource.ENVIRONMENTNAME ).toArray( String[]::new );
     }
 
 
