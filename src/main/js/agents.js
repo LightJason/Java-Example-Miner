@@ -19,6 +19,8 @@ export default class Agents extends React.Component {
         this.downloadClick = this.downloadClick.bind(this);
         this.uploadClick = this.uploadClick.bind(this);
         this.createClick = this.createClick.bind(this);
+        this.createClick = this.createClick.bind(this);
+        this.openEditorClick = this.openEditorClick.bind(this);
     }
 
     downloadClick() {
@@ -31,6 +33,10 @@ export default class Agents extends React.Component {
 
     createClick() {
         console.log("create");
+    }
+
+    openEditorClick() {
+        window.Editor.show();
     }
 
     componentDidMount() {
@@ -60,7 +66,7 @@ export default class Agents extends React.Component {
                         {l_create}
                     </div>
                     <ul>
-                        {Object.values(this.state).map(i => (<li className="clickable">{i}</li>))}
+                        {Object.values(this.state).map(i => (<li className="clickable">< a onClick={this.openEditorClick}>{i}</a></li>))}
                     </ul>
                 </>
             );

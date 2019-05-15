@@ -1,5 +1,5 @@
 import React from 'react';
-import { Navbar, NavbarBrand } from 'reactstrap';
+import { Navbar, NavbarBrand } from 'react-bootstrap';
 import { scaleRotate as NavMenu } from 'react-burger-menu'
 import Agents from './agents.js'
 
