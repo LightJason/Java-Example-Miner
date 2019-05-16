@@ -37,7 +37,7 @@ export default class Editor extends React.Component {
                     <Modal.Title id="contained-modal-title-vcenter">Code Editor &mdash; {this.state.agentname}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <CodeMirror value={ "foo" } />
+                    <CodeMirror value={ "foo" } options={{ theme: "cobalt", lineNumbers: true }} />
                 </Modal.Body>
             </Modal>
         );
