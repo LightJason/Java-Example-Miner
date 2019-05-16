@@ -35,12 +35,12 @@ export default class Agents extends React.Component {
         console.log("create");
     }
 
-    openEditorClick() {
-        window.Editor.show();
+    openEditorClick(name, url) {
+        window.Editor.show(name, url);
     }
 
     componentDidMount() {
-        fetch(this.props.fetch)
+        fetch(this.props.list)
         .then( result => { return result.json(); } )
         .then( data => {
             let l_list = Object.values( data );
@@ -66,7 +66,7 @@ export default class Agents extends React.Component {
                         {l_create}
                     </div>
                     <ul>
-                        {Object.values(this.state).map(i => (<li className="clickable">< a onClick={this.openEditorClick}>{i}</a></li>))}
+                        {Object.values(this.state).map(i => (<li className="clickable">< a onClick={() => this.openEditorClick(i, this.props.source)}>{i}</a></li>))}
                     </ul>
                 </>
             );

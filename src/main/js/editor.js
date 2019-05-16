@@ -14,6 +14,7 @@ export default class Editor extends React.Component {
 
         this.state = {
           show: false,
+          agentname: ""
         };
      }
 
@@ -21,18 +22,21 @@ export default class Editor extends React.Component {
         this.setState({ show: false });
     }
 
-    show() {
-        this.setState({ show: true });
+    show(name, url) {
+        fetch(encodeURI(url+"/"+name))
+        .then( result => { return result.text(); } )
+        .then( data => { console.log(data); } );
+
+        this.setState({ show: true, agentname: name });
     }
 
     render() {
         return(
             <Modal size="lg" aria-labelledby="contained-modal-title-vcenter" centered show={this.state.show} onHide={this.handleClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title id="contained-modal-title-vcenter">Code Editor</Modal.Title>
+                    <Modal.Title id="contained-modal-title-vcenter">Code Editor &mdash; {this.state.agentname}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <h4>Agent</h4>
                     <CodeMirror value={ "foo" } />
                 </Modal.Body>
             </Modal>

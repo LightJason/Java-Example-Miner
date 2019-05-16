@@ -47,9 +47,9 @@ export default class Menu extends React.Component {
                 </Navbar>
         */
                 <NavMenu pageWrapId={ "content" } outerContainerId={ "app" } customBurgerIcon={ <i className="fas fa-bars"></i> }>
-                    <Agents name="Miners" fetch="/agent/miners" create="/agent/miner" remove="/agent/miner" source="/agent/miner" download="/agent/download/miner" />
-                    <Agents name="Traders" fetch="/agent/traders" create="/agent/trader" remove="/agent/trader" source="/agent/trader" download="/agent/download/trader" />
-                    <Agents name="Environment" fetch="/agent/environments" source="/agent/environment" download="/agent/download/environment" />
+                    <Agents name="Miners" list="/agent/miners" create="/agent/miner" remove="/agent/miner" source="/agent/miner" download="/agent/download/miner" />
+                    <Agents name="Traders" list="/agent/traders" create="/agent/trader" remove="/agent/trader" source="/agent/trader" download="/agent/download/trader" />
+                    <Agents name="Environment" list="/agent/environments" source="/agent/environment" download="/agent/download/environment" />
                     <a className="menu-item" href="https://lightjason.org/contact/"><i className="fas fa-envelope"></i> Contact</a>
                 </NavMenu>
 		    //</div>
