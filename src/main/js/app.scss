@@ -35,6 +35,10 @@ html, body {
     padding: 0;
 }
 
+body {
+    height: 100vh;
+}
+
 main {
     padding-left: 100px;
     height: 100%vh;
@@ -49,15 +53,17 @@ main {
     padding-right: 3px;
 }
 
-.clickable, a, a:hover {
+.clickable, a:any-link {
     cursor: pointer;
     color: $light;
     text-decoration: none;
+    border-style: none !important;
 }
 
 .clickable:hover, a:hover {
     background:$success;
 }
+
 
 
 
