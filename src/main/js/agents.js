@@ -65,8 +65,8 @@ export default class Agents extends React.Component {
                         {l_download}
                         {l_create}
                     </div>
-                    <ul>
-                        {Object.values(this.state).map(i => (<li className="clickable">< a onClick={() => this.openEditorClick(i, this.props.source)}>{i}</a></li>))}
+                    <ul className="agents">
+                        {Object.values(this.state).map(i => (<li>< a onClick={() => this.openEditorClick(i, this.props.source)}>{i}</a></li>))}
                     </ul>
                 </>
             );

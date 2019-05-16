@@ -50,17 +50,19 @@ main {
     padding-right: 10px;
 }
 
-.clickable, a:any-link {
-    cursor: pointer;
+a {
     color: $light;
     text-decoration: none;
-    border-style: none !important;
 }
 
-.clickable:hover, a:hover {
+a:hover {
     background:$success;
 }
 
+.agents {
+    padding-top: 0;
+    margin-top: 0.1em;
+}
 
 
 .bm-burger-button {
