@@ -1,28 +1,40 @@
-@import "~bootstrap/scss/bootstrap";
+@import url(//fonts.googleapis.com/css?family=Rubik:200,300,400,700);
+$font-family-base:Rubik;
+$headings-font-family:Rubik;
+
+/* https://medium.com/@programmiri/my-favored-scss-setup-with-bootstrap-4-547e9ea290f8 */
+
+$enable-rounded:false;
+$enable-grid-classes:false;
+$primary:#2f3c48;
+$secondary:#6f7f8c;
+$success:#3e4d59;
+$danger:#cc330d;
+$info:#5c8f94;
+$warning:#6e9fa5;
+$light:#eceeec;
+$dark:#1e2b37;
+
+
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
+@import "~bootstrap/scss/modal";
+@import "~bootstrap/scss/navbar";
+
+
 @import '~codemirror/lib/codemirror.css';
 @import '~codemirror/theme/material.css';
 
-//$fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
-//@import "~@fortawesome/fontawesome-free/scss/fontawesome.scss";
-//@import "~@fortawesome/fontawesome-free/scss/solid.scss";
-
-/* https://fontawesome.com/how-to-use/on-the-web/using-with/sass */
-/* https://stackoverflow.com/questions/33649761/how-do-i-load-font-awesome-using-scss-sass-in-webpack-using-relative-paths */
-
 
 html, body {
-    font-family: 'Rubik', sans-serif;
-    font-size: 18px;
-    background-color: #444;
-    color: white;
+    background: $dark;
+    color: $light;
+    font-family: $font-family-base;
 }
 
 main {
     padding-left: 100px;
-}
-
-a, a:hover {
-    color: white;
 }
 
 .spacepad {
@@ -52,7 +64,7 @@ a, a:hover {
 
 /* Color/shape of burger icons */
 .bm-burger-bars, .bm-burger-bars-hover, .bm-cross {
-    background: white;
+    background: $light;
 }
 
 /* Position and sizing of clickable cross button */
@@ -72,13 +84,13 @@ Note: Beware of modifying this element as it can break the animations - you shou
 
 /* General sidebar styles */
 .bm-menu {
-    background: #777;
+    background: $secondary;
     padding: 2.5em 1.5em 0;
 }
 
 /* Morph shape necessary with bubble or elastic */
 .bm-morph-shape {
-    fill: #373a47;
+    fill: $success;
 }
 
 /* Wrapper for item list */
@@ -95,3 +107,4 @@ Note: Beware of modifying this element as it can break the animations - you shou
 .bm-overlay {
   background: rgba(0, 0, 0, 0.3);
 }
+
