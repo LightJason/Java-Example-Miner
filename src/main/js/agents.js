@@ -60,7 +60,7 @@ export default class Agents extends React.Component {
             return (
                 <>
                     <div>
-                        <span className="spacepadright menu-item"><i className="fas fa-code"></i> {this.props.name}</span>
+                        <span className="menu-item"><i className="fas fa-code"></i> {this.props.name}</span>
                         {l_upload}
                         {l_download}
                         {l_create}
