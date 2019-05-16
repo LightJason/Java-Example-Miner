@@ -10,10 +10,12 @@ export default class Content extends React.Component {
 
 	render() {
 		return (
-            <main id="content">
-                <Screen/>
+		    <>
                 <Editor/>
-            </main>
+                <main id="content">
+                    <Screen/>
+                </main>
+            </>
 		);
 	}
 
