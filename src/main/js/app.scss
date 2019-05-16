@@ -1,19 +1,22 @@
 @import url(//fonts.googleapis.com/css?family=Rubik:200,300,400,700);
-$font-family-base:Rubik;
-$headings-font-family:Rubik;
 
-/* https://medium.com/@programmiri/my-favored-scss-setup-with-bootstrap-4-547e9ea290f8 */
 
-$enable-rounded:false;
-$enable-grid-classes:false;
-$primary:#2f3c48;
-$secondary:#6f7f8c;
-$success:#3e4d59;
-$danger:#cc330d;
-$info:#5c8f94;
-$warning:#6e9fa5;
-$light:#eceeec;
-$dark:#1e2b37;
+$font-family-sans-serif: Rubik, sans-serif;
+$font-size-base: 1.125rem;
+
+$light: #eceeec !default;
+$dark: #1e2b37 !default;
+$primary: #2f3c48 !default;
+$secondary: #6f7f8c !default;
+$success: #3e4d59 !default;
+$info: #5c8f94 !default;
+$warning: #6e9fa5 !default;
+$danger: #cc330d !default;
+
+$gray-base: $dark;
+$body-bg: $dark;
+$text-color: $light;
+$modal-content-bg: $secondary;
 
 
 @import "~bootstrap/scss/functions";
@@ -22,16 +25,15 @@ $dark:#1e2b37;
 @import "~bootstrap/scss/modal";
 @import "~bootstrap/scss/navbar";
 
-
 @import '~codemirror/lib/codemirror.css';
 @import '~codemirror/theme/material.css';
 
 
 html, body {
-    background: $dark;
-    color: $light;
-    font-family: $font-family-base;
-    font-size: 18px;
+    font-family: $font-family-sans-serif;
+    font-size: $font-size-base;
+    background: $body-bg;
+    color: $text-color;
     margin: 0;
     padding: 0;
 }
@@ -56,7 +58,7 @@ a {
 }
 
 a:hover {
-    background:$success;
+    background: $success;
 }
 
 .agents {
