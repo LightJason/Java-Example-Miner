@@ -42,10 +42,14 @@ export default class Editor extends React.Component {
                             indentUnit: 4
                         }}
 
-                        editorDidMount={editor => {
+                        editorDidMount={(editor, value, next) => {
                             fetch( encodeURI( this.state.sourceurl + "/" + this.state.agentname) )
                             .then( result => { return result.text(); } )
-                            .then( data => { console.log("mount: " + data); editor.setValue(data); } );
+                            .then( data => {
+                                console.log("mount: " + data);
+                                editor.setValue(data);
+                                next();
+                            })
                         }}
 
                         editorDidConfigure={editor => {
