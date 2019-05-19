@@ -39,8 +39,7 @@ export default class Editor extends React.Component {
                         options={{
                             theme: "cobalt",
                             lineNumbers: true,
-                            indentUnit: 4,
-                            readOnly: false
+                            indentUnit: 4
                         }}
 
                         editorDidMount={editor => {
@@ -49,8 +48,12 @@ export default class Editor extends React.Component {
                             .then( data => { console.log("mount: " + data); editor.setValue(data); } );
                         }}
 
+                        editorDidConfigure={editor => {
+                            console.log("configured");
+                        }}
+
                         editorWillUnmount={editor => {
-                            console.log("unmount: " + editor);
+                            console.log("unmount");
                         }}
                     />
                 </Modal.Body>
