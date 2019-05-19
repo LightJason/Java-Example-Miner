@@ -36,7 +36,11 @@ export default class Agents extends React.Component {
     }
 
     openEditorClick(name, url) {
-        window.Editor.show(name, url);
+        const l_url = encodeURI( url + "/" + name )
+
+        fetch( l_url )
+        .then( result => { return result.text(); } )
+        .then( data => { window.Editor.show(data, l_url); })
     }
 
     componentDidMount() {

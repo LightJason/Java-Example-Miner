@@ -14,9 +14,9 @@ export default class Editor extends React.Component {
         this.handleClose = this.handleClose.bind(this);
 
         this.state = {
-          show: false,
-          agentname: "",
-          sourceurl: ""
+            show: false,
+            url: "",
+            value: ""
         };
      }
 
@@ -24,8 +24,8 @@ export default class Editor extends React.Component {
         this.setState({ show: false });
     }
 
-    show(name, url) {
-        this.setState({ show: true, agentname: name, sourceurl: url });
+    show(source, puturl) {
+        this.setState({ show: true, value: source, url: puturl });
     }
 
     render() {
@@ -36,28 +36,16 @@ export default class Editor extends React.Component {
                 </Modal.Header>
                 <Modal.Body>
                     <CodeMirror
+                        value={this.state.value}
+
                         options={{
                             theme: "cobalt",
                             lineNumbers: true,
                             indentUnit: 4
                         }}
 
-                        editorDidMount={(editor, value, next) => {
-                            fetch( encodeURI( this.state.sourceurl + "/" + this.state.agentname) )
-                            .then( result => { return result.text(); } )
-                            .then( data => {
-                                console.log("mount: " + data);
-                                editor.setValue(data);
-                                next();
-                            })
-                        }}
-
-                        editorDidConfigure={editor => {
-                            console.log("configured");
-                        }}
-
-                        editorWillUnmount={editor => {
-                            console.log("unmount");
+                        onBeforeChange={(editor, data, value) => {
+                            this.setState({value});
                         }}
                     />
                 </Modal.Body>
