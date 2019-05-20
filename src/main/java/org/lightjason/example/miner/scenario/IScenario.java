@@ -21,18 +21,15 @@
  * @endcond
  */
 
-package org.lightjason.example.miner.runtime;
+package org.lightjason.example.miner.scenario;
 
-import org.lightjason.agentspeak.agent.IAgent;
-
-import java.util.function.Consumer;
 import java.util.function.Supplier;
-import java.util.function.UnaryOperator;
+import java.util.stream.Stream;
 
 
 /**
- * energy data
+ * scenario interface
  */
-public interface IScenarioAgent extends IAgent<IScenarioAgent>, Supplier<Number>, Consumer<UnaryOperator<Number>>
+public interface IScenario extends Supplier<Stream<IScenarioAgent>>
 {
 }

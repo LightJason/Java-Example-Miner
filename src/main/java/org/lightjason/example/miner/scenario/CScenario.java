@@ -22,7 +22,7 @@
  */
 
 
-package org.lightjason.example.miner.runtime;
+package org.lightjason.example.miner.scenario;
 
 import org.apache.commons.io.IOUtils;
 import org.lightjason.agentspeak.action.IBaseAction;
@@ -35,6 +35,7 @@ import org.lightjason.agentspeak.language.CRawTerm;
 import org.lightjason.agentspeak.language.ITerm;
 import org.lightjason.agentspeak.language.execution.IContext;
 import org.lightjason.agentspeak.language.fuzzy.IFuzzyValue;
+import org.lightjason.example.miner.runtime.IRuntime;
 
 import javax.annotation.Nonnull;
 import java.io.IOException;
@@ -49,8 +50,6 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.concurrent.CopyOnWriteArraySet;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -59,7 +58,7 @@ import java.util.stream.Stream;
 /**
  * runtime class
  */
-public final class CRuntime
+public final class CScenario
 {
     // https://docs.oracle.com/en/java/javase/12/docs/api/java.base/java/util/concurrent/ScheduledExecutorService.html
     // https://docs.oracle.com/en/java/javase/12/docs/api/java.base/java/util/concurrent/Executors.html
@@ -89,25 +88,28 @@ public final class CRuntime
      */
     private final Set<IScenarioAgent> m_miner = new CopyOnWriteArraySet<>();
     /**
-     * execution service
+     * runtime
      */
-    private final ExecutorService m_runtime = Executors.newWorkStealingPool();
+    private final IRuntime m_runtime;
 
 
     /**
      * ctor
-     *
-     * @param p_aslenvironment environment asl
+     *  @param p_aslenvironment environment asl
      * @param p_aslminer miner map asl
      * @param p_asltrader trader map asl
+     * @param p_runtime runtime instance
      */
-    public CRuntime( @Nonnull final String p_aslenvironment, @Nonnull final Map<String, String> p_aslminer,
-                     @Nonnull final Map<String, String> p_asltrader )
+    public CScenario( @Nonnull final String p_aslenvironment, @Nonnull final Map<String, String> p_aslminer, @Nonnull final Map<String, String> p_asltrader,
+                      @Nonnull final IRuntime p_runtime
+    )
     {
         // build action list
         // build lambda list
         // build generators by parsing source code -> action for trader & miner generating
         // execute environment -> environment generates world and m_agents
+
+        m_runtime = p_runtime;
 
         new CActionAgentSet( TRADERLIST, m_trader );
 
@@ -133,7 +135,7 @@ public final class CRuntime
 
 
         // parser and run environment
-        m_runtime.submit(
+        m_runtime.accept(
             Objects.requireNonNull(
                 new CAgentEnvironment.CGenerator(
                     toInputStream( p_aslenvironment ),

@@ -21,18 +21,18 @@
  * @endcond
  */
 
-package org.lightjason.example.miner.runtime;
+package org.lightjason.example.miner.scenario;
 
 import org.lightjason.agentspeak.agent.IBaseAgent;
 import org.lightjason.agentspeak.configuration.IAgentConfiguration;
 import org.lightjason.agentspeak.generator.IActionGenerator;
 import org.lightjason.agentspeak.generator.IBaseAgentGenerator;
 import org.lightjason.agentspeak.generator.ILambdaStreamingGenerator;
+import org.lightjason.example.miner.runtime.IRuntime;
 
 import javax.annotation.Nonnull;
 import java.io.InputStream;
 import java.util.Set;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.UnaryOperator;
 
@@ -59,7 +59,7 @@ public abstract class IBaseScenarioAgent extends IBaseAgent<IScenarioAgent> impl
     /**
      * execution runtime
      */
-    private final ExecutorService m_runtime;
+    private final IRuntime m_runtime;
 
     /**
      * ctor
@@ -68,7 +68,7 @@ public abstract class IBaseScenarioAgent extends IBaseAgent<IScenarioAgent> impl
      * @param p_runtime execution runtime
      */
     public IBaseScenarioAgent( @Nonnull final IAgentConfiguration<IScenarioAgent> p_configuration,
-                               @Nonnull final Set<IScenarioAgent> p_agentstorage, @Nonnull final ExecutorService p_runtime
+                               @Nonnull final Set<IScenarioAgent> p_agentstorage, @Nonnull final IRuntime p_runtime
     )
     {
         super( p_configuration );
@@ -84,7 +84,7 @@ public abstract class IBaseScenarioAgent extends IBaseAgent<IScenarioAgent> impl
         if ( this.runningplans().isEmpty() )
             m_agentstorage.remove( this );
         else
-            m_runtime.submit( this );
+            m_runtime.accept( this );
 
         return this;
     }
@@ -111,7 +111,7 @@ public abstract class IBaseScenarioAgent extends IBaseAgent<IScenarioAgent> impl
         /**
          * execution runtime
          */
-        protected final ExecutorService m_runtime;
+        protected final IRuntime m_runtime;
         /**
          * storage set
          */
@@ -128,7 +128,7 @@ public abstract class IBaseScenarioAgent extends IBaseAgent<IScenarioAgent> impl
          */
         protected IBaseScenarioAgentGenerator( @Nonnull final InputStream p_asl, @Nonnull final IActionGenerator p_actions,
                                                @Nonnull final ILambdaStreamingGenerator p_lambda, @Nonnull final Set<IScenarioAgent> p_agentstorage,
-                                               @Nonnull final ExecutorService p_runtime )
+                                               @Nonnull final IRuntime p_runtime )
         {
             super( p_asl, p_actions, p_lambda );
             m_runtime = p_runtime;

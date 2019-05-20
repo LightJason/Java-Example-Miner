@@ -21,28 +21,31 @@
  * @endcond
  */
 
-package org.lightjason.example.miner.runtime;
+package org.lightjason.example.miner.scenario;
 
+import org.lightjason.agentspeak.action.binding.IAgentAction;
+import org.lightjason.agentspeak.action.binding.IAgentActionName;
 import org.lightjason.agentspeak.configuration.IAgentConfiguration;
 import org.lightjason.agentspeak.generator.IActionGenerator;
 import org.lightjason.agentspeak.generator.ILambdaStreamingGenerator;
+import org.lightjason.example.miner.runtime.IRuntime;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.io.InputStream;
 import java.util.Set;
-import java.util.concurrent.ExecutorService;
 
 
 /**
- * trader agent
+ * environment agent
  */
-public final class CAgentTrader extends IBaseScenarioAgent
+@IAgentAction
+public final class CAgentEnvironment extends IBaseScenarioAgent
 {
     /**
      * serial id
      */
-    private static final long serialVersionUID = 1180220544453108361L;
+    private static final long serialVersionUID = 5950067237160399078L;
 
     /**
      * ctor
@@ -51,10 +54,48 @@ public final class CAgentTrader extends IBaseScenarioAgent
      * @param p_agentstorage agent storage
      * @param p_runtime execution runtime
      */
-    private CAgentTrader( @Nonnull final IAgentConfiguration<IScenarioAgent> p_configuration, @Nonnull final Set<IScenarioAgent> p_agentstorage,
-                          @Nonnull final ExecutorService p_runtime )
+    private CAgentEnvironment( @Nonnull final IAgentConfiguration<IScenarioAgent> p_configuration, @Nonnull final Set<IScenarioAgent> p_agentstorage,
+                               @Nonnull final IRuntime p_runtime )
     {
         super( p_configuration, p_agentstorage, p_runtime );
+    }
+
+    /**
+     * get agent energy
+     *
+     * @param p_agent agent
+     * @return engery level
+     */
+    @IAgentActionName( name = "energy/get" )
+    private Number getEnergy( @Nonnull final IScenarioAgent p_agent )
+    {
+        return p_agent.get();
+    }
+
+    /**
+     * take energy
+     *
+     * @param p_agent agent
+     * @param p_value value
+     */
+    @IAgentActionName( name = "energy/take" )
+    private void takeEnergy( @Nonnull final IScenarioAgent p_agent, @Nonnull final Number p_value )
+    {
+        p_agent.accept( i -> i.doubleValue() - p_value.doubleValue() );
+        this.accept( i -> i.doubleValue() + p_value.doubleValue() );
+    }
+
+    /**
+     * add energy
+     *
+     * @param p_agent agent
+     * @param p_value value
+     */
+    @IAgentActionName( name = "energy/add" )
+    private void addEnergy( @Nonnull final IScenarioAgent p_agent, @Nonnull final Number p_value )
+    {
+        this.accept( i -> i.doubleValue() - p_value.doubleValue() );
+        p_agent.accept( i -> i.doubleValue() + p_value.doubleValue() );
     }
 
     /**
@@ -62,7 +103,6 @@ public final class CAgentTrader extends IBaseScenarioAgent
      */
     public static final class CGenerator extends IBaseScenarioAgentGenerator
     {
-
         /**
          * ctor
          *
@@ -70,20 +110,20 @@ public final class CAgentTrader extends IBaseScenarioAgent
          * @param p_actions actions
          * @param p_lambda lambdas
          * @param p_agentstorage agent storage
-         * @param p_pool execution runtime
+         * @param p_runtime runtime
          */
         public CGenerator( @Nonnull final InputStream p_asl, @Nonnull final IActionGenerator p_actions,
                            @Nonnull final ILambdaStreamingGenerator p_lambda, @Nonnull final Set<IScenarioAgent> p_agentstorage,
-                           @Nonnull final ExecutorService p_pool )
+                           @Nonnull final IRuntime p_runtime )
         {
-            super( p_asl, p_actions, p_lambda, p_agentstorage, p_pool );
+            super( p_asl, p_actions, p_lambda, p_agentstorage, p_runtime );
         }
 
         @Nonnull
         @Override
         public IScenarioAgent generatesingle( @Nullable final Object... p_objects )
         {
-            return new CAgentTrader( m_configuration, m_agentstorage, m_runtime );
+            return new CAgentEnvironment( m_configuration, m_agentstorage, m_runtime );
         }
     }
 }

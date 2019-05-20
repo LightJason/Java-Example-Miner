@@ -21,28 +21,28 @@
  * @endcond
  */
 
-package org.lightjason.example.miner.runtime;
+package org.lightjason.example.miner.scenario;
 
 import org.lightjason.agentspeak.configuration.IAgentConfiguration;
 import org.lightjason.agentspeak.generator.IActionGenerator;
 import org.lightjason.agentspeak.generator.ILambdaStreamingGenerator;
+import org.lightjason.example.miner.runtime.IRuntime;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.io.InputStream;
 import java.util.Set;
-import java.util.concurrent.ExecutorService;
 
 
 /**
- * miner agent
+ * trader agent
  */
-public final class CAgentMiner extends IBaseScenarioAgent
+public final class CAgentTrader extends IBaseScenarioAgent
 {
     /**
      * serial id
      */
-    private static final long serialVersionUID = -5782229014102610571L;
+    private static final long serialVersionUID = 1180220544453108361L;
 
     /**
      * ctor
@@ -51,12 +51,11 @@ public final class CAgentMiner extends IBaseScenarioAgent
      * @param p_agentstorage agent storage
      * @param p_runtime execution runtime
      */
-    private CAgentMiner( @Nonnull final IAgentConfiguration<IScenarioAgent> p_configuration, @Nonnull final Set<IScenarioAgent> p_agentstorage,
-                         @Nonnull final ExecutorService p_runtime )
+    private CAgentTrader( @Nonnull final IAgentConfiguration<IScenarioAgent> p_configuration, @Nonnull final Set<IScenarioAgent> p_agentstorage,
+                          @Nonnull final IRuntime p_runtime )
     {
         super( p_configuration, p_agentstorage, p_runtime );
     }
-
 
     /**
      * agent generator
@@ -67,24 +66,24 @@ public final class CAgentMiner extends IBaseScenarioAgent
         /**
          * ctor
          *
-         * @param p_asl asl
+         * @param p_asl asl string
          * @param p_actions actions
          * @param p_lambda lambdas
          * @param p_agentstorage agent storage
-         * @param p_pool execution runtime
+         * @param p_runtime runtime
          */
         public CGenerator( @Nonnull final InputStream p_asl, @Nonnull final IActionGenerator p_actions,
                            @Nonnull final ILambdaStreamingGenerator p_lambda, @Nonnull final Set<IScenarioAgent> p_agentstorage,
-                           @Nonnull final ExecutorService p_pool )
+                           @Nonnull final IRuntime p_runtime )
         {
-            super( p_asl, p_actions, p_lambda, p_agentstorage, p_pool );
+            super( p_asl, p_actions, p_lambda, p_agentstorage, p_runtime );
         }
 
         @Nonnull
         @Override
         public IScenarioAgent generatesingle( @Nullable final Object... p_objects )
         {
-            return new CAgentMiner( m_configuration, m_agentstorage, m_runtime );
+            return new CAgentTrader( m_configuration, m_agentstorage, m_runtime );
         }
     }
 }
