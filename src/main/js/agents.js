@@ -40,7 +40,7 @@ export default class Agents extends React.Component {
 
         fetch( l_url )
         .then( result => { return result.text(); } )
-        .then( data => { window.Editor.show(data, l_url); })
+        .then( data => { window.Editor.show(name, data, l_url); })
     }
 
     componentDidMount() {

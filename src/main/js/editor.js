@@ -16,23 +16,29 @@ export default class Editor extends React.Component {
         this.state = {
             show: false,
             url: "",
-            value: ""
+            value: "",
+            name: ""
         };
      }
 
     handleClose() {
-        this.setState({ show: false });
+        fetch(this.state.url, {
+            method: "PUT",
+            headers: {"Content-Type": "text/plain"},
+            body: this.state.value
+        })
+        .then( result => { this.setState({ show: false }); } );
     }
 
-    show(source, puturl) {
-        this.setState({ show: true, value: source, url: puturl });
+    show(agentname, source, puturl) {
+        this.setState({ show: true, value: source, url: puturl, name: agentname });
     }
 
     render() {
         return(
             <Modal size="lg" aria-labelledby="contained-modal-title-vcenter" centered show={this.state.show} onHide={this.handleClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title id="contained-modal-title-vcenter">Code Editor</Modal.Title>
+                    <Modal.Title id="contained-modal-title-vcenter">Agent Code Editor &mdash; {this.state.name}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <CodeMirror
