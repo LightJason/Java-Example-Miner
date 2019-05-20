@@ -8,6 +8,10 @@ import FileSaver from 'file-saver';
 // https://jsfiddle.net/cowboy/hHZa9/
 // https://gist.github.com/yiwenl/8f2b735a2263bc93ee33
 
+// https://reactjs.org/docs/react-component.html#setstate
+// https://daveceddia.com/where-fetch-data-componentwillmount-vs-componentdidmount/
+// https://blog.logrocket.com/patterns-for-data-fetching-in-react-981ced7e5c56
+
 /**
  * agent submenu
  */
@@ -23,6 +27,20 @@ export default class Agents extends React.Component {
         this.openEditorClick = this.openEditorClick.bind(this);
     }
 
+    componentDidMount() {
+        this.fetchData();
+    }
+
+    fetchData() {
+        fetch(this.props.list)
+        .then( result => { return result.json(); } )
+        .then( data => {
+            let l_list = Object.values( data );
+            l_list.sort();
+            this.setState(l_list);
+        } );
+    }
+
     downloadClick() {
         FileSaver( this.props.download, this.props.name + ".json" );
     }
@@ -35,8 +53,9 @@ export default class Agents extends React.Component {
         console.log("create");
     }
 
-    deleteClick() {
-        console.log("delete");
+    deleteClick(name, url) {
+        fetch(encodeURI( url + "/" + name ), { method: "DELETE" })
+        .then( result => { this.fetchData(); } );
     }
 
     openEditorClick(name, url) {
@@ -45,16 +64,6 @@ export default class Agents extends React.Component {
         fetch( l_url )
         .then( result => { return result.text(); } )
         .then( data => { window.Editor.show(name, data, l_url); })
-    }
-
-    componentDidMount() {
-        fetch(this.props.list)
-        .then( result => { return result.json(); } )
-        .then( data => {
-            let l_list = Object.values( data );
-            l_list.sort();
-            this.setState(l_list);
-        } );
     }
 
     render()
@@ -76,7 +85,7 @@ export default class Agents extends React.Component {
                         {Object.values(this.state).map(i => (
                             <li>
                                 <a onClick={() => this.openEditorClick(i, this.props.source)}>{i}</a>
-                                <a onClick={() => this.deleteClick(i, this.props.source)}><i className="spacepad fas fa-unlink"></i></a>
+                                {this.props.deletable ? <a onClick={() => this.deleteClick(i, this.props.source)}><i className="spacepad fas fa-unlink"></i></a> : <></>}
                             </li>
                         ))}
                     </ul>
@@ -84,12 +93,13 @@ export default class Agents extends React.Component {
             );
 
         return (
-        <div>
-            <span className="menu-item"><i className="fas fa-code"></i> {this.props.name}</span>
-            {l_upload}
-            {l_download}
-            {l_create}
-        </div>);
+            <div>
+                <span className="menu-item"><i className="fas fa-code"></i> {this.props.name}</span>
+                {l_upload}
+                {l_download}
+                {l_create}
+            </div>
+        );
     }
 
 }
