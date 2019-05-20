@@ -46,7 +46,7 @@ public class CSessionAgentSource implements Serializable
     /**
      * asl source of environment agent
      */
-    private String m_evironment = "!run. \\n +!run <- .generic/print('i am the environment agent').";
+    private String m_evironment = "!run. \n\n +!run <- .generic/print('i am the environment agent').";
     /**
      * asl source of miner agents
      */
@@ -62,10 +62,8 @@ public class CSessionAgentSource implements Serializable
      */
     public CSessionAgentSource()
     {
-        m_miner.put( "Default", "!do. \\n +!+do <- .generic/print('hello, i am a miner')." );
-        m_miner.put( "Empty", "" );
-
-        m_trader.put( "Default", "!do. \\n +!+do <- .generic/print('hello, i am a trader')." );
+        m_miner.put( "Default",  "!run. \n\n +!+run <- .generic/print('hello, i am a miner agent')." );
+        m_trader.put( "Default", "!run. \n\n +!+run <- .generic/print('hello, i am a trader agent')." );
     }
 
     /**
