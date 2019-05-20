@@ -38,18 +38,9 @@ html, body {
     padding: 0;
 }
 
-#app {
-    height: 100vh;
-}
-
 main {
     padding-left: 100px;
     height: 100%vh;
-}
-
-.spacepad {
-    padding-left: 10px;
-    padding-right: 10px;
 }
 
 a {
@@ -61,11 +52,19 @@ a:hover {
     background: $success;
 }
 
+#app {
+    height: 100vh;
+}
+
+.spacepad {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
 .agents {
     padding-top: 0;
     margin-top: 0.1em;
 }
-
 
 .close {
     font-size: $font-size-base * 1.25;

@@ -35,6 +35,10 @@ export default class Agents extends React.Component {
         console.log("create");
     }
 
+    deleteClick() {
+        console.log("delete");
+    }
+
     openEditorClick(name, url) {
         const l_url = encodeURI( url + "/" + name )
 
@@ -51,14 +55,13 @@ export default class Agents extends React.Component {
             l_list.sort();
             this.setState(l_list);
         } );
-
     }
 
     render()
     {
-        const l_upload = this.props.upload ? <a onClick={this.uploadClick}><i className="spacepad clickable fas fa-upload"></i></a> : <></>;
-        const l_download = this.props.download ? <a onClick={this.downloadClick}><i className="spacepad clickable  fas fa-download"></i></a> : <></>;
-        const l_create = this.props.create ? <a onClick={this.createClick}><i className="spacepad clickable fas fa-plus-square"></i></a> : <></>;
+        const l_upload = this.props.upload ? <a onClick={this.uploadClick}><i className="spacepad fas fa-upload"></i></a> : <></>;
+        const l_download = this.props.download ? <a onClick={this.downloadClick}><i className="spacepad fas fa-download"></i></a> : <></>;
+        const l_create = this.props.create ? <a onClick={this.createClick}><i className="spacepad fas fa-plus-square"></i></a> : <></>;
 
         if (this.state)
             return (
@@ -70,7 +73,12 @@ export default class Agents extends React.Component {
                         {l_create}
                     </div>
                     <ul className="agents">
-                        {Object.values(this.state).map(i => (<li>< a onClick={() => this.openEditorClick(i, this.props.source)}>{i}</a></li>))}
+                        {Object.values(this.state).map(i => (
+                            <li>
+                                <a onClick={() => this.openEditorClick(i, this.props.source)}>{i}</a>
+                                <a onClick={() => this.deleteClick(i, this.props.source)}><i className="spacepad fas fa-unlink"></i></a>
+                            </li>
+                        ))}
                     </ul>
                 </>
             );
