@@ -58,6 +58,17 @@ public final class CCommon
     }
 
     /**
+     * number casting
+     *
+     * @param p_value any number value
+     * @return number object
+     */
+    public static Number toNumber( @Nonnull final Number p_value )
+    {
+        return p_value;
+    }
+
+    /**
      * convert string to input stream
      *
      * @param p_string string

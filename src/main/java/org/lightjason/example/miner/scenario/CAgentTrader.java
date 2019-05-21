@@ -23,6 +23,7 @@
 
 package org.lightjason.example.miner.scenario;
 
+import cern.colt.matrix.tobject.ObjectMatrix2D;
 import org.lightjason.agentspeak.configuration.IAgentConfiguration;
 import org.lightjason.agentspeak.generator.IActionGenerator;
 import org.lightjason.agentspeak.generator.ILambdaStreamingGenerator;
@@ -37,7 +38,7 @@ import java.util.Set;
 /**
  * trader agent
  */
-public final class CAgentTrader extends IBaseScenarioAgent
+public final class CAgentTrader extends IMovingAgent
 {
     /**
      * serial id
@@ -50,11 +51,12 @@ public final class CAgentTrader extends IBaseScenarioAgent
      * @param p_configuration agent configuration
      * @param p_agentstorage agent storage
      * @param p_runtime execution runtime
+     * @param p_grid world grid
      */
     private CAgentTrader( @Nonnull final IAgentConfiguration<IScenarioAgent> p_configuration, @Nonnull final Set<IScenarioAgent> p_agentstorage,
-                          @Nonnull final IRuntime p_runtime )
+                          @Nonnull final IRuntime p_runtime, @Nonnull final ObjectMatrix2D p_grid  )
     {
-        super( p_configuration, p_agentstorage, p_runtime );
+        super( p_configuration, p_agentstorage, p_runtime, p_grid );
     }
 
     /**
@@ -83,7 +85,7 @@ public final class CAgentTrader extends IBaseScenarioAgent
         @Override
         public IScenarioAgent generatesingle( @Nullable final Object... p_objects )
         {
-            return new CAgentTrader( m_configuration, m_agentstorage, m_runtime );
+            return new CAgentTrader( m_configuration, m_agentstorage, m_runtime, (ObjectMatrix2D) p_objects[0] );
         }
     }
 }
