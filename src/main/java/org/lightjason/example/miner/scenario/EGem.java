@@ -24,6 +24,7 @@
 package org.lightjason.example.miner.scenario;
 
 import javax.annotation.Nonnull;
+import java.text.MessageFormat;
 import java.util.concurrent.ThreadLocalRandom;
 
 
@@ -42,6 +43,8 @@ public enum EGem implements IGemFactory
     {
         return new CGem( this, ThreadLocalRandom.current().nextDouble() );
     }
+
+
 
     /**
      * gem
@@ -81,6 +84,12 @@ public enum EGem implements IGemFactory
         public EGem type()
         {
             return m_type;
+        }
+
+        @Override
+        public String toString()
+        {
+            return MessageFormat.format( "{0}({1})", m_type, m_value );
         }
     }
 }

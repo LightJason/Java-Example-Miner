@@ -23,8 +23,11 @@
 
 package org.lightjason.example.miner.scenario;
 
-import org.apache.commons.lang3.tuple.ImmutableTriple;
+import cern.colt.matrix.tdouble.impl.DenseDoubleMatrix1D;
+import cern.colt.matrix.tdouble.impl.SparseDoubleMatrix1D;
+import org.junit.Assert;
 import org.junit.Test;
+import org.lightjason.agentspeak.action.grid.routing.EDistance;
 
 
 /**
@@ -37,11 +40,89 @@ public final class TestCCommon
      * test gaussian
      */
     @Test
-    public void gaussion()
+    public void gaussian()
     {
-        CCommon.coordinates( 0, 0, 4, x -> true, y -> true )
-               .map( i -> new ImmutableTriple<>( i.getLeft(), i.getRight(), CCommon.gaussian( i, 0, 0, 1 ) ) )
-               .forEach( i -> System.out.println( i ) );
+        Assert.assertArrayEquals(
+            new Object[]{
+                1.0104542167073785e-14,
+                1.826944081672919e-11,
+                1.826944081672919e-11,
+                1.826944081672919e-11,
+                1.826944081672919e-11,
+                1.2151765699646572e-8,
+                1.2151765699646572e-8,
+                1.2151765699646572e-8,
+                1.2151765699646572e-8,
+                1.2151765699646572e-8,
+                1.2151765699646572e-8,
+                1.2151765699646572e-8,
+                1.2151765699646572e-8,
+                2.9734390294685958e-6,
+                2.9734390294685958e-6,
+                2.9734390294685958e-6,
+                2.9734390294685958e-6,
+                2.9734390294685958e-6,
+                2.9734390294685958e-6,
+                2.9734390294685958e-6,
+                2.9734390294685958e-6,
+                2.9734390294685958e-6,
+                2.9734390294685958e-6,
+                2.9734390294685958e-6,
+                2.9734390294685958e-6,
+                2.6766045152977074e-4,
+                2.6766045152977074e-4,
+                2.6766045152977074e-4,
+                2.6766045152977074e-4,
+                2.6766045152977074e-4,
+                2.6766045152977074e-4,
+                2.6766045152977074e-4,
+                2.6766045152977074e-4,
+                2.6766045152977074e-4,
+                2.6766045152977074e-4,
+                2.6766045152977074e-4,
+                2.6766045152977074e-4,
+                2.6766045152977074e-4,
+                2.6766045152977074e-4,
+                0.008863696823876015,
+                0.008863696823876015,
+                0.008863696823876015,
+                0.008863696823876015,
+                0.008863696823876015,
+                0.008863696823876015,
+                0.008863696823876015,
+                0.008863696823876015,
+                0.008863696823876015,
+                0.008863696823876015,
+                0.008863696823876015,
+                0.008863696823876015,
+                0.10798193302637613,
+                0.10798193302637613,
+                0.10798193302637613,
+                0.10798193302637613,
+                0.10798193302637613,
+                0.10798193302637613,
+                0.10798193302637613,
+                0.10798193302637613,
+                0.48394144903828673,
+                0.48394144903828673,
+                0.48394144903828673,
+                0.48394144903828673,
+                0.7978845608028654,
+            },
+
+            CCommon.coordinates( 0, 0, 4, x -> true, y -> true )
+                   .sequential()
+                   .map( i -> CCommon.gaussian(
+                       EDistance.MANHATTAN.apply(
+                               new SparseDoubleMatrix1D( 2 ),
+                               new DenseDoubleMatrix1D( new double[]{i.getLeft().doubleValue(), i.getRight().doubleValue()} )
+                           ),
+                           1, 0, 2
+                       ).doubleValue()
+                   )
+                   .sorted()
+                   .toArray()
+        );
     }
 
 }

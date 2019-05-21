@@ -23,11 +23,15 @@
 
 package org.lightjason.example.miner.scenario;
 
+import cern.colt.matrix.tdouble.DoubleMatrix1D;
+import cern.colt.matrix.tdouble.impl.DenseDoubleMatrix1D;
+import cern.colt.matrix.tdouble.impl.SparseDoubleMatrix1D;
 import cern.colt.matrix.tobject.ObjectMatrix2D;
 import cern.colt.matrix.tobject.impl.SparseObjectMatrix2D;
 import org.lightjason.agentspeak.action.binding.IAgentAction;
 import org.lightjason.agentspeak.action.binding.IAgentActionFilter;
 import org.lightjason.agentspeak.action.binding.IAgentActionName;
+import org.lightjason.agentspeak.action.grid.routing.EDistance;
 import org.lightjason.agentspeak.configuration.IAgentConfiguration;
 import org.lightjason.agentspeak.generator.IActionGenerator;
 import org.lightjason.agentspeak.generator.ILambdaStreamingGenerator;
@@ -103,6 +107,7 @@ public final class CAgentEnvironment extends IBaseScenarioAgent implements IScen
     @IAgentActionName( name = "mine/create" )
     private void addmine( @Nonnull final String p_gem, @Nonnull final Number p_xcenter, @Nonnull final Number p_ycenter, @Nonnull final Number p_size )
     {
+        final DoubleMatrix1D l_zero = new SparseDoubleMatrix1D( 2 );
         final EGem l_gem = EGem.valueOf( p_gem.trim().toUpperCase( Locale.ROOT ) );
 
         CCommon.coordinates(
@@ -111,12 +116,11 @@ public final class CAgentEnvironment extends IBaseScenarioAgent implements IScen
             y -> y.intValue() >= 0 && y.intValue() < m_grid.get().rows()
         )
             .filter( i -> Objects.isNull( m_grid.get().getQuick( i.getLeft().intValue(), i.getRight().intValue() ) ) )
-            .filter( i -> {
-                final double l_value = CCommon.gaussian( i, p_xcenter, p_ycenter, 1 ).doubleValue();
-                System.out.println( i + "   " + l_value );
-
-                return ThreadLocalRandom.current().nextDouble() <= l_value;
-            } )
+            .filter( i -> ThreadLocalRandom.current().nextDouble() >= CCommon.gaussian(
+                EDistance.MANHATTAN.apply(
+                    l_zero,
+                    new DenseDoubleMatrix1D( new double[]{i.getLeft().doubleValue(), i.getRight().doubleValue()} )
+                ), 1, 0, p_size.doubleValue() ).doubleValue() )
             .forEach( i -> m_grid.get().setQuick( i.getLeft().intValue(), i.getRight().intValue(), l_gem.get() ) );
     }
 

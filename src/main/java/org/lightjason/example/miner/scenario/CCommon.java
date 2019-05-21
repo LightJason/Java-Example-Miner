@@ -29,11 +29,13 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.lightjason.agentspeak.generator.IBaseAgentGenerator;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.util.Collections;
 import java.util.Map;
+import java.util.Objects;
 import java.util.TreeMap;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -103,23 +105,15 @@ public final class CCommon
      * gaussian blur
      *
      * @param p_value value
-     * @param p_xcenter x-center
-     * @param p_ycenter y-center
      * @param p_sigma sigma
+     * @param p_mu mu
+     * @param p_scale scaling (half-size is a good value)
      * @return gaussian value
-     *
-     * @see https://homepages.inf.ed.ac.uk/rbf/HIPR2/gsmooth.htm
-     * @see https://en.wikipedia.org/wiki/Gaussian_blur
      */
-    public static Number gaussian( @Nonnull final Pair<Number, Number> p_value,
-                                    @Nonnull final Number p_xcenter, @Nonnull final Number p_ycenter, @Nonnull final Number p_sigma )
+    public static Number gaussian( @Nonnull final Number p_value, @Nonnull final Number p_sigma, @Nonnull final Number p_mu, @Nullable final Number... p_scale )
     {
-        final double l_sigma = 2 * Math.pow( p_sigma.doubleValue(), 2 );
-        return 1 / ( Math.PI * l_sigma )
-               * Math.exp(
-            ( Math.pow( p_ycenter.doubleValue() - p_value.getLeft().doubleValue(), 2 )
-              + Math.pow( p_xcenter.doubleValue() - p_value.getRight().doubleValue(), 2 ) ) / l_sigma
-        );
+        return Math.exp( -0.5 * Math.pow( ( p_value.doubleValue() - p_mu.doubleValue() ) / p_sigma.doubleValue(), 2 ) )
+            / ( p_sigma.doubleValue() * Math.sqrt( 2 * Math.PI ) ) * ( Objects.nonNull( p_scale ) && p_scale.length > 0 ? p_scale[0].doubleValue() : 1 );
     }
 
     /**
@@ -133,7 +127,7 @@ public final class CCommon
      * @return stream with number pairs
      */
     public static Stream<Pair<Number, Number>> coordinates( @Nonnull final Number p_xcenter, @Nonnull final Number p_ycenter, @Nonnull final Number p_size,
-                                                             @Nonnull final Predicate<Number> p_xfilter, @Nonnull Predicate<Number> p_yfilter )
+                                                             @Nonnull final Predicate<Number> p_xfilter, @Nonnull final Predicate<Number> p_yfilter )
     {
         return IntStream.range( p_xcenter.intValue() - p_size.intValue(), p_xcenter.intValue() + p_size.intValue() )
                         .parallel()

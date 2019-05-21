@@ -67,14 +67,14 @@ public final class TestCEnvironment
     public void mine() throws Exception
     {
         final CAgentEnvironment l_env = new CAgentEnvironment.CGenerator(
-            CCommon.toInputStream( "!run. +!run <- .world/create(50, 40); .mine/create( 'topaz',  25,25,5)." ),
+            CCommon.toInputStream( "!run. +!run <- .world/create(50, 50); .mine/create( 'topaz',  25,25,5)." ),
             new CActionStaticGenerator( org.lightjason.agentspeak.common.CCommon.actionsFromAgentClass( CAgentEnvironment.class ) ),
             ILambdaStreamingGenerator.EMPTY,
             Collections.emptySet(),
             IRuntime.EMPTY
         ).generatesingle().call().call().raw();
 
-        //System.out.println( l_env.grid() );
+        System.out.println( l_env.grid() );
     }
 
 }
