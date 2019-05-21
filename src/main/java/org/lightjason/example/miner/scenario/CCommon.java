@@ -24,6 +24,8 @@
 package org.lightjason.example.miner.scenario;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.lightjason.agentspeak.generator.IBaseAgentGenerator;
 
 import javax.annotation.Nonnull;
@@ -34,7 +36,10 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 
 /**
@@ -91,6 +96,54 @@ public final class CCommon
                 )
             )
         );
+    }
+
+
+    /**
+     * gaussian blur
+     *
+     * @param p_value value
+     * @param p_xcenter x-center
+     * @param p_ycenter y-center
+     * @param p_sigma sigma
+     * @return gaussian value
+     *
+     * @see https://homepages.inf.ed.ac.uk/rbf/HIPR2/gsmooth.htm
+     * @see https://en.wikipedia.org/wiki/Gaussian_blur
+     */
+    public static Number gaussian( @Nonnull final Pair<Number, Number> p_value,
+                                    @Nonnull final Number p_xcenter, @Nonnull final Number p_ycenter, @Nonnull final Number p_sigma )
+    {
+        final double l_sigma = 2 * Math.pow( p_sigma.doubleValue(), 2 );
+        return 1 / ( Math.PI * l_sigma )
+               * Math.exp(
+            ( Math.pow( p_ycenter.doubleValue() - p_value.getLeft().doubleValue(), 2 )
+              + Math.pow( p_xcenter.doubleValue() - p_value.getRight().doubleValue(), 2 ) ) / l_sigma
+        );
+    }
+
+    /**
+     * generate coordinates
+     *
+     * @param p_xcenter x-center
+     * @param p_ycenter y-center
+     * @param p_size size
+     * @param p_xfilter x-coordinate filter
+     * @param p_yfilter y-coordinate filter
+     * @return stream with number pairs
+     */
+    public static Stream<Pair<Number, Number>> coordinates( @Nonnull final Number p_xcenter, @Nonnull final Number p_ycenter, @Nonnull final Number p_size,
+                                                             @Nonnull final Predicate<Number> p_xfilter, @Nonnull Predicate<Number> p_yfilter )
+    {
+        return IntStream.range( p_xcenter.intValue() - p_size.intValue(), p_xcenter.intValue() + p_size.intValue() )
+                        .parallel()
+                        .boxed()
+                        .filter( p_xfilter )
+                        .flatMap( x -> IntStream.range( p_ycenter.intValue() - p_size.intValue(), p_ycenter.intValue() + p_size.intValue() )
+                                                .parallel()
+                                                .boxed()
+                                                .filter( p_yfilter )
+                                                .map( y -> new ImmutablePair<>( y, x ) ) );
     }
 
 }

@@ -23,39 +23,25 @@
 
 package org.lightjason.example.miner.scenario;
 
-import org.junit.Assert;
+import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.junit.Test;
-import org.lightjason.agentspeak.generator.CActionStaticGenerator;
-import org.lightjason.agentspeak.generator.ILambdaStreamingGenerator;
-import org.lightjason.example.miner.runtime.IRuntime;
-
-import java.util.Collections;
 
 
 /**
- * test environment agent
+ * test common
  */
-public final class CEnvironment
+public final class TestCCommon
 {
 
     /**
-     * test grid generating
-     *
-     * @throws Exception on execution error
+     * test gaussian
      */
     @Test
-    public void create() throws Exception
+    public void gaussion()
     {
-        final CAgentEnvironment l_env = new CAgentEnvironment.CGenerator(
-            CCommon.toInputStream( "!run. +!run <- .world/create(55, 45)." ),
-            new CActionStaticGenerator( org.lightjason.agentspeak.common.CCommon.actionsFromAgentClass( CAgentEnvironment.class ) ),
-            ILambdaStreamingGenerator.EMPTY,
-            Collections.emptySet(),
-            IRuntime.EMPTY
-        ).generatesingle().call().raw();
-
-        Assert.assertEquals( 45, l_env.grid().rows() );
-        Assert.assertEquals( 55, l_env.grid().columns() );
+        CCommon.coordinates( 0, 0, 4, x -> true, y -> true )
+               .map( i -> new ImmutableTriple<>( i.getLeft(), i.getRight(), CCommon.gaussian( i, 0, 0, 1 ) ) )
+               .forEach( i -> System.out.println( i ) );
     }
 
 }

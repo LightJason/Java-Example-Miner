@@ -25,8 +25,6 @@ package org.lightjason.example.miner.scenario;
 
 import cern.colt.matrix.tobject.ObjectMatrix2D;
 import cern.colt.matrix.tobject.impl.SparseObjectMatrix2D;
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.Pair;
 import org.lightjason.agentspeak.action.binding.IAgentAction;
 import org.lightjason.agentspeak.action.binding.IAgentActionFilter;
 import org.lightjason.agentspeak.action.binding.IAgentActionName;
@@ -43,8 +41,6 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 
 /**
@@ -83,29 +79,6 @@ public final class CAgentEnvironment extends IBaseScenarioAgent implements IScen
     }
 
     /**
-     * build a stream with valid coordinates
-     *
-     * @param p_xcenter x-center
-     * @param p_ycenter y-center
-     * @param p_size size
-     * @return stream with coordinates (y, x)
-     */
-    private Stream<Pair<Number, Number>> clip( @Nonnull final Number p_xcenter, @Nonnull final Number p_ycenter, @Nonnull final Number p_size )
-    {
-        Objects.requireNonNull( m_grid.get() );
-        return IntStream.range( p_xcenter.intValue() - p_size.intValue(), p_xcenter.intValue() + p_size.intValue() )
-                        .parallel()
-                        .boxed()
-                        .filter( x -> x >= 0 && x < m_grid.get().columns() )
-                        .flatMap( x -> IntStream.range( p_ycenter.intValue() - p_size.intValue(), p_ycenter.intValue() + p_size.intValue() )
-                                                 .parallel()
-                                                 .boxed()
-                                                 .filter( y -> y >= 0 && y < m_grid.get().rows() )
-                                                 .filter( y -> Objects.nonNull( m_grid.get().getQuick( y, x ) ) )
-                                                 .map( y -> new ImmutablePair<>( y, x ) ) );
-    }
-
-    /**
      * creates the world map
      *
      * @param p_width width
@@ -132,32 +105,19 @@ public final class CAgentEnvironment extends IBaseScenarioAgent implements IScen
     {
         final EGem l_gem = EGem.valueOf( p_gem.trim().toUpperCase( Locale.ROOT ) );
 
-        // https://homepages.inf.ed.ac.uk/rbf/HIPR2/gsmooth.htm
-        // https://en.wikipedia.org/wiki/Gaussian_blur
+        CCommon.coordinates(
+            p_xcenter, p_ycenter, p_size,
+            x -> x.intValue() >= 0 && x.intValue() < m_grid.get().columns(),
+            y -> y.intValue() >= 0 && y.intValue() < m_grid.get().rows()
+        )
+            .filter( i -> Objects.isNull( m_grid.get().getQuick( i.getLeft().intValue(), i.getRight().intValue() ) ) )
+            .filter( i -> {
+                final double l_value = CCommon.gaussian( i, p_xcenter, p_ycenter, 1 ).doubleValue();
+                System.out.println( i + "   " + l_value );
 
-        this.clip( p_xcenter, p_ycenter, p_size )
-            .filter( i -> ThreadLocalRandom.current().nextDouble() <= gaussian( i, p_xcenter, p_ycenter, 1 ).doubleValue() )
+                return ThreadLocalRandom.current().nextDouble() <= l_value;
+            } )
             .forEach( i -> m_grid.get().setQuick( i.getLeft().intValue(), i.getRight().intValue(), l_gem.get() ) );
-    }
-
-    /**
-     * gaussian blur
-     *
-     * @param p_value value
-     * @param p_xcenter x-center
-     * @param p_ycenter y-center
-     * @param p_sigma sigma
-     * @return gaussian value
-     */
-    private static Number gaussian( @Nonnull final Pair<Number, Number> p_value,
-                                    @Nonnull final Number p_xcenter, @Nonnull final Number p_ycenter, @Nonnull final Number p_sigma )
-    {
-        final double l_sigma = 2 * Math.pow( p_sigma.doubleValue(), 2 );
-        return 1 / ( Math.PI * l_sigma )
-               * Math.exp(
-                    ( Math.pow( p_ycenter.doubleValue() - p_value.getLeft().doubleValue(), 2 )
-                      + Math.pow( p_xcenter.doubleValue() - p_value.getRight().doubleValue(), 2 ) ) / l_sigma
-               );
     }
 
     /**
