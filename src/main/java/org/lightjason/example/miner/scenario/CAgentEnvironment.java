@@ -23,7 +23,12 @@
 
 package org.lightjason.example.miner.scenario;
 
+import cern.colt.matrix.tobject.ObjectMatrix2D;
+import cern.colt.matrix.tobject.impl.SparseObjectMatrix2D;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.lightjason.agentspeak.action.binding.IAgentAction;
+import org.lightjason.agentspeak.action.binding.IAgentActionFilter;
 import org.lightjason.agentspeak.action.binding.IAgentActionName;
 import org.lightjason.agentspeak.configuration.IAgentConfiguration;
 import org.lightjason.agentspeak.generator.IActionGenerator;
@@ -33,19 +38,29 @@ import org.lightjason.example.miner.runtime.IRuntime;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.io.InputStream;
+import java.util.Locale;
+import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 
 /**
  * environment agent
  */
 @IAgentAction
-public final class CAgentEnvironment extends IBaseScenarioAgent
+public final class CAgentEnvironment extends IBaseScenarioAgent implements IScenarioEnvironment
 {
     /**
      * serial id
      */
     private static final long serialVersionUID = 5950067237160399078L;
+    /**
+     * grid
+     */
+    private final AtomicReference<ObjectMatrix2D> m_grid = new AtomicReference<>();
 
     /**
      * ctor
@@ -60,12 +75,98 @@ public final class CAgentEnvironment extends IBaseScenarioAgent
         super( p_configuration, p_agentstorage, p_runtime );
     }
 
+    @Nonnull
+    @Override
+    public ObjectMatrix2D grid()
+    {
+        return Objects.requireNonNull( m_grid.get() );
+    }
+
+    /**
+     * build a stream with valid coordinates
+     *
+     * @param p_xcenter x-center
+     * @param p_ycenter y-center
+     * @param p_size size
+     * @return stream with coordinates (y, x)
+     */
+    private Stream<Pair<Number, Number>> clip( @Nonnull final Number p_xcenter, @Nonnull final Number p_ycenter, @Nonnull final Number p_size )
+    {
+        Objects.requireNonNull( m_grid.get() );
+        return IntStream.range( p_xcenter.intValue() - p_size.intValue(), p_xcenter.intValue() + p_size.intValue() )
+                        .parallel()
+                        .boxed()
+                        .filter( x -> x >= 0 && x < m_grid.get().columns() )
+                        .flatMap( x -> IntStream.range( p_ycenter.intValue() - p_size.intValue(), p_ycenter.intValue() + p_size.intValue() )
+                                                 .parallel()
+                                                 .boxed()
+                                                 .filter( y -> y >= 0 && y < m_grid.get().rows() )
+                                                 .filter( y -> Objects.nonNull( m_grid.get().getQuick( y, x ) ) )
+                                                 .map( y -> new ImmutablePair<>( y, x ) ) );
+    }
+
+    /**
+     * creates the world map
+     *
+     * @param p_width width
+     * @param p_height height
+     */
+    @IAgentActionFilter
+    @IAgentActionName( name = "world/create" )
+    private void generateWorld( @Nonnull final Number p_width, @Nonnull final Number p_height )
+    {
+        m_grid.set( new SparseObjectMatrix2D( p_height.intValue(), p_width.intValue() ) );
+    }
+
+    /**
+     * adds a mine
+     *
+     * @param p_gem gem name
+     * @param p_xcenter x-center value
+     * @param p_ycenter y-center value
+     * @param p_size size of the mine
+     */
+    @IAgentActionFilter
+    @IAgentActionName( name = "mine/create" )
+    private void addmine( @Nonnull final String p_gem, @Nonnull final Number p_xcenter, @Nonnull final Number p_ycenter, @Nonnull final Number p_size )
+    {
+        final EGem l_gem = EGem.valueOf( p_gem.trim().toUpperCase( Locale.ROOT ) );
+
+        // https://homepages.inf.ed.ac.uk/rbf/HIPR2/gsmooth.htm
+        // https://en.wikipedia.org/wiki/Gaussian_blur
+
+        this.clip( p_xcenter, p_ycenter, p_size )
+            .filter( i -> ThreadLocalRandom.current().nextDouble() <= gaussian( i, p_xcenter, p_ycenter, 1 ).doubleValue() )
+            .forEach( i -> m_grid.get().setQuick( i.getLeft().intValue(), i.getRight().intValue(), l_gem.get() ) );
+    }
+
+    /**
+     * gaussian blur
+     *
+     * @param p_value value
+     * @param p_xcenter x-center
+     * @param p_ycenter y-center
+     * @param p_sigma sigma
+     * @return gaussian value
+     */
+    private static Number gaussian( @Nonnull final Pair<Number, Number> p_value,
+                                    @Nonnull final Number p_xcenter, @Nonnull final Number p_ycenter, @Nonnull final Number p_sigma )
+    {
+        final double l_sigma = 2 * Math.pow( p_sigma.doubleValue(), 2 );
+        return 1 / ( Math.PI * l_sigma )
+               * Math.exp(
+                    ( Math.pow( p_ycenter.doubleValue() - p_value.getLeft().doubleValue(), 2 )
+                      + Math.pow( p_xcenter.doubleValue() - p_value.getRight().doubleValue(), 2 ) ) / l_sigma
+               );
+    }
+
     /**
      * get agent energy
      *
      * @param p_agent agent
      * @return engery level
      */
+    @IAgentActionFilter
     @IAgentActionName( name = "energy/get" )
     private Number getEnergy( @Nonnull final IScenarioAgent p_agent )
     {
@@ -78,6 +179,7 @@ public final class CAgentEnvironment extends IBaseScenarioAgent
      * @param p_agent agent
      * @param p_value value
      */
+    @IAgentActionFilter
     @IAgentActionName( name = "energy/take" )
     private void takeEnergy( @Nonnull final IScenarioAgent p_agent, @Nonnull final Number p_value )
     {
@@ -91,6 +193,7 @@ public final class CAgentEnvironment extends IBaseScenarioAgent
      * @param p_agent agent
      * @param p_value value
      */
+    @IAgentActionFilter
     @IAgentActionName( name = "energy/add" )
     private void addEnergy( @Nonnull final IScenarioAgent p_agent, @Nonnull final Number p_value )
     {

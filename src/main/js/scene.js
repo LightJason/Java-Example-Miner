@@ -1,12 +1,16 @@
 import store from '../store'
 import { TOGGLE_UI } from '../store/gameReducer'
 
-export default class ExampleScene extends Phaser.Scene {
+// https://medium.com/@michaelwesthadley/modular-game-worlds-in-phaser-3-tilemaps-1-958fc7e6bbd6
+
+
+export default class Scene extends Phaser.Scene {
   create() {
     const text = this.add.text(250, 250, 'Toggle UI', {
       backgroundColor: 'white',
       color: 'blue',
-      fontSize: 48
+      fontSize: 48,
+      pixelArt: true,
     })
 
     text.setInteractive({ useHandCursor: true })

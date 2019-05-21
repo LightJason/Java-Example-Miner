@@ -23,64 +23,74 @@
 
 package org.lightjason.example.miner.scenario;
 
+import org.apache.commons.io.IOUtils;
+import org.lightjason.agentspeak.generator.IBaseAgentGenerator;
+
 import javax.annotation.Nonnull;
-import java.util.concurrent.ThreadLocalRandom;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UncheckedIOException;
+import java.util.Collections;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 
 /**
- * gem factory
+ * scenario common methods
  */
-public enum EGem implements IGemFactory
+public final class CCommon
 {
-    DIAMOND,
-    RUBY,
-    TOPAZ,
-    EMERALD;
 
-    @Override
-    public IGem get()
+    /**
+     * ctor
+     */
+    private CCommon()
     {
-        return new CGem( this, ThreadLocalRandom.current().nextDouble() );
     }
 
     /**
-     * gem
+     * convert string to input stream
+     *
+     * @param p_string string
+     * @return input stream
      */
-    private static final class CGem implements IGem
+    @Nonnull
+    public static InputStream toInputStream( @Nonnull final String p_string )
     {
-        /**
-         * type
-         */
-        private final EGem m_type;
-        /**
-         * value
-         */
-        private final Number m_value;
-
-        /**
-         * ctor
-         *
-         * @param p_type tpe
-         * @param p_value value
-         */
-        private CGem( final EGem p_type, final Number p_value )
+        try
         {
-            m_type = p_type;
-            m_value = p_value;
+            return IOUtils.toInputStream( p_string, "UTF-8" );
         }
-
-        @Nonnull
-        @Override
-        public Number value( @Nonnull final IScenarioAgent p_agent )
+        catch ( final IOException l_exception )
         {
-            return m_value;
-        }
-
-        @Nonnull
-        @Override
-        public EGem type()
-        {
-            return m_type;
+            throw new UncheckedIOException( l_exception );
         }
     }
+
+
+    /**
+     * create generators
+     *
+     * @param p_asl map with asl
+     * @param p_generator generator function
+     * @return map
+     */
+    @Nonnull
+    public static Map<String, IBaseAgentGenerator<IScenarioAgent>> generators( @Nonnull final Map<String, String> p_asl,
+                                                                               @Nonnull final Function<String, IBaseAgentGenerator<IScenarioAgent>> p_generator )
+    {
+        return Collections.unmodifiableMap(
+            p_asl.entrySet().parallelStream().collect(
+                Collectors.toMap(
+                    Map.Entry::getKey,
+                    i -> p_generator.apply( i.getValue() ),
+                    ( i, j ) -> i,
+                    () -> new TreeMap<>( String.CASE_INSENSITIVE_ORDER )
+                )
+            )
+        );
+    }
+
 }

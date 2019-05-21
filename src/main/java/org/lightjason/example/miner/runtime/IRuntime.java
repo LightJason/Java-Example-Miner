@@ -34,6 +34,25 @@ import java.util.function.Consumer;
 public interface IRuntime extends Consumer<IScenarioAgent>
 {
     /**
+     * empty runtime
+     */
+    IRuntime EMPTY = new IRuntime()
+    {
+        @Override
+        public IRuntime continuous( final boolean p_execution )
+        {
+            return this;
+        }
+
+        @Override
+        public void accept( final IScenarioAgent p_agent )
+        {
+
+        }
+    };
+
+
+    /**
      * switch the runtime model
      *
      * @param p_execution switch

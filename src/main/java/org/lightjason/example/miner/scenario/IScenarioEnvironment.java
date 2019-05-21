@@ -23,64 +23,22 @@
 
 package org.lightjason.example.miner.scenario;
 
+import cern.colt.matrix.tobject.ObjectMatrix2D;
+
 import javax.annotation.Nonnull;
-import java.util.concurrent.ThreadLocalRandom;
 
 
 /**
- * gem factory
+ * scenario interface
  */
-public enum EGem implements IGemFactory
+public interface IScenarioEnvironment
 {
-    DIAMOND,
-    RUBY,
-    TOPAZ,
-    EMERALD;
-
-    @Override
-    public IGem get()
-    {
-        return new CGem( this, ThreadLocalRandom.current().nextDouble() );
-    }
-
     /**
-     * gem
+     * returns the object grid
+     *
+     * @return grid
      */
-    private static final class CGem implements IGem
-    {
-        /**
-         * type
-         */
-        private final EGem m_type;
-        /**
-         * value
-         */
-        private final Number m_value;
+    @Nonnull
+    ObjectMatrix2D grid();
 
-        /**
-         * ctor
-         *
-         * @param p_type tpe
-         * @param p_value value
-         */
-        private CGem( final EGem p_type, final Number p_value )
-        {
-            m_type = p_type;
-            m_value = p_value;
-        }
-
-        @Nonnull
-        @Override
-        public Number value( @Nonnull final IScenarioAgent p_agent )
-        {
-            return m_value;
-        }
-
-        @Nonnull
-        @Override
-        public EGem type()
-        {
-            return m_type;
-        }
-    }
 }

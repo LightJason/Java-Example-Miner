@@ -24,7 +24,6 @@
 
 package org.lightjason.example.miner.scenario;
 
-import org.apache.commons.io.IOUtils;
 import org.lightjason.agentspeak.action.IBaseAction;
 import org.lightjason.agentspeak.common.CPath;
 import org.lightjason.agentspeak.common.IPath;
@@ -38,9 +37,6 @@ import org.lightjason.agentspeak.language.fuzzy.IFuzzyValue;
 import org.lightjason.example.miner.runtime.IRuntime;
 
 import javax.annotation.Nonnull;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UncheckedIOException;
 import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.HashSet;
@@ -48,10 +44,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.TreeMap;
 import java.util.concurrent.CopyOnWriteArraySet;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 
@@ -118,18 +111,18 @@ public final class CScenario
         new CAgentGenerator(
             MINERGENERATE,
             m_miner,
-            generators(
+            CCommon.generators(
                 p_aslminer,
-                i -> new CAgentMiner.CGenerator( toInputStream( i ), IActionGenerator.EMPTY, ILambdaStreamingGenerator.EMPTY, m_miner, m_runtime )
+                i -> new CAgentMiner.CGenerator( CCommon.toInputStream( i ), IActionGenerator.EMPTY, ILambdaStreamingGenerator.EMPTY, m_miner, m_runtime )
             )
         );
 
         new CAgentGenerator(
             TRADERGENERATE,
             m_trader,
-            generators(
+            CCommon.generators(
                 p_asltrader,
-                i -> new CAgentTrader.CGenerator( toInputStream( i ), IActionGenerator.EMPTY, ILambdaStreamingGenerator.EMPTY, m_trader, m_runtime )
+                i -> new CAgentTrader.CGenerator( CCommon.toInputStream( i ), IActionGenerator.EMPTY, ILambdaStreamingGenerator.EMPTY, m_trader, m_runtime )
             )
         );
 
@@ -138,7 +131,7 @@ public final class CScenario
         m_runtime.accept(
             Objects.requireNonNull(
                 new CAgentEnvironment.CGenerator(
-                    toInputStream( p_aslenvironment ),
+                    CCommon.toInputStream( p_aslenvironment ),
                     IActionGenerator.EMPTY,
                     ILambdaStreamingGenerator.EMPTY,
                     new HashSet<>(),
@@ -148,46 +141,7 @@ public final class CScenario
         );
     }
 
-    /**
-     * convert string to input stream
-     *
-     * @param p_string string
-     * @return input stream
-     */
-    @Nonnull
-    private static InputStream toInputStream( @Nonnull final String p_string )
-    {
-        try
-        {
-            return IOUtils.toInputStream( p_string, "UTF-8" );
-        }
-        catch ( final IOException l_exception )
-        {
-            throw new UncheckedIOException( l_exception );
-        }
-    }
 
-    /**
-     * create generators
-     *
-     * @param p_asl map with asl
-     * @param p_generator generator function
-     * @return map
-     */
-    private static Map<String, IBaseAgentGenerator<IScenarioAgent>> generators( @Nonnull final Map<String, String> p_asl,
-                                                                                @Nonnull final Function<String, IBaseAgentGenerator<IScenarioAgent>> p_generator )
-    {
-        return Collections.unmodifiableMap(
-            p_asl.entrySet().parallelStream().collect(
-                Collectors.toMap(
-                    Map.Entry::getKey,
-                    i -> p_generator.apply( i.getValue() ),
-                    ( i, j ) -> i,
-                    () -> new TreeMap<>( String.CASE_INSENSITIVE_ORDER )
-                )
-            )
-        );
-    }
 
     /**
      * action to generate agents

@@ -23,64 +23,39 @@
 
 package org.lightjason.example.miner.scenario;
 
-import javax.annotation.Nonnull;
-import java.util.concurrent.ThreadLocalRandom;
+import org.junit.Assert;
+import org.junit.Test;
+import org.lightjason.agentspeak.generator.CActionStaticGenerator;
+import org.lightjason.agentspeak.generator.ILambdaStreamingGenerator;
+import org.lightjason.example.miner.runtime.IRuntime;
+
+import java.util.Collections;
 
 
 /**
- * gem factory
+ * test environment agent
  */
-public enum EGem implements IGemFactory
+public final class CEnvironment
 {
-    DIAMOND,
-    RUBY,
-    TOPAZ,
-    EMERALD;
-
-    @Override
-    public IGem get()
-    {
-        return new CGem( this, ThreadLocalRandom.current().nextDouble() );
-    }
 
     /**
-     * gem
+     * test grid generating
+     *
+     * @throws Exception on execution error
      */
-    private static final class CGem implements IGem
+    @Test
+    public void create() throws Exception
     {
-        /**
-         * type
-         */
-        private final EGem m_type;
-        /**
-         * value
-         */
-        private final Number m_value;
+        final CAgentEnvironment l_env = new CAgentEnvironment.CGenerator(
+            CCommon.toInputStream( "!run. +!run <- .world/create(55, 45)." ),
+            new CActionStaticGenerator( org.lightjason.agentspeak.common.CCommon.actionsFromAgentClass( CAgentEnvironment.class ) ),
+            ILambdaStreamingGenerator.EMPTY,
+            Collections.emptySet(),
+            IRuntime.EMPTY
+        ).generatesingle().call().raw();
 
-        /**
-         * ctor
-         *
-         * @param p_type tpe
-         * @param p_value value
-         */
-        private CGem( final EGem p_type, final Number p_value )
-        {
-            m_type = p_type;
-            m_value = p_value;
-        }
-
-        @Nonnull
-        @Override
-        public Number value( @Nonnull final IScenarioAgent p_agent )
-        {
-            return m_value;
-        }
-
-        @Nonnull
-        @Override
-        public EGem type()
-        {
-            return m_type;
-        }
+        Assert.assertEquals( 45, l_env.grid().rows() );
+        Assert.assertEquals( 55, l_env.grid().columns() );
     }
+
 }

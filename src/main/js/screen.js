@@ -14,13 +14,26 @@ export default class Screen extends React.Component {
             type: Phaser.AUTO,
             width: 800,
             height: 800,
-            parent: "screen"
-            //scene: [ExampleScene]
+            parent: "screen",
+            scene: {
+                preload: this.preload,
+                create: this.create,
+                update: this.update
+            }
         });
     }
 
     shouldComponentUpdate() {
         return false
+    }
+
+    preload() {
+    }
+
+    create() {
+    }
+
+    update() {
     }
 
 	render() {

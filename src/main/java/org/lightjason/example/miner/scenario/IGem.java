@@ -25,7 +25,6 @@ package org.lightjason.example.miner.scenario;
 
 
 import javax.annotation.Nonnull;
-import java.lang.annotation.ElementType;
 
 
 /**
@@ -48,6 +47,6 @@ public interface IGem
      * @return gem type
      */
     @Nonnull
-    ElementType type();
+    EGem type();
 
 }
