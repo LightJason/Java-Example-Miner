@@ -74,7 +74,7 @@ public final class TestCEnvironment
             IRuntime.EMPTY
         ).generatesingle().call().call().raw();
 
-        System.out.println( l_env.grid() );
+        Assert.assertTrue( l_env.grid().cardinality() > 0 );
     }
 
 }
