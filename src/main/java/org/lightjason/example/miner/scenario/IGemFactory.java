@@ -23,14 +23,12 @@
 
 package org.lightjason.example.miner.scenario;
 
-import org.lightjason.agentspeak.agent.IAgent;
-
 import java.util.function.Supplier;
 
 
 /**
- * energy data
+ * gem factory interface
  */
-public interface IScenarioAgent extends IAgent<IScenarioAgent>, Supplier<IAgentProperties>
+public interface IGemFactory extends Supplier<IGem>
 {
 }

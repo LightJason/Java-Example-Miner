@@ -23,14 +23,46 @@
 
 package org.lightjason.example.miner.scenario;
 
-import org.lightjason.agentspeak.agent.IAgent;
-
-import java.util.function.Supplier;
-
-
 /**
- * energy data
+ * gem factory
  */
-public interface IScenarioAgent extends IAgent<IScenarioAgent>, Supplier<IAgentProperties>
+public enum EGem implements IGemFactory
 {
+    DIAMOND
+    {
+        @Override
+        public IGem get()
+        {
+            return null;
+        }
+    },
+
+    RUBY
+    {
+        @Override
+        public IGem get()
+        {
+            return null;
+        }
+    },
+
+    TOPAZ
+    {
+        @Override
+        public IGem get()
+        {
+            return null;
+        }
+    },
+
+
+    EMERALD
+    {
+        @Override
+        public IGem get()
+        {
+            return null;
+        }
+    };
+
 }

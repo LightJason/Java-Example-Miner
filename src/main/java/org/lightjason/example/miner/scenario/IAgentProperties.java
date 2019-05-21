@@ -23,14 +23,48 @@
 
 package org.lightjason.example.miner.scenario;
 
-import org.lightjason.agentspeak.agent.IAgent;
-
-import java.util.function.Supplier;
+import javax.annotation.Nonnull;
 
 
 /**
- * energy data
+ * agent properties
  */
-public interface IScenarioAgent extends IAgent<IScenarioAgent>, Supplier<IAgentProperties>
+public interface IAgentProperties
 {
+    /**
+     * returns the current energy level of the agent
+     *
+     * @return energy agent
+     */
+    @Nonnull
+    Number energy();
+
+    /**
+     * updates the energy level of the agent
+     *
+     * @param p_value update value
+     * @return self-reference
+     */
+    @Nonnull
+    IAgentProperties energy( @Nonnull final Number p_value );
+
+    /**
+     * gem rating value
+     *
+     * @param p_gem gem type
+     * @return rating value
+     */
+    @Nonnull
+    Number gemrating( @Nonnull final EGem p_gem );
+
+    /**
+     * update gem rating value
+     *
+     * @param p_gem gem
+     * @param p_value value
+     * @return self-reference
+     */
+    @Nonnull
+    IAgentProperties gemrating( @Nonnull final EGem p_gem, @Nonnull final Number p_value );
+
 }

@@ -33,8 +33,6 @@ import org.lightjason.example.miner.runtime.IRuntime;
 import javax.annotation.Nonnull;
 import java.io.InputStream;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.UnaryOperator;
 
 
 /**
@@ -49,9 +47,9 @@ public abstract class IBaseScenarioAgent extends IBaseAgent<IScenarioAgent> impl
      */
     private static final long serialVersionUID = 4159418649578529062L;
     /**
-     * energy level
+     * agent properties
      */
-    private final AtomicReference<Number> m_energy = new AtomicReference<>( 0 );
+    private final IAgentProperties m_properties = new CAgentProperties();
     /**
      * agent storage
      */
@@ -90,15 +88,9 @@ public abstract class IBaseScenarioAgent extends IBaseAgent<IScenarioAgent> impl
     }
 
     @Override
-    public void accept( @Nonnull final UnaryOperator<Number> p_value )
+    public IAgentProperties get()
     {
-        m_energy.getAndUpdate( p_value );
-    }
-
-    @Override
-    public Number get()
-    {
-        return m_energy.get();
+        return m_properties;
     }
 
     /**

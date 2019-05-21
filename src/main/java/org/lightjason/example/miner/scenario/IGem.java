@@ -23,14 +23,31 @@
 
 package org.lightjason.example.miner.scenario;
 
-import org.lightjason.agentspeak.agent.IAgent;
 
-import java.util.function.Supplier;
+import javax.annotation.Nonnull;
+import java.lang.annotation.ElementType;
 
 
 /**
- * energy data
+ * gem interface
  */
-public interface IScenarioAgent extends IAgent<IScenarioAgent>, Supplier<IAgentProperties>
+public interface IGem
 {
+    /**
+     * returns the value of the gem based on the agent
+     *
+     * @param p_agent agent
+     * @return value
+     */
+    @Nonnull
+    Number value( @Nonnull final IScenarioAgent p_agent );
+
+    /**
+     * returns gem type
+     *
+     * @return gem type
+     */
+    @Nonnull
+    ElementType type();
+
 }
