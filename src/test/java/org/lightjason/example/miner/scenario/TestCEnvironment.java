@@ -30,6 +30,7 @@ import org.lightjason.agentspeak.generator.ILambdaStreamingGenerator;
 import org.lightjason.example.miner.runtime.IRuntime;
 
 import java.util.Collections;
+import java.util.stream.IntStream;
 
 
 /**
@@ -72,9 +73,49 @@ public final class TestCEnvironment
             ILambdaStreamingGenerator.EMPTY,
             Collections.emptySet(),
             IRuntime.EMPTY
-        ).generatesingle().call().call().raw();
+        ).generatesingle().call().raw();
 
         Assert.assertTrue( l_env.grid().cardinality() > 0 );
+    }
+
+    /**
+     * test horizontal solid
+     *
+     * @throws Exception on execution error
+     */
+    @Test
+    public void horizontalsolid() throws Exception
+    {
+        final CAgentEnvironment l_env = new CAgentEnvironment.CGenerator(
+            CCommon.toInputStream( "!run. +!run <- .world/create(10, 10); .solid/create/horizontal( 'wall', 0,0,5)." ),
+            new CActionStaticGenerator( org.lightjason.agentspeak.common.CCommon.actionsFromAgentClass( CAgentEnvironment.class ) ),
+            ILambdaStreamingGenerator.EMPTY,
+            Collections.emptySet(),
+            IRuntime.EMPTY
+        ).generatesingle().call().raw();
+
+        Assert.assertEquals( 5, l_env.grid().cardinality() );
+        Assert.assertTrue( IntStream.range( 0, 5 ).mapToObj( i -> l_env.grid().getQuick( 0, i ) ).allMatch( i -> i instanceof ISolid ) );
+    }
+
+    /**
+     * test vertical solid
+     *
+     * @throws Exception on execution error
+     */
+    @Test
+    public void verticalsolid() throws Exception
+    {
+        final CAgentEnvironment l_env = new CAgentEnvironment.CGenerator(
+            CCommon.toInputStream( "!run. +!run <- .world/create(10, 10); .solid/create/vertical( 'wall', 2,2,4)." ),
+            new CActionStaticGenerator( org.lightjason.agentspeak.common.CCommon.actionsFromAgentClass( CAgentEnvironment.class ) ),
+            ILambdaStreamingGenerator.EMPTY,
+            Collections.emptySet(),
+            IRuntime.EMPTY
+        ).generatesingle().call().raw();
+
+        Assert.assertEquals( 4, l_env.grid().cardinality() );
+        Assert.assertTrue( IntStream.range( 2, 5 ).mapToObj( i -> l_env.grid().getQuick( i, 2 ) ).allMatch( i -> i instanceof ISolid ) );
     }
 
 }

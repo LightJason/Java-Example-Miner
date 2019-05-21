@@ -45,6 +45,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.IntStream;
 
 
 /**
@@ -90,7 +91,7 @@ public final class CAgentEnvironment extends IBaseScenarioAgent implements IScen
      */
     @IAgentActionFilter
     @IAgentActionName( name = "world/create" )
-    private void generateWorld( @Nonnull final Number p_width, @Nonnull final Number p_height )
+    private void createworld( @Nonnull final Number p_width, @Nonnull final Number p_height )
     {
         m_grid.set( new SparseObjectMatrix2D( p_height.intValue(), p_width.intValue() ) );
     }
@@ -105,8 +106,9 @@ public final class CAgentEnvironment extends IBaseScenarioAgent implements IScen
      */
     @IAgentActionFilter
     @IAgentActionName( name = "mine/create" )
-    private void addmine( @Nonnull final String p_gem, @Nonnull final Number p_xcenter, @Nonnull final Number p_ycenter, @Nonnull final Number p_size )
+    private void createmine( @Nonnull final String p_gem, @Nonnull final Number p_xcenter, @Nonnull final Number p_ycenter, @Nonnull final Number p_size )
     {
+        Objects.requireNonNull( m_grid.get() );
         final DoubleMatrix1D l_center = new SparseDoubleMatrix1D( new double[]{p_ycenter.doubleValue(), p_xcenter.doubleValue()} );
         final EGem l_gem = EGem.valueOf( p_gem.trim().toUpperCase( Locale.ROOT ) );
 
@@ -121,6 +123,48 @@ public final class CAgentEnvironment extends IBaseScenarioAgent implements IScen
                 1, 0, p_size.doubleValue() ).doubleValue()
                )
             .forEach( i -> m_grid.get().setQuick( i.getLeft().intValue(), i.getRight().intValue(), l_gem.get() ) );
+    }
+
+    /**
+     * creates a horizontal solid
+     *
+     * @param p_solid solid
+     * @param p_xstart start x-position
+     * @param p_ystart start y-position
+     * @param p_size x-size
+     */
+    @IAgentActionFilter
+    @IAgentActionName( name = "solid/horizontal" )
+    public void createhorizontalsolid( @Nonnull final String p_solid, @Nonnull final Number p_xstart, @Nonnull final Number p_ystart, @Nonnull final Number p_size )
+    {
+        Objects.requireNonNull( m_grid.get() );
+        final ISolid l_solid = ESolid.valueOf( p_solid.trim().toUpperCase( Locale.ROOT ) );
+
+        IntStream.range( p_xstart.intValue(), p_xstart.intValue() + p_size.intValue() )
+                 .parallel()
+                 .filter( x -> x >= 0 && x < m_grid.get().columns() )
+                 .forEach( x -> m_grid.get().setQuick( p_ystart.intValue(), x, l_solid ) );
+    }
+
+    /**
+     * creates a vertical solid
+     *
+     * @param p_solid solid
+     * @param p_xstart start x-position
+     * @param p_ystart start y-position
+     * @param p_size y-size
+     */
+    @IAgentActionFilter
+    @IAgentActionName( name = "solid/vertical" )
+    public void createverticalsolid( @Nonnull final String p_solid, @Nonnull final Number p_xstart, @Nonnull final Number p_ystart, @Nonnull final Number p_size )
+    {
+        Objects.requireNonNull( m_grid.get() );
+        final ISolid l_solid = ESolid.valueOf( p_solid.trim().toUpperCase( Locale.ROOT ) );
+
+        IntStream.range( p_ystart.intValue(), p_ystart.intValue() + p_size.intValue() )
+                 .parallel()
+                 .filter( y -> y >= 0 && y < m_grid.get().rows() )
+                 .forEach( y -> m_grid.get().setQuick( y, p_xstart.intValue(), l_solid ) );
     }
 
     /**
