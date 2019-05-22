@@ -3,6 +3,14 @@ import { TOGGLE_UI } from '../store/gameReducer'
 
 // https://medium.com/@michaelwesthadley/modular-game-worlds-in-phaser-3-tilemaps-1-958fc7e6bbd6
 
+// https://gameartpartners.com/downloads/the-mines-platformer-tileset/
+// https://gameartpartners.com/downloads/the-huge-super-tiny-bundle-48-hour-sale/
+
+// https://gameartpartners.com/downloads/super-tiny-gold-miners-3-pack-of-characters/
+// https://gameartpartners.com/downloads/super-tiny-cowboys/
+
+// https://gameartpartners.com/downloads/indiana-adventurer/
+
 
 export default class Scene extends Phaser.Scene {
   create() {
