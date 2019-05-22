@@ -29,6 +29,7 @@ import cern.colt.matrix.tobject.ObjectMatrix2D;
 import org.lightjason.agentspeak.action.binding.IAgentAction;
 import org.lightjason.agentspeak.action.binding.IAgentActionFilter;
 import org.lightjason.agentspeak.action.binding.IAgentActionName;
+import org.lightjason.agentspeak.action.grid.EMovementDirection;
 import org.lightjason.agentspeak.configuration.IAgentConfiguration;
 import org.lightjason.example.miner.runtime.IRuntime;
 
@@ -143,27 +144,40 @@ public abstract class IBaseMovingAgent extends IBaseScenarioAgent implements IMo
     @IAgentActionName( name = "walk/forward" )
     private void walkstraight()
     {
-
+        this.walk( EMovementDirection.FORWARD );
     }
 
     @IAgentActionFilter
     @IAgentActionName( name = "walk/left" )
     private void walkleft()
     {
-
+        this.walk( EMovementDirection.LEFT );
     }
 
     @IAgentActionFilter
     @IAgentActionName( name = "walk/right" )
     private void walkright()
     {
-
+        this.walk( EMovementDirection.RIGHT );
     }
 
     @IAgentActionFilter
     @IAgentActionName( name = "walk/backward" )
     private void walkbackward()
     {
+        this.walk( EMovementDirection.BACKWARD );
+    }
 
+    /**
+     * walk
+     *
+     * @param p_direction direction
+     */
+    private void walk( @Nonnull final EMovementDirection p_direction )
+    {
+        if ( m_route.isEmpty() )
+            throw new RuntimeException( "empty route" );
+
+        p_direction.apply( m_position, m_route.get( 0 ), 1 );
     }
 }
