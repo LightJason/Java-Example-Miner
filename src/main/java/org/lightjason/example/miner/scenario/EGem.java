@@ -33,10 +33,13 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public enum EGem implements IGemFactory
 {
-    DIAMOND,
+    // red
     RUBY,
-    TOPAZ,
-    EMERALD;
+    // blue
+    SAPPHIRINE,
+    // violette
+    AMETHYST;
+
 
     @Override
     public IGem get()
