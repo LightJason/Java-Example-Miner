@@ -34,6 +34,8 @@ import org.lightjason.agentspeak.configuration.IAgentConfiguration;
 import org.lightjason.example.miner.runtime.IRuntime;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.validation.constraints.Null;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -96,11 +98,7 @@ public abstract class IBaseMovingAgent extends IBaseScenarioAgent implements IMo
     public IScenarioAgent call() throws Exception
     {
         if ( this.runningplans().isEmpty() )
-            m_grid.setQuick(
-                CCommon.toNumber( m_position.getQuick( 0 ) ).intValue(),
-                CCommon.toNumber( m_position.getQuick( 1 ) ).intValue(),
-                null
-            );
+
 
         return super.call();
     }
@@ -178,6 +176,23 @@ public abstract class IBaseMovingAgent extends IBaseScenarioAgent implements IMo
         if ( m_route.isEmpty() )
             throw new RuntimeException( "empty route" );
 
-        p_direction.apply( m_position, m_route.get( 0 ), 1 );
+
+        this.setcurrentposition( null );
+        m_position.assign( p_direction.apply( m_position, m_route.get( 0 ), 1.5 ) );
+        this.setcurrentposition( this );
+    }
+
+    /**
+     * set current position
+     *
+     * @param p_object grid value
+     */
+    private void setcurrentposition( @Nullable final Object p_object )
+    {
+        m_grid.setQuick(
+            CCommon.toNumber( m_position.getQuick( 0 ) ).intValue(),
+            CCommon.toNumber( m_position.getQuick( 1 ) ).intValue(),
+            p_object
+        );
     }
 }
