@@ -98,7 +98,7 @@ public abstract class IBaseMovingAgent extends IBaseScenarioAgent implements IMo
     public IScenarioAgent call() throws Exception
     {
         if ( this.runningplans().isEmpty() )
-
+            this.setcurrentposition( null );
 
         return super.call();
     }
