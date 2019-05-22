@@ -88,7 +88,7 @@ public abstract class IBaseScenarioAgent extends IBaseAgent<IScenarioAgent> impl
     }
 
     @Override
-    public IAgentProperties get()
+    public final IAgentProperties get()
     {
         return m_properties;
     }

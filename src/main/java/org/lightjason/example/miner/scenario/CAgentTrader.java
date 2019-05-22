@@ -38,7 +38,7 @@ import java.util.Set;
 /**
  * trader agent
  */
-public final class CAgentTrader extends IMovingAgent
+public final class CAgentTrader extends IBaseMovingAgent
 {
     /**
      * serial id

@@ -38,7 +38,7 @@ import java.util.Set;
 /**
  * miner agent
  */
-public final class CAgentMiner extends IMovingAgent
+public final class CAgentMiner extends IBaseMovingAgent
 {
     /**
      * serial id

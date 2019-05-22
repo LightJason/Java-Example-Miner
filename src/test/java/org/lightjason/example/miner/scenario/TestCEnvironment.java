@@ -87,7 +87,7 @@ public final class TestCEnvironment
     public void horizontalsolid() throws Exception
     {
         final CAgentEnvironment l_env = new CAgentEnvironment.CGenerator(
-            CCommon.toInputStream( "!run. +!run <- .world/create(10, 10); .solid/create/horizontal( 'wall', 0,0,5)." ),
+            CCommon.toInputStream( "!run. +!run <- .world/create(10, 10); .solid/horizontal( 'wall', 0,0,5)." ),
             new CActionStaticGenerator( org.lightjason.agentspeak.common.CCommon.actionsFromAgentClass( CAgentEnvironment.class ) ),
             ILambdaStreamingGenerator.EMPTY,
             Collections.emptySet(),
@@ -107,7 +107,7 @@ public final class TestCEnvironment
     public void verticalsolid() throws Exception
     {
         final CAgentEnvironment l_env = new CAgentEnvironment.CGenerator(
-            CCommon.toInputStream( "!run. +!run <- .world/create(10, 10); .solid/create/vertical( 'wall', 2,2,4)." ),
+            CCommon.toInputStream( "!run. +!run <- .world/create(10, 10); .solid/vertical( 'wall', 2,2,4)." ),
             new CActionStaticGenerator( org.lightjason.agentspeak.common.CCommon.actionsFromAgentClass( CAgentEnvironment.class ) ),
             ILambdaStreamingGenerator.EMPTY,
             Collections.emptySet(),
