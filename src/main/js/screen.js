@@ -45,12 +45,18 @@ export default class Screen extends React.Component {
     preload() {
         console.log("preload");
 
-        this.load.image("tiles", "/assets/sprites.png");
-        this.load.tilemapTiledJSON("map", "/test/tilemap");
+        this.load.image( "tiles", "/assets/sprites.png" );
+        this.load.tilemapTiledJSON("map", "/assets/tileset.json");
     }
 
     create() {
         console.log("create");
+
+        const l_map = this.make.tilemap({ key: "map" });
+        const l_tiles = l_map.addTilesetImage("sprites", "tiles");
+
+        const l_background = l_map.createDynamicLayer("Background", l_tiles);
+        l_background.putTileAt(1, 20, 10);
     }
 
     update() {
