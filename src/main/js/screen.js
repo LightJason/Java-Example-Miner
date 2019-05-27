@@ -1,14 +1,29 @@
 import React from 'react';
 
+// https://medium.com/@michaelwesthadley/modular-game-worlds-in-phaser-3-tilemaps-1-958fc7e6bbd6
+
+// https://gameartpartners.com/downloads/the-mines-platformer-tileset/
+// https://gameartpartners.com/downloads/the-huge-super-tiny-bundle-48-hour-sale/
+
+// https://gameartpartners.com/downloads/super-tiny-gold-miners-3-pack-of-characters/
+// https://gameartpartners.com/downloads/super-tiny-cowboys/
+
+// https://gameartpartners.com/downloads/indiana-adventurer/
+
+
+
+
+// https://tutorialzine.com/2015/06/making-your-first-html5-game-with-phaser
+// https://phaser.io/examples/v2/category/tilemaps
+// https://www.zephyrcoding.com/phaser3-with-react/
+
+
 /**
  * screen with phaser
  **/
 export default class Screen extends React.Component {
 
     componentDidMount() {
-        // https://tutorialzine.com/2015/06/making-your-first-html5-game-with-phaser
-        // https://phaser.io/examples/v2/category/tilemaps
-        // https://www.zephyrcoding.com/phaser3-with-react/
 
         new Phaser.Game({
             type: Phaser.AUTO,
@@ -28,12 +43,18 @@ export default class Screen extends React.Component {
     }
 
     preload() {
+        console.log("preload");
+
+        this.load.image("tiles", "/assets/sprites.png");
+        this.load.tilemapTiledJSON("map", "/test/tilemap");
     }
 
     create() {
+        console.log("create");
     }
 
     update() {
+        //console.log("update");
     }
 
 	render() {

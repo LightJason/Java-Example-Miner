@@ -35,7 +35,6 @@ import org.lightjason.example.miner.runtime.IRuntime;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.validation.constraints.Null;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

@@ -59,6 +59,6 @@ public final class CTestController
     @GetMapping( "/tilemap" )
     public Object[] tiles()
     {
-        return Stream.of( 0, 0 , 1, 1 ).toArray();
+        return Stream.of( 0, 0, 1, 1 ).toArray();
     }
 }
