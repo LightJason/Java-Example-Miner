@@ -47,7 +47,7 @@ import java.util.stream.Stream;
  * agentspeak rest controller
  */
 @RestController
-@RequestMapping( "/agent" )
+@RequestMapping( "/mas/agent" )
 public final class CAgentController
 {
     /**
@@ -150,9 +150,9 @@ public final class CAgentController
     }
 
     /**
-     * returns a list with environemnt names
+     * returns a list with environemnt agent names
      *
-     * @return list with environments names
+     * @return list with environments agent names
      */
     @GetMapping( value = "/environments" )
     public String[] getEnvironments()
@@ -235,9 +235,9 @@ public final class CAgentController
     }
 
     /**
-     * returns the source of the environment
+     * returns the source of the environment agent
      *
-     * @return environment asl code
+     * @return agent environment asl code
      */
     @GetMapping( value = "/environment/{name}", produces = MediaType.TEXT_PLAIN_VALUE )
     public String getSourceEnvironment( @PathVariable( name = "name" ) final String p_name )
@@ -272,9 +272,9 @@ public final class CAgentController
     }
 
     /**
-     * puts the source of the environment into the session
+     * puts the source of the environment agent into the session
      *
-     * @param p_source environemnt source
+     * @param p_source agent environemnt source
      */
     @PutMapping( value = "/environment/{name}", consumes = MediaType.TEXT_PLAIN_VALUE )
     public void setSourceEnvironment( @PathVariable( name = "name" ) final String p_name, @RequestBody final String p_source )

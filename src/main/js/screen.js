@@ -17,6 +17,8 @@ import React from 'react';
 // https://phaser.io/examples/v2/category/tilemaps
 // https://www.zephyrcoding.com/phaser3-with-react/
 
+// https://www.youtube.com/watch?v=ZhBhlOOtHPQ
+
 
 /**
  * screen with phaser
@@ -45,8 +47,8 @@ export default class Screen extends React.Component {
     preload() {
         console.log("preload");
 
-        this.load.image( "tiles", "/assets/sprites.png" );
-        this.load.tilemapTiledJSON("map", "/assets/tileset.json");
+        this.load.image( "tiles", "/assets/level.png" );
+        this.load.tilemapTiledJSON("map", "/mas/environment/map");
     }
 
     create() {
@@ -56,7 +58,7 @@ export default class Screen extends React.Component {
         const l_tiles = l_map.addTilesetImage("sprites", "tiles");
 
         const l_background = l_map.createDynamicLayer("Background", l_tiles);
-        l_background.putTileAt(1, 20, 10);
+        //l_background.putTileAt(1, 20, 10);
     }
 
     update() {
