@@ -49,6 +49,7 @@ public final class CEnvironmentController
     @GetMapping( value = "/map", produces = MediaType.APPLICATION_JSON_VALUE )
     public Map<String, Object> tilemap()
     {
+        // https://dev.to/jorbascrumps/loading-server-generated-tilemaps-with-phaser-4mm7
         return Collections.emptyMap();
     }
 
