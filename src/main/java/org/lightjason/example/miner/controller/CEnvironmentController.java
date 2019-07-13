@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 
@@ -50,7 +51,29 @@ public final class CEnvironmentController
     public Map<String, Object> tilemap()
     {
         // https://dev.to/jorbascrumps/loading-server-generated-tilemaps-with-phaser-4mm7
-        return Collections.emptyMap();
+        final Map<String, Object> l_map = new HashMap<>();
+
+
+        l_map.put( "version", 1.2 );
+        l_map.put( "tiledversion", "1.2.4" );
+
+        l_map.put( "tileheight", 64 );
+        l_map.put( "tilewidth", 64 );
+        l_map.put( "type", "map" );
+
+        l_map.put( "orientation", "orthogonal" );
+        l_map.put( "renderorder", "right-down" );
+        l_map.put( "infinite", false );
+
+
+        l_map.put( "background", "#ffffff" );
+        l_map.put( "height", 10 );
+        l_map.put( "weight", 10 );
+        l_map.put( "layers", Collections.emptyList() );
+        l_map.put( "properties", Collections.emptyList() );
+        l_map.put( "tilesets", Collections.emptyList() );
+
+        return l_map;
     }
 
 }

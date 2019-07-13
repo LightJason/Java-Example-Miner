@@ -48,7 +48,7 @@ public final class CTilemap implements ITilemap
     }
 
     @Override
-    public Map<String, Object> apply( final Stream<ILayer> p_iLayerStream )
+    public Map<String, Object> apply( final Stream<ILayer> p_stream )
     {
         // http://labs.phaser.io/assets/tilemaps/maps/cybernoid.json
         // https://doc.mapeditor.org/en/stable/reference/json-map-format/
