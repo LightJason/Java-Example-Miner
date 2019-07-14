@@ -55,10 +55,7 @@ export default class Screen extends React.Component {
         console.log("create");
 
         const l_map = this.make.tilemap({ key: "map" });
-        const l_tiles = l_map.addTilesetImage("sprites", "tiles");
-
-        const l_background = l_map.createDynamicLayer("Background", l_tiles);
-        //l_background.putTileAt(1, 20, 10);
+        const l_scenario = l_map.addTilesetImage("scenario", "scenario");
     }
 
     update() {

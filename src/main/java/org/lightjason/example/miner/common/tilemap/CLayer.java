@@ -23,29 +23,40 @@
 
 package org.lightjason.example.miner.common.tilemap;
 
-import java.util.Locale;
+import javax.annotation.Nonnull;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
- * tilemap orientation interface
+ * tilemap layer structure
  */
-public interface IOrientation
+public final class CLayer implements ILayer
 {
+    /**
+     * layer name
+     */
+    private final String m_name;
 
     /**
-     * orientation
+     * ctor
+     *
+     * @param p_name name
      */
-    enum EOrientation implements IOrientation
+    public CLayer( @Nonnull final String p_name )
     {
-        ORTHOGONAL,
-        ISOMETRIC,
-        STAGGERED,
-        HEXAGONAL;
+        m_name = p_name;
+    }
 
-        @Override
-        public String toString()
-        {
-            return super.toString().toLowerCase( Locale.ROOT );
-        }
+    @Override
+    public Map<String, Object> get()
+    {
+        // https://doc.mapeditor.org/en/stable/reference/json-map-format/#json-tileset
+        final Map<String, Object> l_layer = new HashMap<>();
+
+        l_layer.put( "name", m_name );
+        l_layer.put( "type", "tileset" );
+
+        return l_layer;
     }
 }

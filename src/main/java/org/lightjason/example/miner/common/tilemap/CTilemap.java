@@ -67,7 +67,6 @@ public final class CTilemap implements ITilemap
         l_map.put( "infinite", false );
 
 
-        l_map.put( "background", "#ffffff" );
         l_map.put( "height", m_height.intValue() );
         l_map.put( "weight", m_weight.intValue() );
         l_map.put( "layers", p_stream.map( Supplier::get ).toArray() );
