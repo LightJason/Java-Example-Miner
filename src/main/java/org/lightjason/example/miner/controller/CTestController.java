@@ -29,7 +29,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
-import java.util.stream.Stream;
 
 
 /**
@@ -51,14 +50,4 @@ public final class CTestController
         return p_session.getId();
     }
 
-    /**
-     * test tilemap
-     *
-     * @return tile index
-     */
-    @GetMapping( "/tilemap" )
-    public Object[] tiles()
-    {
-        return Stream.of( 0, 0, 1, 1 ).toArray();
-    }
 }

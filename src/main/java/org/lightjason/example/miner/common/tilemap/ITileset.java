@@ -24,13 +24,12 @@
 package org.lightjason.example.miner.common.tilemap;
 
 import java.util.Map;
-import java.util.function.BiFunction;
-import java.util.stream.Stream;
+import java.util.function.Supplier;
 
 
 /**
- * tilemap interface
+ * tileset, to describe a source
  */
-public interface ITilemap extends BiFunction<Stream<ILayer>, Stream<ITileset>, Map<String, Object>>
+public interface ITileset extends Supplier<Map<String, Object>>
 {
 }

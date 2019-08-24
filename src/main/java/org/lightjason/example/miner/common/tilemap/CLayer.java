@@ -51,7 +51,7 @@ public final class CLayer implements ILayer
     @Override
     public Map<String, Object> get()
     {
-        // https://doc.mapeditor.org/en/stable/reference/json-map-format/#json-tileset
+        // https://doc.mapeditor.org/en/stable/reference/json-map-format/#layer
         final Map<String, Object> l_layer = new HashMap<>();
 
         l_layer.put( "name", m_name );

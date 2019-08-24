@@ -37,9 +37,21 @@ import java.util.stream.Stream;
  */
 public final class CTilemap implements ITilemap
 {
+    /**
+     * tilemap height
+     */
     private final Number m_height;
+    /**
+     * tilemap width
+     */
     private final Number m_weight;
 
+    /**
+     * ctor
+     *
+     * @param p_height tilemap height
+     * @param p_weight tilemap width
+     */
     public CTilemap( @Nonnull @Positive final Number p_height, @Nonnull @Positive final Number p_weight )
     {
         m_height = p_height;
@@ -47,13 +59,14 @@ public final class CTilemap implements ITilemap
     }
 
     @Override
-    public Map<String, Object> apply( final Stream<ILayer> p_stream )
+    public Map<String, Object> apply( final Stream<ILayer> p_layer, final Stream<ITileset> p_tileset )
     {
         // http://labs.phaser.io/assets/tilemaps/maps/cybernoid.json
         // https://doc.mapeditor.org/en/stable/reference/json-map-format/
         // https://dev.to/jorbascrumps/loading-server-generated-tilemaps-with-phaser-4mm7
-        final Map<String, Object> l_map = new HashMap<>();
 
+        // https://doc.mapeditor.org/en/stable/reference/json-map-format/#map
+        final Map<String, Object> l_map = new HashMap<>();
 
         l_map.put( "version", 1.2 );
         l_map.put( "tiledversion", "1.2.4" );
@@ -69,7 +82,7 @@ public final class CTilemap implements ITilemap
 
         l_map.put( "height", m_height.intValue() );
         l_map.put( "weight", m_weight.intValue() );
-        l_map.put( "layers", p_stream.map( Supplier::get ).toArray() );
+        l_map.put( "layers", p_layer.map( Supplier::get ).toArray() );
         l_map.put( "properties", Collections.emptyList() );
         l_map.put( "tilesets", Collections.emptyList() );
 

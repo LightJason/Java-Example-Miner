@@ -50,7 +50,7 @@ public final class CEnvironmentController
     @GetMapping( value = "/map", produces = MediaType.APPLICATION_JSON_VALUE )
     public Map<String, Object> tilemap()
     {
-        return new CTilemap( 10, 10 ).apply( Stream.empty() );
+        return new CTilemap( 10, 10 ).apply( Stream.empty(), Stream.empty() );
     }
 
 }

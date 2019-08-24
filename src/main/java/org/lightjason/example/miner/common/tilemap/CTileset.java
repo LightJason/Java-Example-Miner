@@ -23,14 +23,72 @@
 
 package org.lightjason.example.miner.common.tilemap;
 
+import javax.annotation.Nonnull;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.function.BiFunction;
-import java.util.stream.Stream;
 
 
 /**
- * tilemap interface
+ * tileset definition
  */
-public interface ITilemap extends BiFunction<Stream<ILayer>, Stream<ITileset>, Map<String, Object>>
+public final class CTileset implements ITileset
 {
+    /**
+     * image path
+     */
+    private final String m_image;
+    /**
+     * image height
+     */
+    private final Number m_height;
+    /**
+     * image width
+     */
+    private final Number m_weight;
+    /**
+     * image margin
+     */
+    private final Number m_margin;
+    /**
+     * image spacing
+     */
+    private final Number m_spacing;
+
+    /**
+     * ctor
+     *
+     * @param p_image image path
+     * @param p_height image height
+     * @param p_width image width
+     * @param p_margin image margin
+     * @param p_spacing image spacing
+     */
+    public CTileset( @Nonnull final String p_image,
+                     @Nonnull @Positive final Number p_height, @Nonnull @Positive final Number p_width,
+                     @Nonnull @PositiveOrZero final Number p_margin, @Nonnull @PositiveOrZero final Number p_spacing )
+    {
+        m_image = p_image;
+        m_height = p_height;
+        m_weight = p_width;
+        m_spacing = p_spacing;
+        m_margin = p_margin;
+    }
+
+
+    @Override
+    public Map<String, Object> get()
+    {
+        // https://doc.mapeditor.org/en/stable/reference/json-map-format/#tileset-example
+        final Map<String, Object> l_map = new HashMap<>();
+
+        l_map.put( "image", m_image );
+        l_map.put( "imagewidth", m_weight );
+        l_map.put( "imageheight", m_height );
+        l_map.put( "spacing", m_spacing );
+        l_map.put( "margi", m_margin );
+
+        return l_map;
+    }
 }
