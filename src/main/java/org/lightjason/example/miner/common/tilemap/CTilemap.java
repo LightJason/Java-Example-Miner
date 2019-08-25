@@ -23,12 +23,15 @@
 
 package org.lightjason.example.miner.common.tilemap;
 
+import com.google.common.collect.Streams;
+
 import javax.annotation.Nonnull;
 import javax.validation.constraints.Positive;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 
@@ -85,6 +88,19 @@ public final class CTilemap implements ITilemap
         l_map.put( "layers", p_layer.map( Supplier::get ).toArray() );
         l_map.put( "properties", Collections.emptyList() );
         l_map.put( "tilesets", Collections.emptyList() );
+
+        l_map.put(
+            "tileset",
+            Streams.zip(
+                p_tileset,
+                IntStream.iterate( 1, i -> i + 1 ).boxed(),
+                ( i, j ) -> {
+                    final Map<String, Object> l_tileset = i.get();
+                    l_tileset.put( "tilesets", j );
+                    return l_tileset;
+                }
+            ).toArray()
+        );
 
         return l_map;
     }

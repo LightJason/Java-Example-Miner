@@ -87,7 +87,7 @@ public final class CTileset implements ITileset
         l_map.put( "imagewidth", m_weight );
         l_map.put( "imageheight", m_height );
         l_map.put( "spacing", m_spacing );
-        l_map.put( "margi", m_margin );
+        l_map.put( "margin", m_margin );
 
         return l_map;
     }

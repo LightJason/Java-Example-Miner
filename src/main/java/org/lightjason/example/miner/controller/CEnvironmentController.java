@@ -24,6 +24,7 @@
 package org.lightjason.example.miner.controller;
 
 import org.lightjason.example.miner.common.tilemap.CTilemap;
+import org.lightjason.example.miner.common.tilemap.CTileset;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -50,7 +51,15 @@ public final class CEnvironmentController
     @GetMapping( value = "/map", produces = MediaType.APPLICATION_JSON_VALUE )
     public Map<String, Object> tilemap()
     {
-        return new CTilemap( 10, 10 ).apply( Stream.empty(), Stream.empty() );
+        return new CTilemap(
+            10,
+            10
+        ).apply(
+            Stream.empty(),
+            Stream.of(
+                new CTileset( "/foo.jpg", 480, 640, 0, 0 )
+            )
+        );
     }
 
 }
