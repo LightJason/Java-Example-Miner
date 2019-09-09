@@ -47,15 +47,15 @@ export default class Screen extends React.Component {
     preload() {
         console.log("preload");
 
-        this.load.image( "tiles", "/assets/level.png" );
+        //this.load.image( "tiles", "/assets/tileset.png" );
         this.load.tilemapTiledJSON("map", "/mas/environment/map");
     }
 
     create() {
         console.log("create");
 
-        const l_map = this.make.tilemap({ key: "map" });
-        const l_scenario = l_map.addTilesetImage("scenario", "scenario");
+        //const l_map = this.make.tilemap({ key: "map" });
+        //const l_scenario = l_map.addTilesetImage("scenario", "scenario");
     }
 
     update() {

@@ -23,47 +23,25 @@
 
 package org.lightjason.example.miner.controller;
 
-import org.lightjason.example.miner.common.tilemap.CTilemap;
-import org.lightjason.example.miner.common.tilemap.CTileset;
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Map;
-import java.util.stream.Stream;
-
-
 /**
- * environment controller
+ * controller for performance results
  */
-@RestController
-@RequestMapping( "/mas/environment" )
-public final class CEnvironmentController
+public final class CPerformanceVisualization
 {
 
+    // https://glowroot.org/
+    // http://naver.github.io/pinpoint/
+    // https://github.com/javamelody/javamelody
+    // https://github.com/scouter-project/scouter
+
+
     /**
-     * returns the tilemap
+     * test call
      *
-     * @return phaser tilemap structure
-     * @see https://doc.mapeditor.org/en/stable/reference/json-map-format/
+     * @return string
      */
-    @GetMapping( value = "/map", produces = MediaType.APPLICATION_JSON_VALUE )
-    public Map<String, Object> tilemap()
+    public String test()
     {
-        // <map version="1.0" orientation="orthogonal" width="30" height="15" tilewidth="64" tileheight="64">
-        // <tileset firstgid="1" source="sprites.tsx"/>
-         // <layer name="bg" width="30" height="15">
-
-        return new CTilemap(
-            10,
-            10
-        ).apply(
-            Stream.empty(),
-            Stream.of(
-                new CTileset( "/assets/tileset.png", 715, 715, 0, 1 )
-            )
-        );
+        return "";
     }
-
 }
