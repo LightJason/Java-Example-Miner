@@ -34,6 +34,7 @@ public final class CPerformanceVisualization
     // https://github.com/javamelody/javamelody
     // https://github.com/scouter-project/scouter
     // https://github.com/aragozin/jvm-tools
+    // https://www.baeldung.com/java-profilers
 
 
     /**
