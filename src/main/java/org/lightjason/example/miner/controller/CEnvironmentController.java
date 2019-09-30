@@ -23,6 +23,7 @@
 
 package org.lightjason.example.miner.controller;
 
+import org.lightjason.example.miner.common.tilemap.CLayer;
 import org.lightjason.example.miner.common.tilemap.CTilemap;
 import org.lightjason.example.miner.common.tilemap.CTileset;
 import org.springframework.http.MediaType;
@@ -59,7 +60,9 @@ public final class CEnvironmentController
             10,
             10
         ).apply(
-            Stream.empty(),
+            Stream.of(
+                new CLayer( "World" )
+            ),
             Stream.of(
                 new CTileset( "/assets/tileset.png", 715, 715, 0, 1 )
             )

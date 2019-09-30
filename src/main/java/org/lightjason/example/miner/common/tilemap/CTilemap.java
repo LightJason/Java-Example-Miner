@@ -85,12 +85,10 @@ public final class CTilemap implements ITilemap
 
         l_map.put( "height", m_height.intValue() );
         l_map.put( "weight", m_weight.intValue() );
-        l_map.put( "layers", p_layer.map( Supplier::get ).toArray() );
         l_map.put( "properties", Collections.emptyList() );
-        l_map.put( "tilesets", Collections.emptyList() );
 
         l_map.put(
-            "tileset",
+            "tilesets",
             Streams.zip(
                 p_tileset,
                 IntStream.iterate( 1, i -> i + 1 ).boxed(),
@@ -98,6 +96,19 @@ public final class CTilemap implements ITilemap
                     final Map<String, Object> l_tileset = i.get();
                     l_tileset.put( "tilesets", j );
                     return l_tileset;
+                }
+            ).toArray()
+        );
+
+        l_map.put(
+            "layers",
+            Streams.zip(
+                p_layer,
+                IntStream.iterate( 1, i -> i + 1 ).boxed(),
+                ( i, j ) -> {
+                    final Map<String, Object> l_layer = i.get();
+                    l_layer.put( "id", i );
+                    return l_layer;
                 }
             ).toArray()
         );

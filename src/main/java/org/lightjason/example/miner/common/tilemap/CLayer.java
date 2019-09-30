@@ -55,7 +55,11 @@ public final class CLayer implements ILayer
         final Map<String, Object> l_layer = new HashMap<>();
 
         l_layer.put( "name", m_name );
-        l_layer.put( "type", "tileset" );
+        l_layer.put( "type", "tilelayer" );
+        l_layer.put( "opacity", 1 );
+        l_layer.put( "x", 0 );
+        l_layer.put( "y", 0 );
+        l_layer.put( "visible", true );
 
         return l_layer;
     }
