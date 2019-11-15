@@ -374,7 +374,7 @@
                 </executions>
             </plugin>
 
-            <!-- checkstyle is perform at compile phase -->
+            <!-- checkstyle is perform at compile phase
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
@@ -405,6 +405,7 @@
                     <suppressionsLocation>${project.basedir}/src/codestyle/checkstyle/suppressions.xml</suppressionsLocation>
                 </configuration>
             </plugin>
+            -->
 
             <!-- code-coverage report plugin -->
             <plugin>
