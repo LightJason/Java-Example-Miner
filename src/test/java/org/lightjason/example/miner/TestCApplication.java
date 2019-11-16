@@ -23,9 +23,12 @@
 
 package org.lightjason.example.miner;
 
+import org.lightjason.agentspeak.testing.IBaseTest;
+
+
 /**
  * main test application
  */
-public final class TestCApplication
+public final class TestCApplication extends IBaseTest
 {
 }

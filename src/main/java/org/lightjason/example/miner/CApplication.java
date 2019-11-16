@@ -23,6 +23,12 @@
 
 package org.lightjason.example.miner;
 
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Options;
+import org.lightjason.agentspeak.common.CCommon;
+
 import javax.annotation.Nonnull;
 
 /**
@@ -46,6 +52,32 @@ public final class CApplication
     //Checkstyle:OFF:UncommentedMain
     public static void main( @Nonnull final String[] p_args )
     {
+        final Options l_clioptions = new Options();
+        l_clioptions.addOption( "help", false, CCommon.languagestring( CApplication.class, "help" ) );
+        l_clioptions.addOption( "miner", true, CCommon.languagestring( CApplication.class, "miner" ) );
+        l_clioptions.addOption( "trader", false, CCommon.languagestring( CApplication.class, "trader" ) );
+        l_clioptions.addOption( "environment", true, CCommon.languagestring( CApplication.class, "environment" ) );
+
+        final CommandLine l_cli;
+        try
+        {
+            l_cli = new DefaultParser().parse( l_clioptions, p_args );
+        }
+        catch ( final Exception l_exception )
+        {
+            System.err.println( CCommon.languagestring( CApplication.class, "parseerror", l_exception.getLocalizedMessage() ) );
+            System.exit( -1 );
+            return;
+        }
+
+
+        // --- process CLI arguments and push configuration ------------------------------------------------------------
+        if ( l_cli.hasOption( "help" ) )
+        {
+            final HelpFormatter l_formatter = new HelpFormatter();
+            l_formatter.printHelp( ( new java.io.File( CApplication.class.getProtectionDomain().getCodeSource().getLocation().getPath() ).getName() ), l_clioptions );
+            System.exit( 0 );
+        }
         System.out.println("start");
     }
     //Checkstyle:ON:UncommentedMain
