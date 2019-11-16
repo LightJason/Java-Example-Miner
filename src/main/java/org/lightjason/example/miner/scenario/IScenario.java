@@ -21,78 +21,15 @@
  * @endcond
  */
 
-package org.lightjason.example.evaluation.scenario;
+package org.lightjason.example.miner.scenario;
 
-import javax.annotation.Nonnull;
-import java.text.MessageFormat;
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 
 /**
- * gem factory
+ * scenario interface
  */
-public enum EGem implements IGemFactory
+public interface IScenario extends Supplier<Stream<IScenarioAgent>>
 {
-    // red
-    RUBY,
-    // blue
-    SAPPHIRINE,
-    // violette
-    AMETHYST;
-
-
-    @Override
-    public IGem get()
-    {
-        return new CGem( this, ThreadLocalRandom.current().nextDouble() );
-    }
-
-
-
-    /**
-     * gem
-     */
-    private static final class CGem implements IGem
-    {
-        /**
-         * type
-         */
-        private final EGem m_type;
-        /**
-         * value
-         */
-        private final Number m_value;
-
-        /**
-         * ctor
-         *
-         * @param p_type tpe
-         * @param p_value value
-         */
-        private CGem( final EGem p_type, final Number p_value )
-        {
-            m_type = p_type;
-            m_value = p_value;
-        }
-
-        @Nonnull
-        @Override
-        public Number value( @Nonnull final IScenarioAgent p_agent )
-        {
-            return m_value;
-        }
-
-        @Nonnull
-        @Override
-        public EGem type()
-        {
-            return m_type;
-        }
-
-        @Override
-        public String toString()
-        {
-            return MessageFormat.format( "{0}({1})", m_type, m_value );
-        }
-    }
 }

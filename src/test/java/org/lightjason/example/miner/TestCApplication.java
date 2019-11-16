@@ -21,9 +21,11 @@
  * @endcond
  */
 
-package org.lightjason.example.evaluation.scenario;
+package org.lightjason.example.miner;
 
-public enum ESolid implements ISolid
+/**
+ * main test application
+ */
+public final class TestCApplication
 {
-    WALL;
 }

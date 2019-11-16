@@ -22,7 +22,7 @@
  */
 
 
-package org.lightjason.example.evaluation.scenario;
+package org.lightjason.example.miner.scenario;
 
 import org.lightjason.agentspeak.action.IBaseAction;
 import org.lightjason.agentspeak.common.CPath;
@@ -34,7 +34,7 @@ import org.lightjason.agentspeak.language.CRawTerm;
 import org.lightjason.agentspeak.language.ITerm;
 import org.lightjason.agentspeak.language.execution.IContext;
 import org.lightjason.agentspeak.language.fuzzy.IFuzzyValue;
-import org.lightjason.example.evaluation.runtime.IRuntime;
+import org.lightjason.example.miner.runtime.IRuntime;
 
 import javax.annotation.Nonnull;
 import java.text.MessageFormat;

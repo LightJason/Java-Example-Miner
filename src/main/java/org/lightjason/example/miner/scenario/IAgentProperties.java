@@ -21,11 +21,50 @@
  * @endcond
  */
 
-package org.lightjason.example.evaluation;
+package org.lightjason.example.miner.scenario;
+
+import javax.annotation.Nonnull;
+
 
 /**
- * main test application
+ * agent properties
  */
-public final class TestCApplication
+public interface IAgentProperties
 {
+    /**
+     * returns the current energy level of the agent
+     *
+     * @return energy agent
+     */
+    @Nonnull
+    Number energy();
+
+    /**
+     * updates the energy level of the agent
+     *
+     * @param p_value update value
+     * @return self-reference
+     */
+    @Nonnull
+    IAgentProperties energy( @Nonnull final Number p_value );
+
+    /**
+     * gem rating value
+     *
+     * @param p_gem gem type
+     * @return rating value
+     */
+    @Nonnull
+    Number gemrating( @Nonnull final EGem p_gem );
+
+    /**
+     * update gem rating value
+     *
+     * @param p_gem gem
+     * @param p_value value
+     * @return self-reference
+     */
+    @Nonnull
+    IAgentProperties gemrating( @Nonnull final EGem p_gem, @Nonnull final Number p_value );
+
 }

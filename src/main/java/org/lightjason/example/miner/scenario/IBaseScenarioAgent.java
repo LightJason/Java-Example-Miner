@@ -21,14 +21,14 @@
  * @endcond
  */
 
-package org.lightjason.example.evaluation.scenario;
+package org.lightjason.example.miner.scenario;
 
 import org.lightjason.agentspeak.agent.IBaseAgent;
 import org.lightjason.agentspeak.configuration.IAgentConfiguration;
 import org.lightjason.agentspeak.generator.IActionGenerator;
 import org.lightjason.agentspeak.generator.IBaseAgentGenerator;
 import org.lightjason.agentspeak.generator.ILambdaStreamingGenerator;
-import org.lightjason.example.evaluation.runtime.IRuntime;
+import org.lightjason.example.miner.runtime.IRuntime;
 
 import javax.annotation.Nonnull;
 import java.io.InputStream;

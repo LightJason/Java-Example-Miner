@@ -21,22 +21,33 @@
  * @endcond
  */
 
-package org.lightjason.example.evaluation.scenario;
+package org.lightjason.example.miner;
 
 import javax.annotation.Nonnull;
 
-
 /**
- * mocfing agent interface
+ * main application
  */
-public interface IMovingAgent
+public final class CApplication
 {
     /**
-     * update the view range
+    private ctor
+    */
+    private CApplication()
+    {
+    }
+
+
+    /**
+     * main method
      *
-     * @param p_value view range
-     * @return self-reference
+     * @param p_args arguments
      */
-    IMovingAgent viewrange( @Nonnull final Number p_value );
+    //Checkstyle:OFF:UncommentedMain
+    public static void main( @Nonnull final String[] p_args )
+    {
+        System.out.println("start");
+    }
+    //Checkstyle:ON:UncommentedMain
 
 }

@@ -21,14 +21,24 @@
  * @endcond
  */
 
-package org.lightjason.example.evaluation.scenario;
+package org.lightjason.example.miner.scenario;
 
-import java.util.function.Supplier;
+import cern.colt.matrix.tobject.ObjectMatrix2D;
+
+import javax.annotation.Nonnull;
 
 
 /**
- * gem factory interface
+ * scenario interface
  */
-public interface IGemFactory extends Supplier<IGem>
+public interface IScenarioEnvironment
 {
+    /**
+     * returns the object grid
+     *
+     * @return grid
+     */
+    @Nonnull
+    ObjectMatrix2D grid();
+
 }

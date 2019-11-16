@@ -21,32 +21,8 @@
  * @endcond
  */
 
-package org.lightjason.example.evaluation.scenario;
+package org.lightjason.example.miner.scenario;
 
-
-import javax.annotation.Nonnull;
-
-
-/**
- * gem interface
- */
-public interface IGem
+public interface ISolid
 {
-    /**
-     * returns the value of the gem based on the agent
-     *
-     * @param p_agent agent
-     * @return value
-     */
-    @Nonnull
-    Number value( @Nonnull final IScenarioAgent p_agent );
-
-    /**
-     * returns gem type
-     *
-     * @return gem type
-     */
-    @Nonnull
-    EGem type();
-
 }

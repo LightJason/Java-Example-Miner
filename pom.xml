@@ -3,10 +3,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.lightjason.example</groupId>
-    <artifactId>evaluation</artifactId>
+    <artifactId>miner</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>LightJason - Evaluation</name>
-    <description>LightJason Evaluation Example</description>
+    <name>LightJason - Miner</name>
+    <description>LightJason Miner Example</description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

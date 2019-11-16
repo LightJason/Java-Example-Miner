@@ -21,33 +21,14 @@
  * @endcond
  */
 
-package org.lightjason.example.evaluation;
+package org.lightjason.example.miner.scenario;
 
-import javax.annotation.Nonnull;
+import java.util.function.Supplier;
+
 
 /**
- * main application
+ * gem factory interface
  */
-public final class CApplication
+public interface IGemFactory extends Supplier<IGem>
 {
-    /**
-    private ctor
-    */
-    private CApplication()
-    {
-    }
-
-
-    /**
-     * main method
-     *
-     * @param p_args arguments
-     */
-    //Checkstyle:OFF:UncommentedMain
-    public static void main( @Nonnull final String[] p_args )
-    {
-        System.out.println("start");
-    }
-    //Checkstyle:ON:UncommentedMain
-
 }

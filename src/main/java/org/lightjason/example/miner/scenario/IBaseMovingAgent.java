@@ -21,7 +21,7 @@
  * @endcond
  */
 
-package org.lightjason.example.evaluation.scenario;
+package org.lightjason.example.miner.scenario;
 
 import cern.colt.matrix.tdouble.DoubleMatrix1D;
 import cern.colt.matrix.tdouble.impl.DenseDoubleMatrix1D;
@@ -31,7 +31,7 @@ import org.lightjason.agentspeak.action.binding.IAgentActionFilter;
 import org.lightjason.agentspeak.action.binding.IAgentActionName;
 import org.lightjason.agentspeak.action.grid.EMovementDirection;
 import org.lightjason.agentspeak.configuration.IAgentConfiguration;
-import org.lightjason.example.evaluation.runtime.IRuntime;
+import org.lightjason.example.miner.runtime.IRuntime;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

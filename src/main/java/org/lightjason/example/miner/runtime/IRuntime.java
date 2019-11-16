@@ -21,24 +21,43 @@
  * @endcond
  */
 
-package org.lightjason.example.evaluation.scenario;
+package org.lightjason.example.miner.runtime;
 
-import cern.colt.matrix.tobject.ObjectMatrix2D;
+import org.lightjason.example.miner.scenario.IScenarioAgent;
 
-import javax.annotation.Nonnull;
+import java.util.function.Consumer;
 
 
 /**
- * scenario interface
+ * runtime interface
  */
-public interface IScenarioEnvironment
+public interface IRuntime extends Consumer<IScenarioAgent>
 {
     /**
-     * returns the object grid
-     *
-     * @return grid
+     * empty runtime
      */
-    @Nonnull
-    ObjectMatrix2D grid();
+    IRuntime EMPTY = new IRuntime()
+    {
+        @Override
+        public IRuntime continuous( final boolean p_execution )
+        {
+            return this;
+        }
+
+        @Override
+        public void accept( final IScenarioAgent p_agent )
+        {
+
+        }
+    };
+
+
+    /**
+     * switch the runtime model
+     *
+     * @param p_execution switch
+     * @return self-reference
+     */
+    IRuntime continuous( boolean p_execution );
 
 }

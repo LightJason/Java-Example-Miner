@@ -21,43 +21,9 @@
  * @endcond
  */
 
-package org.lightjason.example.evaluation.runtime;
+package org.lightjason.example.miner.scenario;
 
-import org.lightjason.example.evaluation.scenario.IScenarioAgent;
-
-import java.util.function.Consumer;
-
-
-/**
- * runtime interface
- */
-public interface IRuntime extends Consumer<IScenarioAgent>
+public enum ESolid implements ISolid
 {
-    /**
-     * empty runtime
-     */
-    IRuntime EMPTY = new IRuntime()
-    {
-        @Override
-        public IRuntime continuous( final boolean p_execution )
-        {
-            return this;
-        }
-
-        @Override
-        public void accept( final IScenarioAgent p_agent )
-        {
-
-        }
-    };
-
-
-    /**
-     * switch the runtime model
-     *
-     * @param p_execution switch
-     * @return self-reference
-     */
-    IRuntime continuous( boolean p_execution );
-
+    WALL;
 }

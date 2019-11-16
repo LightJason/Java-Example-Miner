@@ -21,50 +21,32 @@
  * @endcond
  */
 
-package org.lightjason.example.evaluation.scenario;
+package org.lightjason.example.miner.scenario;
+
 
 import javax.annotation.Nonnull;
 
 
 /**
- * agent properties
+ * gem interface
  */
-public interface IAgentProperties
+public interface IGem
 {
     /**
-     * returns the current energy level of the agent
+     * returns the value of the gem based on the agent
      *
-     * @return energy agent
+     * @param p_agent agent
+     * @return value
      */
     @Nonnull
-    Number energy();
+    Number value( @Nonnull final IScenarioAgent p_agent );
 
     /**
-     * updates the energy level of the agent
+     * returns gem type
      *
-     * @param p_value update value
-     * @return self-reference
+     * @return gem type
      */
     @Nonnull
-    IAgentProperties energy( @Nonnull final Number p_value );
-
-    /**
-     * gem rating value
-     *
-     * @param p_gem gem type
-     * @return rating value
-     */
-    @Nonnull
-    Number gemrating( @Nonnull final EGem p_gem );
-
-    /**
-     * update gem rating value
-     *
-     * @param p_gem gem
-     * @param p_value value
-     * @return self-reference
-     */
-    @Nonnull
-    IAgentProperties gemrating( @Nonnull final EGem p_gem, @Nonnull final Number p_value );
+    EGem type();
 
 }

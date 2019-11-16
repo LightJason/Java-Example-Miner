@@ -21,7 +21,7 @@
  * @endcond
  */
 
-package org.lightjason.example.evaluation.scenario;
+package org.lightjason.example.miner.scenario;
 
 import javax.annotation.Nonnull;
 import java.util.Map;

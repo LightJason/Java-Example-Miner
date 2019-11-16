@@ -21,16 +21,22 @@
  * @endcond
  */
 
-package org.lightjason.example.evaluation.scenario;
+package org.lightjason.example.miner.scenario;
 
-import org.lightjason.agentspeak.agent.IAgent;
-
-import java.util.function.Supplier;
+import javax.annotation.Nonnull;
 
 
 /**
- * energy data
+ * mocfing agent interface
  */
-public interface IScenarioAgent extends IAgent<IScenarioAgent>, Supplier<IAgentProperties>
+public interface IMovingAgent
 {
+    /**
+     * update the view range
+     *
+     * @param p_value view range
+     * @return self-reference
+     */
+    IMovingAgent viewrange( @Nonnull final Number p_value );
+
 }
