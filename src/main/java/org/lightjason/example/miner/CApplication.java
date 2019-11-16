@@ -57,6 +57,8 @@ public final class CApplication
         l_clioptions.addOption( "miner", true, CCommon.languagestring( CApplication.class, "miner" ) );
         l_clioptions.addOption( "trader", false, CCommon.languagestring( CApplication.class, "trader" ) );
         l_clioptions.addOption( "environment", true, CCommon.languagestring( CApplication.class, "environment" ) );
+        l_clioptions.addOption( "port", true, CCommon.languagestring( CApplication.class, "port" ) );
+        l_clioptions.addOption( "host", true, CCommon.languagestring( CApplication.class, "host" ) );
 
         final CommandLine l_cli;
         try
