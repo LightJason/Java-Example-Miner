@@ -94,7 +94,7 @@ public final class CTilemap implements ITilemap
                 IntStream.iterate( 1, i -> i + 1 ).boxed(),
                 ( i, j ) -> {
                     final Map<String, Object> l_tileset = i.get();
-                    l_tileset.put( "tilesets", j );
+                    l_tileset.put( "firstgrid", j );
                     return l_tileset;
                 }
             ).toArray()
