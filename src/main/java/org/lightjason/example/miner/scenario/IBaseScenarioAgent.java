@@ -47,13 +47,13 @@ public abstract class IBaseScenarioAgent extends IBaseAgent<IScenarioAgent> impl
      */
     private static final long serialVersionUID = 4159418649578529062L;
     /**
+     * agent storage
+     */
+    protected final Set<IScenarioAgent> m_agentstorage;
+    /**
      * agent properties
      */
     private final IAgentProperties m_properties = new CAgentProperties();
-    /**
-     * agent storage
-     */
-    private final Set<IScenarioAgent> m_agentstorage;
     /**
      * execution runtime
      */

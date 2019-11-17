@@ -35,6 +35,9 @@ import org.lightjason.agentspeak.action.grid.routing.EDistance;
 import org.lightjason.agentspeak.configuration.IAgentConfiguration;
 import org.lightjason.agentspeak.generator.IActionGenerator;
 import org.lightjason.agentspeak.generator.ILambdaStreamingGenerator;
+import org.lightjason.agentspeak.language.CLiteral;
+import org.lightjason.agentspeak.language.CRawTerm;
+import org.lightjason.agentspeak.language.execution.instantiable.plan.trigger.ITrigger;
 import org.lightjason.example.miner.runtime.IRuntime;
 
 import javax.annotation.Nonnull;
@@ -44,6 +47,7 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.IntStream;
 
@@ -58,6 +62,18 @@ public final class CAgentEnvironment extends IBaseScenarioAgent implements IScen
      * serial id
      */
     private static final long serialVersionUID = 5950067237160399078L;
+    /**
+     * trigger for empty world
+     */
+    private static final ITrigger TRIGGEREMPTY = ITrigger.EType.ADDGOAL.builddefault( CLiteral.of( "world/empty" ) );
+    /**
+     * functor of trigger for iteration
+     */
+    private static final String TRIGGERITERATION = "world/iteration";
+    /**
+     * iteration count
+     */
+    private final AtomicLong m_iteration = new AtomicLong();
     /**
      * grid
      */
@@ -93,6 +109,7 @@ public final class CAgentEnvironment extends IBaseScenarioAgent implements IScen
     @IAgentActionName( name = "world/create" )
     private void createworld( @Nonnull final Number p_width, @Nonnull final Number p_height )
     {
+        m_iteration.set( 0 );
         m_grid.set( new SparseObjectMatrix2D( p_height.intValue(), p_width.intValue() ) );
     }
 
@@ -105,7 +122,7 @@ public final class CAgentEnvironment extends IBaseScenarioAgent implements IScen
      * @param p_size size of the mine
      */
     @IAgentActionFilter
-    @IAgentActionName( name = "mine/create" )
+    @IAgentActionName( name = "miner/create" )
     private void createmine( @Nonnull final String p_gem, @Nonnull final Number p_xcenter, @Nonnull final Number p_ycenter, @Nonnull final Number p_size )
     {
         Objects.requireNonNull( m_grid.get() );
@@ -206,7 +223,16 @@ public final class CAgentEnvironment extends IBaseScenarioAgent implements IScen
     {
         p_agent.get().energy( p_value );
         this.get().energy( -p_value.doubleValue() );
+    }
 
+    @Override
+    public IScenarioAgent call() throws Exception
+    {
+        if ( m_agentstorage.size() == 1 && m_agentstorage.contains( this ) )
+            this.trigger( TRIGGEREMPTY );
+
+        this.trigger( ITrigger.EType.ADDGOAL.builddefault( CLiteral.of( TRIGGERITERATION, CRawTerm.of( m_iteration.getAndIncrement() ) ) ) );
+        return super.call();
     }
 
     /**
