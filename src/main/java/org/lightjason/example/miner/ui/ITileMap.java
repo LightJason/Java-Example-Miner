@@ -21,92 +21,43 @@
  * @endcond
  */
 
-package org.lightjason.example.miner.scenario;
+package org.lightjason.example.miner.ui;
 
-import com.badlogic.gdx.graphics.g2d.Sprite;
-
-import javax.annotation.Nonnull;
-import java.text.MessageFormat;
-import java.util.concurrent.ThreadLocalRandom;
+import com.badlogic.gdx.maps.tiled.TiledMap;
 
 
 /**
- * gem factory
+ * interface for creating a tilemap (environment)
  */
-public enum EGem implements IGemFactory
+public interface ITileMap
 {
-    // red
-    RUBY,
-    // blue
-    SAPPHIRINE,
-    // violette
-    AMETHYST;
-
-
-    @Override
-    public IGem get()
-    {
-        return new CGem( this, ThreadLocalRandom.current().nextDouble() );
-    }
-
-
 
     /**
-     * gem
+     * returns the tilemap
+     *
+     * @return map
      */
-    private static final class CGem implements IGem
-    {
-        /**
-         * type
-         */
-        private final EGem m_type;
-        /**
-         * value
-         */
-        private final Number m_value;
+    TiledMap map();
 
-        /**
-         * ctor
-         *
-         * @param p_type tpe
-         * @param p_value value
-         */
-        private CGem( final EGem p_type, final Number p_value )
-        {
-            m_type = p_type;
-            m_value = p_value;
-        }
+    /**
+     * returns the number of rows
+     *
+     * @return rows
+     */
+    int rows();
 
-        @Nonnull
-        @Override
-        public Number value( @Nonnull final IScenarioAgent p_agent )
-        {
-            return m_value;
-        }
+    /**
+     * returns the number of columns
+     *
+     * @return columns
+     */
+    int columns();
 
-        @Nonnull
-        @Override
-        public EGem type()
-        {
-            return m_type;
-        }
+    /**
+     * returns the cell size
+     *
+     * @return cell size
+     */
+    int cellsize();
 
-        @Override
-        public String toString()
-        {
-            return MessageFormat.format( "{0}({1})", m_type, m_value );
-        }
-
-        @Override
-        public Sprite sprite()
-        {
-            return null;
-        }
-
-        @Override
-        public void spriteinitialize( final int p_rows, final int p_columns, final int p_cellsize, final float p_unit )
-        {
-
-        }
-    }
 }

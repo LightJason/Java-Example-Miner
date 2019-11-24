@@ -28,6 +28,10 @@ import cern.colt.matrix.tdouble.impl.DenseDoubleMatrix1D;
 import cern.colt.matrix.tdouble.impl.SparseDoubleMatrix1D;
 import cern.colt.matrix.tobject.ObjectMatrix2D;
 import cern.colt.matrix.tobject.impl.SparseObjectMatrix2D;
+import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.lightjason.agentspeak.action.binding.IAgentAction;
 import org.lightjason.agentspeak.action.binding.IAgentActionFilter;
 import org.lightjason.agentspeak.action.binding.IAgentActionName;
@@ -39,6 +43,7 @@ import org.lightjason.agentspeak.language.CLiteral;
 import org.lightjason.agentspeak.language.CRawTerm;
 import org.lightjason.agentspeak.language.execution.instantiable.plan.trigger.ITrigger;
 import org.lightjason.example.miner.runtime.IRuntime;
+import org.lightjason.example.miner.ui.CScreen;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -97,6 +102,56 @@ public final class CAgentEnvironment extends IBaseScenarioAgent implements IScen
     public ObjectMatrix2D grid()
     {
         return Objects.requireNonNull( m_grid.get() );
+    }
+
+    /**
+     *
+     * @todo must be fixed
+     */
+    @Override
+    public TiledMap map()
+    {
+        return null;
+    }
+
+    /**
+     *
+     * @todo must be fixed
+     */
+    @Override
+    public int rows()
+    {
+        return 0;
+    }
+
+    /**
+     *
+     * @todo must be fixed
+     */
+    @Override
+    public int columns()
+    {
+        return 0;
+    }
+
+    /**
+     *
+     * @todo must be fixed
+     */
+    @Override
+    public int cellsize()
+    {
+        return 0;
+    }
+
+    /**
+     * runs the world
+     */
+    @IAgentActionFilter
+    @IAgentActionName( name = "world/start" )
+    private void startworld()
+    {
+        CScreen.open();
     }
 
     /**

@@ -24,6 +24,7 @@
 package org.lightjason.example.miner.scenario;
 
 import cern.colt.matrix.tobject.ObjectMatrix2D;
+import org.lightjason.example.miner.ui.ITileMap;
 
 import javax.annotation.Nonnull;
 
@@ -31,7 +32,7 @@ import javax.annotation.Nonnull;
 /**
  * scenario interface
  */
-public interface IScenarioEnvironment
+public interface IScenarioEnvironment extends ITileMap
 {
     /**
      * returns the object grid

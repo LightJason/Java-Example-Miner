@@ -23,7 +23,22 @@
 
 package org.lightjason.example.miner.scenario;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
+
+
 public enum ESolid implements ISolid
 {
     WALL;
+
+    @Override
+    public Sprite sprite()
+    {
+        return null;
+    }
+
+    @Override
+    public void spriteinitialize( final int p_rows, final int p_columns, final int p_cellsize, final float p_unit )
+    {
+
+    }
 }

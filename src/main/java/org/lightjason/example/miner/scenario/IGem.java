@@ -24,13 +24,15 @@
 package org.lightjason.example.miner.scenario;
 
 
+import org.lightjason.example.miner.ui.ISprite;
+
 import javax.annotation.Nonnull;
 
 
 /**
  * gem interface
  */
-public interface IGem
+public interface IGem extends ISprite
 {
     /**
      * returns the value of the gem based on the agent

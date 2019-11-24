@@ -23,6 +23,9 @@
 
 package org.lightjason.example.miner.scenario;
 
-public interface ISolid
+import org.lightjason.example.miner.ui.ISprite;
+
+
+public interface ISolid extends ISprite
 {
 }

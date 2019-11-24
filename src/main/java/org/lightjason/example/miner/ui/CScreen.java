@@ -26,6 +26,8 @@ package org.lightjason.example.miner.ui;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
+import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -39,6 +41,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import org.apache.commons.lang3.tuple.Triple;
 
 import java.text.MessageFormat;
+import java.util.Set;
 
 
 /**
@@ -60,7 +63,7 @@ public final class CScreen extends ApplicationAdapter implements InputProcessor
     /**
      * sprite list
      */
-    private final List<? extends ISprite> m_sprites;
+    private final Set<? extends ISprite> m_sprites;
     /**
      * screenshot
      */
@@ -103,7 +106,7 @@ public final class CScreen extends ApplicationAdapter implements InputProcessor
      * @param p_environment environment reference
      * @param p_screenshot screenshot configuration
      */
-    public CScreen( final List<? extends ISprite> p_sprites, final ITileMap p_environment, final Triple<String, String, Integer> p_screenshot )
+    private CScreen( final Set<? extends ISprite> p_sprites, final ITileMap p_environment, final Triple<String, String, Integer> p_screenshot )
     {
         m_environment = p_environment;
         m_sprites = p_sprites;
@@ -122,13 +125,13 @@ public final class CScreen extends ApplicationAdapter implements InputProcessor
         // create environment view and put all objects in it
         m_render = new OrthogonalTiledMapRenderer( m_environment.map(), l_unit, m_spritebatch );
 
-        m_camera = new OrthographicCamera( m_environment.column(), m_environment.row() );
-        m_camera.setToOrtho( false, m_environment.column() * l_unit, m_environment.row() * l_unit );
-        m_camera.position.set( m_environment.column() / 2f, m_environment.row() / 2f, 0 );
+        m_camera = new OrthographicCamera( m_environment.columns(), m_environment.rows() );
+        m_camera.setToOrtho( false, m_environment.columns() * l_unit, m_environment.rows() * l_unit );
+        m_camera.position.set( m_environment.columns() / 2f, m_environment.rows() / 2f, 0 );
         m_camera.zoom = m_environment.cellsize();
 
         // create sprites and particle systems
-        m_sprites.forEach( i -> i.spriteinitialize( m_environment.row(), m_environment.column(), m_environment.cellsize(), l_unit ) );
+        m_sprites.forEach( i -> i.spriteinitialize( m_environment.rows(), m_environment.columns(), m_environment.cellsize(), l_unit ) );
         m_render.setView( m_camera );
 
         // set input processor
@@ -287,6 +290,21 @@ public final class CScreen extends ApplicationAdapter implements InputProcessor
         );
         l_pixmap.dispose();
         return this;
+    }
+
+    /**
+     * factory to create a screen
+     */
+    public static void open()
+    {
+        // force-exit must be disabled for avoid error exiting
+        final LwjglApplicationConfiguration l_config = new LwjglApplicationConfiguration();
+
+        l_config.forceExit = false;
+        l_config.width = CConfiguration.INSTANCE.windowweight();
+        l_config.height = CConfiguration.INSTANCE.windowheight();
+
+        new LwjglApplication( new CScreen(), l_config );
     }
 
 }

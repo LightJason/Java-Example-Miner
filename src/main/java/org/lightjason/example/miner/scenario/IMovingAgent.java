@@ -23,13 +23,15 @@
 
 package org.lightjason.example.miner.scenario;
 
+import org.lightjason.example.miner.ui.ISprite;
+
 import javax.annotation.Nonnull;
 
 
 /**
  * mocfing agent interface
  */
-public interface IMovingAgent
+public interface IMovingAgent extends ISprite
 {
     /**
      * update the view range
