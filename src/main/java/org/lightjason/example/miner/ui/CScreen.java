@@ -50,9 +50,9 @@ import java.util.Set;
  *
  * @note with "s" a screenshot can be created
  * @warning rendering elements must be set within the create call for avoid instantiation error
- * @see https://libgdx.badlogicgames.com/
- * @see https://github.com/libgdx/libgdx/wiki/Tile-maps
- * @see http://www.gamefromscratch.com/post/2014/04/16/LibGDX-Tutorial-11-Tiled-Maps-Part-1-Simple-Orthogonal-Maps.aspx
+ * @see <a href="https://libgdx.badlogicgames.com/"></a>
+ * @see <a href="https://github.com/libgdx/libgdx/wiki/Tile-maps"></a>
+ * @see <a href="http://www.gamefromscratch.com/post/2014/04/16/LibGDX-Tutorial-11-Tiled-Maps-Part-1-Simple-Orthogonal-Maps.aspx"></a>
  */
 public final class CScreen extends ApplicationAdapter implements InputProcessor
 {
@@ -71,7 +71,7 @@ public final class CScreen extends ApplicationAdapter implements InputProcessor
     /**
      * last camera position
      */
-    private final Vector3 m_lastTouch = new Vector3();
+    private final Vector3 m_lasttouch = new Vector3();
     /**
      * camera definition
      */
@@ -231,7 +231,7 @@ public final class CScreen extends ApplicationAdapter implements InputProcessor
     @Override
     public final boolean touchDown( final int p_screenx, final int p_screeny, final int p_pointer, final int p_button )
     {
-        m_lastTouch.set( p_screenx, p_screeny, 0 );
+        m_lasttouch.set( p_screenx, p_screeny, 0 );
         return false;
     }
 
@@ -246,11 +246,11 @@ public final class CScreen extends ApplicationAdapter implements InputProcessor
     {
         m_camera.translate(
             new Vector3().set( p_screenx, p_screeny, 0 )
-                         .sub( m_lastTouch )
+                         .sub( m_lasttouch )
                          .scl( -CConfiguration.INSTANCE.dragspeed(), CConfiguration.INSTANCE.dragspeed(), 0 )
                          .scl( m_camera.zoom )
         );
-        m_lastTouch.set( p_screenx, p_screeny, 0 );
+        m_lasttouch.set( p_screenx, p_screeny, 0 );
         return false;
     }
 

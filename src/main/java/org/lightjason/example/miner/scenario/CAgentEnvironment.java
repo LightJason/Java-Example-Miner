@@ -28,10 +28,7 @@ import cern.colt.matrix.tdouble.impl.DenseDoubleMatrix1D;
 import cern.colt.matrix.tdouble.impl.SparseDoubleMatrix1D;
 import cern.colt.matrix.tobject.ObjectMatrix2D;
 import cern.colt.matrix.tobject.impl.SparseObjectMatrix2D;
-import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.Pair;
 import org.lightjason.agentspeak.action.binding.IAgentAction;
 import org.lightjason.agentspeak.action.binding.IAgentActionFilter;
 import org.lightjason.agentspeak.action.binding.IAgentActionName;
@@ -105,7 +102,8 @@ public final class CAgentEnvironment extends IBaseScenarioAgent implements IScen
     }
 
     /**
-     *
+     * must be fixed
+     * @return tilemap
      * @todo must be fixed
      */
     @Override
@@ -115,7 +113,8 @@ public final class CAgentEnvironment extends IBaseScenarioAgent implements IScen
     }
 
     /**
-     *
+     * must be fixed
+     * @return rows
      * @todo must be fixed
      */
     @Override
@@ -125,7 +124,8 @@ public final class CAgentEnvironment extends IBaseScenarioAgent implements IScen
     }
 
     /**
-     *
+     * must be fixed
+     * @return columns
      * @todo must be fixed
      */
     @Override
@@ -135,7 +135,8 @@ public final class CAgentEnvironment extends IBaseScenarioAgent implements IScen
     }
 
     /**
-     *
+     * must be fixed
+     * @return cellsize
      * @todo must be fixed
      */
     @Override

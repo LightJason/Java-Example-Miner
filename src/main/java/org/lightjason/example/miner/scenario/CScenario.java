@@ -38,12 +38,7 @@ import org.lightjason.example.miner.runtime.IRuntime;
 
 import javax.annotation.Nonnull;
 import java.text.MessageFormat;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.stream.Stream;
 

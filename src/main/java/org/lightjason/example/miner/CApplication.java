@@ -77,10 +77,10 @@ public final class CApplication
         if ( l_cli.hasOption( "help" ) )
         {
             final HelpFormatter l_formatter = new HelpFormatter();
-            l_formatter.printHelp( ( new java.io.File( CApplication.class.getProtectionDomain().getCodeSource().getLocation().getPath() ).getName() ), l_clioptions );
+            l_formatter.printHelp( new java.io.File( CApplication.class.getProtectionDomain().getCodeSource().getLocation().getPath() ).getName(), l_clioptions );
             System.exit( 0 );
         }
-        System.out.println("start");
+        System.out.println( "start" );
     }
     //Checkstyle:ON:UncommentedMain
 
