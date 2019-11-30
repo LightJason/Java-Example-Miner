@@ -38,6 +38,7 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.BufferUtils;
 import com.badlogic.gdx.utils.ScreenUtils;
+import edu.umd.cs.findbugs.annotations.NonNull;
 import org.apache.commons.lang3.tuple.Triple;
 
 import javax.annotation.Nonnull;
@@ -65,10 +66,6 @@ public final class CScreen extends ApplicationAdapter implements InputProcessor
      * sprite list
      */
     private final Set<? extends ISprite> m_sprites;
-    /**
-     * screenshot
-     */
-    private final Triple<String, String, Integer> m_screenshot;
     /**
      * last camera position
      */
@@ -105,13 +102,11 @@ public final class CScreen extends ApplicationAdapter implements InputProcessor
      *
      * @param p_sprites list with executables
      * @param p_environment environment reference
-     * @param p_screenshot screenshot configuration
      */
-    private CScreen( final Set<? extends ISprite> p_sprites, final ITileMap p_environment, final Triple<String, String, Integer> p_screenshot )
+    private CScreen( final Set<? extends ISprite> p_sprites, final ITileMap p_environment )
     {
         m_environment = p_environment;
         m_sprites = p_sprites;
-        m_screenshot = p_screenshot;
     }
 
     @Override
@@ -199,11 +194,6 @@ public final class CScreen extends ApplicationAdapter implements InputProcessor
     public final CScreen iteration( final int p_iteration )
     {
         m_iteration = p_iteration;
-
-        // screenshot-take flag set
-        if ( !m_screenshottake )
-            m_screenshottake = ( !m_screenshot.getLeft().isEmpty() ) && ( !m_screenshot.getMiddle().isEmpty() )
-                               && ( m_screenshot.getRight() > 0 ) && ( p_iteration % m_screenshot.getRight() == 0 );
         return this;
     }
 
@@ -211,9 +201,7 @@ public final class CScreen extends ApplicationAdapter implements InputProcessor
     public final boolean keyDown( final int p_key )
     {
         // if "s" key pressed, create a screenshot
-        if ( p_key == 47 )
-            m_screenshottake = ( !m_screenshot.getLeft().isEmpty() ) && ( !m_screenshot.getMiddle().isEmpty() );
-
+        m_screenshottake = p_key == 47;
         return false;
     }
 
@@ -279,7 +267,7 @@ public final class CScreen extends ApplicationAdapter implements InputProcessor
      *
      * @return self reference
      */
-    private CScreen screenshot()
+    public CScreen screenshot()
     {
         if ( !m_screenshottake )
             return this;
@@ -290,7 +278,7 @@ public final class CScreen extends ApplicationAdapter implements InputProcessor
 
         BufferUtils.copy( l_pixels, 0, l_pixmap.getPixels(), l_pixels.length );
         PixmapIO.writePNG(
-            new FileHandle( MessageFormat.format( m_screenshot.getLeft(), String.format( m_screenshot.getMiddle(), m_iteration ) ) + ".png" ),
+            new FileHandle( MessageFormat.format( "image{0}{1}", String.format( "%08d", m_iteration ), ".png" ) ),
             l_pixmap
         );
         l_pixmap.dispose();
@@ -302,8 +290,11 @@ public final class CScreen extends ApplicationAdapter implements InputProcessor
      *
      * @param p_width window width
      * @param p_height window height
+     * @param p_sprites set with sprites / agents
+     * @param p_environment environment agent
      */
-    public static void open( @Nonnull final Number p_width, @Nonnull final Number p_height )
+    public static void open( @Nonnull final Number p_width, @Nonnull final Number p_height,
+                             @NonNull final Set<? extends ISprite> p_sprites, @NonNull final ITileMap p_environment )
     {
         // force-exit must be disabled for avoid error exiting
         final LwjglApplicationConfiguration l_config = new LwjglApplicationConfiguration();
@@ -312,7 +303,7 @@ public final class CScreen extends ApplicationAdapter implements InputProcessor
         l_config.width = p_width.intValue();
         l_config.height = p_height.intValue();
 
-        //new LwjglApplication( new CScreen(), l_config );
+        new LwjglApplication( new CScreen( p_sprites, p_environment ), l_config );
     }
 
 }

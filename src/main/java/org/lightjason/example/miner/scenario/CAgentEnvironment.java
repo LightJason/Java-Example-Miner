@@ -25,6 +25,7 @@ package org.lightjason.example.miner.scenario;
 
 import cern.colt.matrix.tobject.ObjectMatrix2D;
 import cern.colt.matrix.tobject.impl.SparseObjectMatrix2D;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import org.lightjason.agentspeak.action.binding.IAgentAction;
 import org.lightjason.agentspeak.action.binding.IAgentActionFilter;
@@ -140,21 +141,36 @@ public final class CAgentEnvironment extends IBaseScenarioAgent implements IScen
         return 0;
     }
 
+    @Override
+    public Sprite sprite()
+    {
+        return null;
+    }
+
+    @Override
+    public void spriteinitialize( final int p_rows, final int p_columns, final int p_cellsize, final float p_unit )
+    {
+
+    }
+
     /**
      * runs the world
+     *
+     * @param p_width screen width
+     * @param p_height screen height
      */
     @IAgentActionFilter
     @IAgentActionName( name = "world/start" )
-    private void worldstart()
+    private void worldstart( @Nonnull final Number p_width, @Nonnull final Number p_height )
     {
-        CScreen.open( 1200, 980 );
+        CScreen.open( p_width, p_height, m_agentstorage, this );
     }
 
     /**
      * creates the world map
      *
-     * @param p_width width
-     * @param p_height height
+     * @param p_width world width
+     * @param p_height world height
      */
     @IAgentActionFilter
     @IAgentActionName( name = "world/create" )

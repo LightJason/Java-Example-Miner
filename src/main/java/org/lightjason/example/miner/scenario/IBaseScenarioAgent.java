@@ -49,7 +49,7 @@ public abstract class IBaseScenarioAgent extends IBaseAgent<IScenarioAgent> impl
     /**
      * agent storage
      */
-    protected final Set<IScenarioAgent> m_agentstorage;
+    protected final Set<? extends IScenarioAgent> m_agentstorage;
     /**
      * agent properties
      */
