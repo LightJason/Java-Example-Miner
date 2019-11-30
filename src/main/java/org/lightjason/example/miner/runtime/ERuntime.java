@@ -35,7 +35,9 @@ import java.util.concurrent.Executors;
  */
 public enum ERuntime implements IRuntime
 {
-    STEALINGPOOL( Executors.newWorkStealingPool() );
+    STEALING( Executors.newWorkStealingPool() ),
+    CACHED( Executors.newCachedThreadPool() ),
+    SINGLETHREAD( Executors.newSingleThreadExecutor() );
 
     /**
      * pool definition

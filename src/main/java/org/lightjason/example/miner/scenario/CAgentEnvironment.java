@@ -23,16 +23,12 @@
 
 package org.lightjason.example.miner.scenario;
 
-import cern.colt.matrix.tdouble.DoubleMatrix1D;
-import cern.colt.matrix.tdouble.impl.DenseDoubleMatrix1D;
-import cern.colt.matrix.tdouble.impl.SparseDoubleMatrix1D;
 import cern.colt.matrix.tobject.ObjectMatrix2D;
 import cern.colt.matrix.tobject.impl.SparseObjectMatrix2D;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import org.lightjason.agentspeak.action.binding.IAgentAction;
 import org.lightjason.agentspeak.action.binding.IAgentActionFilter;
 import org.lightjason.agentspeak.action.binding.IAgentActionName;
-import org.lightjason.agentspeak.action.grid.routing.EDistance;
 import org.lightjason.agentspeak.configuration.IAgentConfiguration;
 import org.lightjason.agentspeak.generator.IActionGenerator;
 import org.lightjason.agentspeak.generator.ILambdaStreamingGenerator;
@@ -45,10 +41,10 @@ import org.lightjason.example.miner.ui.CScreen;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.io.InputStream;
+import java.util.Collections;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.Set;
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.IntStream;
@@ -85,13 +81,12 @@ public final class CAgentEnvironment extends IBaseScenarioAgent implements IScen
      * ctor
      *
      * @param p_configuration agent configuration
-     * @param p_agentstorage agent storage
      * @param p_runtime execution runtime
      */
-    private CAgentEnvironment( @Nonnull final IAgentConfiguration<IScenarioAgent> p_configuration, @Nonnull final Set<IScenarioAgent> p_agentstorage,
+    private CAgentEnvironment( @Nonnull final IAgentConfiguration<IScenarioAgent> p_configuration,
                                @Nonnull final IRuntime p_runtime )
     {
-        super( p_configuration, p_agentstorage, p_runtime );
+        super( p_configuration, new CopyOnWriteArraySet<>(), p_runtime );
     }
 
     @Nonnull
@@ -170,7 +165,7 @@ public final class CAgentEnvironment extends IBaseScenarioAgent implements IScen
     }
 
     /**
-     * adds a mine
+     * adds a miner
      *
      * @param p_gem gem name
      * @param p_xcenter x-center value
@@ -179,8 +174,9 @@ public final class CAgentEnvironment extends IBaseScenarioAgent implements IScen
      */
     @IAgentActionFilter
     @IAgentActionName( name = "miner/create" )
-    private void createmine( @Nonnull final String p_gem, @Nonnull final Number p_xcenter, @Nonnull final Number p_ycenter, @Nonnull final Number p_size )
+    private void createminer( @Nonnull final String p_gem, @Nonnull final Number p_xcenter, @Nonnull final Number p_ycenter, @Nonnull final Number p_size )
     {
+        /*
         Objects.requireNonNull( m_grid.get() );
         final DoubleMatrix1D l_center = new SparseDoubleMatrix1D( new double[]{p_ycenter.doubleValue(), p_xcenter.doubleValue()} );
         final EGem l_gem = EGem.valueOf( p_gem.trim().toUpperCase( Locale.ROOT ) );
@@ -196,6 +192,8 @@ public final class CAgentEnvironment extends IBaseScenarioAgent implements IScen
                 1, 0, p_size.doubleValue() ).doubleValue()
                )
             .forEach( i -> m_grid.get().setQuick( i.getLeft().intValue(), i.getRight().intValue(), l_gem.get() ) );
+
+         */
     }
 
     /**
@@ -284,11 +282,13 @@ public final class CAgentEnvironment extends IBaseScenarioAgent implements IScen
     @Override
     public IScenarioAgent call() throws Exception
     {
-        if ( m_agentstorage.size() == 1 && m_agentstorage.contains( this ) )
+        super.call();
+
+        if ( m_agentstorage.isEmpty() )
             this.trigger( TRIGGEREMPTY );
 
         this.trigger( ITrigger.EType.ADDGOAL.builddefault( CLiteral.of( TRIGGERITERATION, CRawTerm.of( m_iteration.getAndIncrement() ) ) ) );
-        return super.call();
+        return this.toruntime();
     }
 
     /**
@@ -302,21 +302,19 @@ public final class CAgentEnvironment extends IBaseScenarioAgent implements IScen
          * @param p_asl asl string
          * @param p_actions actions
          * @param p_lambda lambdas
-         * @param p_agentstorage agent storage
          * @param p_runtime runtime
          */
         public CGenerator( @Nonnull final InputStream p_asl, @Nonnull final IActionGenerator p_actions,
-                           @Nonnull final ILambdaStreamingGenerator p_lambda, @Nonnull final Set<IScenarioAgent> p_agentstorage,
-                           @Nonnull final IRuntime p_runtime )
+                           @Nonnull final ILambdaStreamingGenerator p_lambda, @Nonnull final IRuntime p_runtime )
         {
-            super( p_asl, p_actions, p_lambda, p_agentstorage, p_runtime );
+            super( p_asl, p_actions, p_lambda, Collections.emptySet(), p_runtime );
         }
 
         @Nonnull
         @Override
         public IScenarioAgent generatesingle( @Nullable final Object... p_objects )
         {
-            return new CAgentEnvironment( m_configuration, m_agentstorage, m_runtime );
+            return new CAgentEnvironment( m_configuration, m_runtime );
         }
     }
 }

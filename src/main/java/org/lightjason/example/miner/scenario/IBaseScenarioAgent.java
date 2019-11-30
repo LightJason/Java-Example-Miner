@@ -72,6 +72,16 @@ public abstract class IBaseScenarioAgent extends IBaseAgent<IScenarioAgent> impl
         super( p_configuration );
         m_runtime = p_runtime;
         m_agentstorage = p_agentstorage;
+        m_runtime.accept( this );
+    }
+
+    /**
+     * pushs the agent explicit to the runtime
+     */
+    protected final IScenarioAgent toruntime()
+    {
+        m_runtime.accept( this );
+        return this;
     }
 
     @Override
@@ -82,7 +92,7 @@ public abstract class IBaseScenarioAgent extends IBaseAgent<IScenarioAgent> impl
         if ( this.runningplans().isEmpty() )
             m_agentstorage.remove( this );
         else
-            m_runtime.accept( this );
+            this.toruntime();
 
         return this;
     }

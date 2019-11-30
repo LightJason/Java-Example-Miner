@@ -28,8 +28,14 @@ import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.lightjason.agentspeak.common.CCommon;
+import org.lightjason.agentspeak.generator.CActionGenerator;
+import org.lightjason.agentspeak.generator.IActionGenerator;
+import org.lightjason.agentspeak.generator.ILambdaStreamingGenerator;
+import org.lightjason.example.miner.runtime.ERuntime;
+import org.lightjason.example.miner.scenario.CAgentEnvironment;
 
 import javax.annotation.Nonnull;
+import java.util.stream.Stream;
 
 /**
  * main application
@@ -82,6 +88,17 @@ public final class CApplication
         }
 
 
+        final IActionGenerator l_actions = new CActionGenerator(
+                Stream.of( "org.lightjason.agentspeak.action" ),
+                Stream.of( CAgentEnvironment.class )
+        );
+
+        new CAgentEnvironment.CGenerator(
+                CApplication.class.getResourceAsStream( "environment.asl" ),
+                l_actions,
+                ILambdaStreamingGenerator.EMPTY,
+                ERuntime.CACHED
+        ).generatesingle();
 
     }
     //Checkstyle:ON:UncommentedMain

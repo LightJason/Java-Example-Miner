@@ -129,7 +129,6 @@ public final class CScenario
                     CCommon.toInputStream( p_aslenvironment ),
                     IActionGenerator.EMPTY,
                     ILambdaStreamingGenerator.EMPTY,
-                    new HashSet<>(),
                     m_runtime
                 ).generatesingle()
             )

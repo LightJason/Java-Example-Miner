@@ -45,6 +45,12 @@
         <!-- Base packages -->
         <dependency>
             <groupId>org.lightjason.agentspeak.action</groupId>
+            <artifactId>generic</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.lightjason.agentspeak.action</groupId>
             <artifactId>grid</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
