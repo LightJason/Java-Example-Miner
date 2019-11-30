@@ -32,7 +32,7 @@ import javax.annotation.Nonnull;
 /**
  * scenario interface
  */
-public interface IScenarioEnvironment extends ITileMap
+public interface IScenarioEnvironment
 {
     /**
      * returns the object grid
@@ -41,5 +41,12 @@ public interface IScenarioEnvironment extends ITileMap
      */
     @Nonnull
     ObjectMatrix2D grid();
+
+    /**
+     * returns a tilemap
+     *
+     * @return tilemap
+     */
+    ITileMap tilemap();
 
 }

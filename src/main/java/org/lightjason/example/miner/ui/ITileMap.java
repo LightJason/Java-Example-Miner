@@ -25,39 +25,19 @@ package org.lightjason.example.miner.ui;
 
 import com.badlogic.gdx.maps.tiled.TiledMap;
 
+import java.util.function.Supplier;
+
 
 /**
  * interface for creating a tilemap (environment)
  */
-public interface ITileMap
+public interface ITileMap extends Supplier<TiledMap>
 {
 
-    /**
-     * returns the tilemap
-     *
-     * @return map
-     */
-    TiledMap map();
+    int cellsize();
 
-    /**
-     * returns the number of rows
-     *
-     * @return rows
-     */
     int rows();
 
-    /**
-     * returns the number of columns
-     *
-     * @return columns
-     */
     int columns();
-
-    /**
-     * returns the cell size
-     *
-     * @return cell size
-     */
-    int cellsize();
 
 }

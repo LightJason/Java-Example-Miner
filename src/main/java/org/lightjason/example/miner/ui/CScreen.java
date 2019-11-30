@@ -39,7 +39,6 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.BufferUtils;
 import com.badlogic.gdx.utils.ScreenUtils;
 import edu.umd.cs.findbugs.annotations.NonNull;
-import org.apache.commons.lang3.tuple.Triple;
 
 import javax.annotation.Nonnull;
 import java.text.MessageFormat;
@@ -119,7 +118,7 @@ public final class CScreen extends ApplicationAdapter implements InputProcessor
         m_spritebatch = new SpriteBatch();
 
         // create environment view and put all objects in it
-        m_render = new OrthogonalTiledMapRenderer( m_environment.map(), l_unit, m_spritebatch );
+        m_render = new OrthogonalTiledMapRenderer( m_environment.get(), l_unit, m_spritebatch );
 
         m_camera = new OrthographicCamera( m_environment.columns(), m_environment.rows() );
         m_camera.setToOrtho( false, m_environment.columns() * l_unit, m_environment.rows() * l_unit );
