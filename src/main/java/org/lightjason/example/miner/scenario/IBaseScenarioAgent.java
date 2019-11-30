@@ -72,7 +72,8 @@ public abstract class IBaseScenarioAgent extends IBaseAgent<IScenarioAgent> impl
         super( p_configuration );
         m_runtime = p_runtime;
         m_agentstorage = p_agentstorage;
-        m_runtime.accept( this );
+
+        this.toruntime();
     }
 
     /**
@@ -80,7 +81,9 @@ public abstract class IBaseScenarioAgent extends IBaseAgent<IScenarioAgent> impl
      */
     protected final IScenarioAgent toruntime()
     {
-        m_runtime.accept( this );
+        if ( !m_runtime.apply( this ) )
+            m_agentstorage.remove( this );
+
         return this;
     }
 

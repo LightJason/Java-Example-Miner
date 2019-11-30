@@ -25,25 +25,18 @@ package org.lightjason.example.miner.runtime;
 
 import org.lightjason.example.miner.scenario.IScenarioAgent;
 
-import java.util.function.Consumer;
+import java.util.function.Function;
 
 
 /**
  * runtime interface
  */
-public interface IRuntime extends Consumer<IScenarioAgent>
+public interface IRuntime extends Function<IScenarioAgent, Boolean>
 {
+
     /**
-     * empty runtime
+     * runtime shutdown
      */
-    IRuntime EMPTY = new IRuntime()
-    {
-
-        @Override
-        public void accept( final IScenarioAgent p_agent )
-        {
-
-        }
-    };
+    void shutdown();
 
 }

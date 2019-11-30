@@ -145,7 +145,7 @@ public final class CAgentEnvironment extends IBaseScenarioAgent implements IScen
      */
     @IAgentActionFilter
     @IAgentActionName( name = "world/start" )
-    private void startworld()
+    private void worldstart()
     {
         CScreen.open();
     }
@@ -158,7 +158,7 @@ public final class CAgentEnvironment extends IBaseScenarioAgent implements IScen
      */
     @IAgentActionFilter
     @IAgentActionName( name = "world/create" )
-    private void createworld( @Nonnull final Number p_width, @Nonnull final Number p_height )
+    private void worldcreate( @Nonnull final Number p_width, @Nonnull final Number p_height )
     {
         m_iteration.set( 0 );
         m_grid.set( new SparseObjectMatrix2D( p_height.intValue(), p_width.intValue() ) );
@@ -174,7 +174,7 @@ public final class CAgentEnvironment extends IBaseScenarioAgent implements IScen
      */
     @IAgentActionFilter
     @IAgentActionName( name = "miner/create" )
-    private void createminer( @Nonnull final String p_gem, @Nonnull final Number p_xcenter, @Nonnull final Number p_ycenter, @Nonnull final Number p_size )
+    private void minercreate( @Nonnull final String p_gem, @Nonnull final Number p_xcenter, @Nonnull final Number p_ycenter, @Nonnull final Number p_size )
     {
         /*
         Objects.requireNonNull( m_grid.get() );
@@ -206,7 +206,7 @@ public final class CAgentEnvironment extends IBaseScenarioAgent implements IScen
      */
     @IAgentActionFilter
     @IAgentActionName( name = "solid/horizontal" )
-    public void createhorizontalsolid( @Nonnull final String p_solid, @Nonnull final Number p_xstart, @Nonnull final Number p_ystart, @Nonnull final Number p_size )
+    public void solidhorizontalcreate( @Nonnull final String p_solid, @Nonnull final Number p_xstart, @Nonnull final Number p_ystart, @Nonnull final Number p_size )
     {
         Objects.requireNonNull( m_grid.get() );
         final ISolid l_solid = ESolid.valueOf( p_solid.trim().toUpperCase( Locale.ROOT ) );
@@ -227,7 +227,7 @@ public final class CAgentEnvironment extends IBaseScenarioAgent implements IScen
      */
     @IAgentActionFilter
     @IAgentActionName( name = "solid/vertical" )
-    public void createverticalsolid( @Nonnull final String p_solid, @Nonnull final Number p_xstart, @Nonnull final Number p_ystart, @Nonnull final Number p_size )
+    public void solidverticalcreate( @Nonnull final String p_solid, @Nonnull final Number p_xstart, @Nonnull final Number p_ystart, @Nonnull final Number p_size )
     {
         Objects.requireNonNull( m_grid.get() );
         final ISolid l_solid = ESolid.valueOf( p_solid.trim().toUpperCase( Locale.ROOT ) );
@@ -246,7 +246,7 @@ public final class CAgentEnvironment extends IBaseScenarioAgent implements IScen
      */
     @IAgentActionFilter
     @IAgentActionName( name = "energy/get" )
-    private Number getEnergy( @Nonnull final IScenarioAgent p_agent )
+    private Number energyget( @Nonnull final IScenarioAgent p_agent )
     {
         return p_agent.get().energy();
     }
@@ -259,7 +259,7 @@ public final class CAgentEnvironment extends IBaseScenarioAgent implements IScen
      */
     @IAgentActionFilter
     @IAgentActionName( name = "energy/take" )
-    private void takeEnergy( @Nonnull final IScenarioAgent p_agent, @Nonnull final Number p_value )
+    private void energytake( @Nonnull final IScenarioAgent p_agent, @Nonnull final Number p_value )
     {
         p_agent.get().energy( -p_value.doubleValue() );
         this.get().energy( p_value );
@@ -273,7 +273,7 @@ public final class CAgentEnvironment extends IBaseScenarioAgent implements IScen
      */
     @IAgentActionFilter
     @IAgentActionName( name = "energy/add" )
-    private void addEnergy( @Nonnull final IScenarioAgent p_agent, @Nonnull final Number p_value )
+    private void anergyadd( @Nonnull final IScenarioAgent p_agent, @Nonnull final Number p_value )
     {
         p_agent.get().energy( p_value );
         this.get().energy( -p_value.doubleValue() );

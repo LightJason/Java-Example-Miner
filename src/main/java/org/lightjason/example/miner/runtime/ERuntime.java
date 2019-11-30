@@ -56,8 +56,18 @@ public enum ERuntime implements IRuntime
 
 
     @Override
-    public void accept( @NonNull final IScenarioAgent p_agent )
+    public Boolean apply( @NonNull final IScenarioAgent p_agent )
     {
+        if ( m_pool.isShutdown() || m_pool.isTerminated() )
+            return false;
+
         m_pool.submit( p_agent );
+        return true;
+    }
+
+    @Override
+    public void shutdown()
+    {
+        m_pool.shutdown();
     }
 }

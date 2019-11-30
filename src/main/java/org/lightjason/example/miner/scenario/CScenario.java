@@ -123,7 +123,7 @@ public final class CScenario
 
 
         // parser and run environment
-        m_runtime.accept(
+        m_runtime.apply(
             Objects.requireNonNull(
                 new CAgentEnvironment.CGenerator(
                     CCommon.toInputStream( p_aslenvironment ),
