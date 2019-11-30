@@ -80,7 +80,9 @@ public final class CApplication
             l_formatter.printHelp( new java.io.File( CApplication.class.getProtectionDomain().getCodeSource().getLocation().getPath() ).getName(), l_clioptions );
             System.exit( 0 );
         }
-        System.out.println( "start" );
+
+
+
     }
     //Checkstyle:ON:UncommentedMain
 

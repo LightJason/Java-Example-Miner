@@ -23,27 +23,39 @@
 
 package org.lightjason.example.miner.runtime;
 
+import edu.umd.cs.findbugs.annotations.NonNull;
 import org.lightjason.example.miner.scenario.IScenarioAgent;
 
-import java.util.function.Consumer;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 
 /**
- * runtime interface
+ * runtime definitions
  */
-public interface IRuntime extends Consumer<IScenarioAgent>
+public enum ERuntime implements IRuntime
 {
+    STEALINGPOOL( Executors.newWorkStealingPool() );
+
     /**
-     * empty runtime
+     * pool definition
      */
-    IRuntime EMPTY = new IRuntime()
+    private final ExecutorService m_pool;
+
+    /**
+     * ctor
+     *
+     * @param p_pool pool object
+     */
+    ERuntime( @NonNull final ExecutorService p_pool )
     {
+        m_pool = p_pool;
+    }
 
-        @Override
-        public void accept( final IScenarioAgent p_agent )
-        {
 
-        }
-    };
-
+    @Override
+    public void accept( @NonNull final IScenarioAgent p_agent )
+    {
+        m_pool.submit( p_agent );
+    }
 }

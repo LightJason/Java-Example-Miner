@@ -26,7 +26,6 @@ package org.lightjason.example.miner.ui;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
@@ -244,12 +243,14 @@ public final class CScreen extends ApplicationAdapter implements InputProcessor
     @Override
     public final boolean touchDragged( final int p_screenx, final int p_screeny, final int p_pointer )
     {
+        /*
         m_camera.translate(
             new Vector3().set( p_screenx, p_screeny, 0 )
                          .sub( m_lasttouch )
                          .scl( -CConfiguration.INSTANCE.dragspeed(), CConfiguration.INSTANCE.dragspeed(), 0 )
                          .scl( m_camera.zoom )
         );
+        */
         m_lasttouch.set( p_screenx, p_screeny, 0 );
         return false;
     }
@@ -263,9 +264,11 @@ public final class CScreen extends ApplicationAdapter implements InputProcessor
     @Override
     public final boolean scrolled( final int p_amount )
     {
+        /*
         m_camera.zoom *= p_amount > 0
                          ? 1 + CConfiguration.INSTANCE.zoomspeed()
                          : 1 - CConfiguration.INSTANCE.zoomspeed();
+         */
         return false;
     }
 
@@ -300,11 +303,13 @@ public final class CScreen extends ApplicationAdapter implements InputProcessor
         // force-exit must be disabled for avoid error exiting
         final LwjglApplicationConfiguration l_config = new LwjglApplicationConfiguration();
 
+        /*
         l_config.forceExit = false;
         l_config.width = CConfiguration.INSTANCE.windowweight();
         l_config.height = CConfiguration.INSTANCE.windowheight();
+        */
 
-        new LwjglApplication( new CScreen(), l_config );
+        //new LwjglApplication( new CScreen(), l_config );
     }
 
 }
