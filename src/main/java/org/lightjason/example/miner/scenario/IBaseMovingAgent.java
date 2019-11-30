@@ -32,6 +32,7 @@ import org.lightjason.agentspeak.action.binding.IAgentActionName;
 import org.lightjason.agentspeak.action.grid.EMovementDirection;
 import org.lightjason.agentspeak.configuration.IAgentConfiguration;
 import org.lightjason.example.miner.runtime.IRuntime;
+import org.lightjason.example.miner.ui.ISprite;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -74,15 +75,15 @@ public abstract class IBaseMovingAgent extends IBaseScenarioAgent implements IMo
      * ctor
      *
      * @param p_configuration agent configuration
-     * @param p_agentstorage agent storage
+     * @param p_visibleobjects visible objects
      * @param p_runtime execution runtime
      * @param p_grid world grid
      */
     protected IBaseMovingAgent( @Nonnull final IAgentConfiguration<IScenarioAgent> p_configuration,
-                                @Nonnull final Set<IScenarioAgent> p_agentstorage,
+                                @Nonnull final Set<? extends ISprite> p_visibleobjects,
                                 @Nonnull final IRuntime p_runtime, @Nonnull final ObjectMatrix2D p_grid )
     {
-        super( p_configuration, p_agentstorage, p_runtime );
+        super( p_configuration, p_visibleobjects, p_runtime );
         m_grid = p_grid;
     }
 

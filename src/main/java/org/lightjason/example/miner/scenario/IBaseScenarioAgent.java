@@ -29,6 +29,7 @@ import org.lightjason.agentspeak.generator.IActionGenerator;
 import org.lightjason.agentspeak.generator.IBaseAgentGenerator;
 import org.lightjason.agentspeak.generator.ILambdaStreamingGenerator;
 import org.lightjason.example.miner.runtime.IRuntime;
+import org.lightjason.example.miner.ui.ISprite;
 
 import javax.annotation.Nonnull;
 import java.io.InputStream;
@@ -47,9 +48,9 @@ public abstract class IBaseScenarioAgent extends IBaseAgent<IScenarioAgent> impl
      */
     private static final long serialVersionUID = 4159418649578529062L;
     /**
-     * agent storage
+     * visible objects
      */
-    protected final Set<? extends IScenarioAgent> m_agentstorage;
+    protected final Set<? extends ISprite> m_visibleobjects;
     /**
      * agent properties
      */
@@ -62,16 +63,16 @@ public abstract class IBaseScenarioAgent extends IBaseAgent<IScenarioAgent> impl
     /**
      * ctor
      *  @param p_configuration agent configuration
-     * @param p_agentstorage agent storage
+     * @param p_visibleobjects visible objects
      * @param p_runtime execution runtime
      */
     public IBaseScenarioAgent( @Nonnull final IAgentConfiguration<IScenarioAgent> p_configuration,
-                               @Nonnull final Set<IScenarioAgent> p_agentstorage, @Nonnull final IRuntime p_runtime
+                               @Nonnull final Set<? extends ISprite> p_visibleobjects, @Nonnull final IRuntime p_runtime
     )
     {
         super( p_configuration );
         m_runtime = p_runtime;
-        m_agentstorage = p_agentstorage;
+        m_visibleobjects = p_visibleobjects;
 
         this.toruntime();
     }
@@ -82,7 +83,7 @@ public abstract class IBaseScenarioAgent extends IBaseAgent<IScenarioAgent> impl
     protected final IScenarioAgent toruntime()
     {
         if ( !m_runtime.apply( this ) )
-            m_agentstorage.remove( this );
+            m_visibleobjects.remove( this );
 
         return this;
     }
@@ -93,7 +94,7 @@ public abstract class IBaseScenarioAgent extends IBaseAgent<IScenarioAgent> impl
         super.call();
 
         if ( this.runningplans().isEmpty() )
-            m_agentstorage.remove( this );
+            m_visibleobjects.remove( this );
         else
             this.toruntime();
 
@@ -118,9 +119,9 @@ public abstract class IBaseScenarioAgent extends IBaseAgent<IScenarioAgent> impl
          */
         protected final IRuntime m_runtime;
         /**
-         * storage set
+         * svisible objects
          */
-        protected final Set<IScenarioAgent> m_agentstorage;
+        protected final Set<? extends ISprite> m_visibleobjects;
 
         /**
          * ctor
@@ -128,16 +129,16 @@ public abstract class IBaseScenarioAgent extends IBaseAgent<IScenarioAgent> impl
          * @param p_asl asl
          * @param p_actions actions
          * @param p_lambda lambdas
-         * @param p_agentstorage agent storage
+         * @param p_visibleobjects visible objects
          * @param p_runtime execution pool;
          */
         protected IBaseScenarioAgentGenerator( @Nonnull final InputStream p_asl, @Nonnull final IActionGenerator p_actions,
-                                               @Nonnull final ILambdaStreamingGenerator p_lambda, @Nonnull final Set<IScenarioAgent> p_agentstorage,
+                                               @Nonnull final ILambdaStreamingGenerator p_lambda, @Nonnull final Set<? extends ISprite> p_visibleobjects,
                                                @Nonnull final IRuntime p_runtime )
         {
             super( p_asl, p_actions, p_lambda );
             m_runtime = p_runtime;
-            m_agentstorage = p_agentstorage;
+            m_visibleobjects = p_visibleobjects;
         }
     }
 }

@@ -29,6 +29,7 @@ import org.lightjason.agentspeak.configuration.IAgentConfiguration;
 import org.lightjason.agentspeak.generator.IActionGenerator;
 import org.lightjason.agentspeak.generator.ILambdaStreamingGenerator;
 import org.lightjason.example.miner.runtime.IRuntime;
+import org.lightjason.example.miner.ui.ISprite;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -50,14 +51,14 @@ public final class CAgentTrader extends IBaseMovingAgent
      * ctor
      *
      * @param p_configuration agent configuration
-     * @param p_agentstorage agent storage
+     * @param p_visibleobjects visible objects
      * @param p_runtime execution runtime
      * @param p_grid world grid
      */
-    private CAgentTrader( @Nonnull final IAgentConfiguration<IScenarioAgent> p_configuration, @Nonnull final Set<IScenarioAgent> p_agentstorage,
+    private CAgentTrader( @Nonnull final IAgentConfiguration<IScenarioAgent> p_configuration, @Nonnull final Set<? extends ISprite> p_visibleobjects,
                           @Nonnull final IRuntime p_runtime, @Nonnull final ObjectMatrix2D p_grid  )
     {
-        super( p_configuration, p_agentstorage, p_runtime, p_grid );
+        super( p_configuration, p_visibleobjects, p_runtime, p_grid );
     }
 
     @Override
@@ -84,21 +85,21 @@ public final class CAgentTrader extends IBaseMovingAgent
          * @param p_asl asl string
          * @param p_actions actions
          * @param p_lambda lambdas
-         * @param p_agentstorage agent storage
+         * @param p_visibleobjects visible objects
          * @param p_runtime runtime
          */
         public CGenerator( @Nonnull final InputStream p_asl, @Nonnull final IActionGenerator p_actions,
-                           @Nonnull final ILambdaStreamingGenerator p_lambda, @Nonnull final Set<IScenarioAgent> p_agentstorage,
+                           @Nonnull final ILambdaStreamingGenerator p_lambda, @Nonnull final Set<? extends ISprite> p_visibleobjects,
                            @Nonnull final IRuntime p_runtime )
         {
-            super( p_asl, p_actions, p_lambda, p_agentstorage, p_runtime );
+            super( p_asl, p_actions, p_lambda, p_visibleobjects, p_runtime );
         }
 
         @Nonnull
         @Override
         public IScenarioAgent generatesingle( @Nullable final Object... p_objects )
         {
-            return new CAgentTrader( m_configuration, m_agentstorage, m_runtime, (ObjectMatrix2D) p_objects[0] );
+            return new CAgentTrader( m_configuration, m_visibleobjects, m_runtime, (ObjectMatrix2D) p_objects[0] );
         }
     }
 }

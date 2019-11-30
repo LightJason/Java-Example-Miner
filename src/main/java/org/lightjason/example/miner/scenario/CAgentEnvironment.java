@@ -25,7 +25,6 @@ package org.lightjason.example.miner.scenario;
 
 import cern.colt.matrix.tobject.ObjectMatrix2D;
 import cern.colt.matrix.tobject.impl.SparseObjectMatrix2D;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import org.lightjason.agentspeak.action.binding.IAgentAction;
 import org.lightjason.agentspeak.action.binding.IAgentActionFilter;
 import org.lightjason.agentspeak.action.binding.IAgentActionName;
@@ -38,7 +37,6 @@ import org.lightjason.agentspeak.language.execution.instantiable.plan.trigger.IT
 import org.lightjason.example.miner.runtime.IRuntime;
 import org.lightjason.example.miner.ui.CScreen;
 import org.lightjason.example.miner.ui.CTileMap;
-import org.lightjason.example.miner.ui.ITileMap;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -98,24 +96,6 @@ public final class CAgentEnvironment extends IBaseScenarioAgent implements IScen
         return Objects.requireNonNull( m_grid.get() );
     }
 
-    @Override
-    public ITileMap tilemap()
-    {
-        return null;
-    }
-
-    @Override
-    public Sprite sprite()
-    {
-        return null;
-    }
-
-    @Override
-    public void spriteinitialize( final int p_rows, final int p_columns, final int p_cellsize, final float p_unit )
-    {
-
-    }
-
     /**
      * runs the world
      *
@@ -127,7 +107,8 @@ public final class CAgentEnvironment extends IBaseScenarioAgent implements IScen
     private void worldstart( @Nonnull final Number p_width, @Nonnull final Number p_height )
     {
         Objects.nonNull( m_grid.get() );
-        CScreen.open( p_width, p_height, m_agentstorage, new CTileMap( m_grid.get().rows(), m_grid.get().columns(), 20 ) );
+        m_iteration.set( 0 );
+        CScreen.open( p_width, p_height, m_visibleobjects, new CTileMap( m_grid.get().rows(), m_grid.get().columns(), 20 ) );
     }
 
     /**
@@ -140,7 +121,6 @@ public final class CAgentEnvironment extends IBaseScenarioAgent implements IScen
     @IAgentActionName( name = "world/create" )
     private void worldcreate( @Nonnull final Number p_width, @Nonnull final Number p_height )
     {
-        m_iteration.set( 0 );
         m_grid.set( new SparseObjectMatrix2D( p_height.intValue(), p_width.intValue() ) );
     }
 
@@ -264,7 +244,7 @@ public final class CAgentEnvironment extends IBaseScenarioAgent implements IScen
     {
         super.call();
 
-        if ( m_agentstorage.isEmpty() )
+        if ( m_visibleobjects.isEmpty() )
             this.trigger( TRIGGEREMPTY );
 
         this.trigger( ITrigger.EType.ADDGOAL.builddefault( CLiteral.of( TRIGGERITERATION, CRawTerm.of( m_iteration.getAndIncrement() ) ) ) );

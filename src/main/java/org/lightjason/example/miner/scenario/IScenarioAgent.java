@@ -24,7 +24,6 @@
 package org.lightjason.example.miner.scenario;
 
 import org.lightjason.agentspeak.agent.IAgent;
-import org.lightjason.example.miner.ui.ISprite;
 
 import java.util.function.Supplier;
 
@@ -32,6 +31,6 @@ import java.util.function.Supplier;
 /**
  * energy data
  */
-public interface IScenarioAgent extends IAgent<IScenarioAgent>, Supplier<IAgentProperties>, ISprite
+public interface IScenarioAgent extends IAgent<IScenarioAgent>, Supplier<IAgentProperties>
 {
 }
