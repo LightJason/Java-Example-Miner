@@ -44,8 +44,17 @@ public final class CTileMap implements ITileMap
      * render tilemap
      */
     private final TiledMap m_map;
+    /**
+     * cell size
+     */
     private int m_cellsize;
+    /**
+     * number of rows
+     */
     private int m_rows;
+    /**
+     * number of columns
+     */
     private int m_columns;
 
     /**
@@ -62,7 +71,7 @@ public final class CTileMap implements ITileMap
         m_cellsize = p_cellsize;
 
         // create background checkerboard with a tile map
-        final Pixmap l_pixmap = new Pixmap( 2*m_cellsize, m_cellsize, Pixmap.Format.RGBA8888 );
+        final Pixmap l_pixmap = new Pixmap( 2 * m_cellsize, m_cellsize, Pixmap.Format.RGBA8888 );
         l_pixmap.setColor( new Color( 0.8f, 0.1f, 0.1f, 0.5f ) );
         l_pixmap.fillRectangle( 0, 0, m_cellsize, m_cellsize );
         l_pixmap.setColor( new Color( 0.5f, 0.5f, 0.5f, 0.5f ) );
