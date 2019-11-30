@@ -60,6 +60,7 @@ public final class CApplication
     {
         final Options l_clioptions = new Options();
         l_clioptions.addOption( "help", false, CCommon.languagestring( CApplication.class, "help" ) );
+        l_clioptions.addOption( "save", true, CCommon.languagestring( CApplication.class, "save" ) );
         l_clioptions.addOption( "miner", true, CCommon.languagestring( CApplication.class, "miner" ) );
         l_clioptions.addOption( "trader", false, CCommon.languagestring( CApplication.class, "trader" ) );
         l_clioptions.addOption( "environment", true, CCommon.languagestring( CApplication.class, "environment" ) );

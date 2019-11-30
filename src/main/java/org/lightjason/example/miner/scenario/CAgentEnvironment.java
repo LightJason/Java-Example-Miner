@@ -147,7 +147,7 @@ public final class CAgentEnvironment extends IBaseScenarioAgent implements IScen
     @IAgentActionName( name = "world/start" )
     private void worldstart()
     {
-        CScreen.open();
+        CScreen.open( 1200, 980 );
     }
 
     /**

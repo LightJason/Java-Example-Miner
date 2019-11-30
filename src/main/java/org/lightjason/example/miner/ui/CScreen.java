@@ -26,6 +26,7 @@ package org.lightjason.example.miner.ui;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
@@ -39,6 +40,7 @@ import com.badlogic.gdx.utils.BufferUtils;
 import com.badlogic.gdx.utils.ScreenUtils;
 import org.apache.commons.lang3.tuple.Triple;
 
+import javax.annotation.Nonnull;
 import java.text.MessageFormat;
 import java.util.Set;
 
@@ -297,17 +299,18 @@ public final class CScreen extends ApplicationAdapter implements InputProcessor
 
     /**
      * factory to create a screen
+     *
+     * @param p_width window width
+     * @param p_height window height
      */
-    public static void open()
+    public static void open( @Nonnull final Number p_width, @Nonnull final Number p_height )
     {
         // force-exit must be disabled for avoid error exiting
         final LwjglApplicationConfiguration l_config = new LwjglApplicationConfiguration();
 
-        /*
         l_config.forceExit = false;
-        l_config.width = CConfiguration.INSTANCE.windowweight();
-        l_config.height = CConfiguration.INSTANCE.windowheight();
-        */
+        l_config.width = p_width.intValue();
+        l_config.height = p_height.intValue();
 
         //new LwjglApplication( new CScreen(), l_config );
     }
