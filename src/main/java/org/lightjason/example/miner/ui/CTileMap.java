@@ -41,10 +41,6 @@ import java.util.stream.IntStream;
 public final class CTileMap implements ITileMap
 {
     /**
-     * render tilemap
-     */
-    private final TiledMap m_map;
-    /**
      * cell size
      */
     private int m_cellsize;
@@ -69,10 +65,16 @@ public final class CTileMap implements ITileMap
         m_rows = p_rows;
         m_columns = p_columns;
         m_cellsize = p_cellsize;
+    }
+
+
+    @Override
+    public TiledMap get()
+    {
 
         // create background checkerboard with a tile map
         final Pixmap l_pixmap = new Pixmap( 2 * m_cellsize, m_cellsize, Pixmap.Format.RGBA8888 );
-        l_pixmap.setColor( new Color( 0.8f, 0.1f, 0.1f, 0.5f ) );
+        l_pixmap.setColor( new Color( 0.8f, 0.8f, 0.1f, 0.5f ) );
         l_pixmap.fillRectangle( 0, 0, m_cellsize, m_cellsize );
         l_pixmap.setColor( new Color( 0.5f, 0.5f, 0.5f, 0.5f ) );
         l_pixmap.fillRectangle( m_cellsize, 0, m_cellsize, m_cellsize );
@@ -84,9 +86,9 @@ public final class CTileMap implements ITileMap
         final TiledMapTile l_region2 = new StaticTiledMapTile( new TextureRegion( l_texture, m_cellsize, 0, m_cellsize, m_cellsize ) );
 
         // create tilemap
-        m_map = new TiledMap();
+        final TiledMap l_map = new TiledMap();
         final TiledMapTileLayer l_layer = new TiledMapTileLayer( m_columns, m_rows, m_cellsize, m_cellsize );
-        m_map.getLayers().add( l_layer );
+        l_map.getLayers().add( l_layer );
 
         IntStream
             .range( 0, m_columns )
@@ -105,13 +107,8 @@ public final class CTileMap implements ITileMap
                         );
                     } );
             } );
-    }
 
-
-    @Override
-    public TiledMap get()
-    {
-        return m_map;
+        return l_map;
     }
 
     @Override

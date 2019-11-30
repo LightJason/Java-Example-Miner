@@ -152,7 +152,7 @@ public final class CScreen extends ApplicationAdapter implements InputProcessor
         m_spritebatch.setProjectionMatrix( m_camera.combined );
         m_spritebatch.begin();
 
-        m_sprites.forEach( i -> i.sprite().draw( m_spritebatch ) );
+        //m_sprites.forEach( i -> i.sprite().draw( m_spritebatch ) );
 
         final float l_delta = Gdx.graphics.getDeltaTime();
 

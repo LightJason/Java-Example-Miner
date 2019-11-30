@@ -42,6 +42,7 @@
             <classifier>natives-desktop</classifier>
         </dependency>
 
+
         <!-- Base packages -->
         <dependency>
             <groupId>org.lightjason.agentspeak.action</groupId>
