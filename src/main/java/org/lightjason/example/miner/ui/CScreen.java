@@ -58,6 +58,14 @@ import java.util.Set;
 public final class CScreen extends ApplicationAdapter implements InputProcessor
 {
     /**
+     * zoom speed
+     */
+    private final int ZOOMSPEED = 2;
+    /**
+     * drag speed
+     */
+    private static final int DRAGSPEED = 80;
+    /**
      * environment tilemap reference
      */
     private final ITileMap m_environment;
@@ -232,14 +240,12 @@ public final class CScreen extends ApplicationAdapter implements InputProcessor
     @Override
     public final boolean touchDragged( final int p_screenx, final int p_screeny, final int p_pointer )
     {
-        /*
         m_camera.translate(
             new Vector3().set( p_screenx, p_screeny, 0 )
                          .sub( m_lasttouch )
-                         .scl( -CConfiguration.INSTANCE.dragspeed(), CConfiguration.INSTANCE.dragspeed(), 0 )
+                         .scl( -DRAGSPEED, DRAGSPEED, 0 )
                          .scl( m_camera.zoom )
         );
-        */
         m_lasttouch.set( p_screenx, p_screeny, 0 );
         return false;
     }
@@ -253,11 +259,9 @@ public final class CScreen extends ApplicationAdapter implements InputProcessor
     @Override
     public final boolean scrolled( final int p_amount )
     {
-        /*
         m_camera.zoom *= p_amount > 0
-                         ? 1 + CConfiguration.INSTANCE.zoomspeed()
-                         : 1 - CConfiguration.INSTANCE.zoomspeed();
-         */
+                         ? 1 + ZOOMSPEED
+                         : 1 - ZOOMSPEED;
         return false;
     }
 
