@@ -32,11 +32,15 @@ import org.lightjason.agentspeak.action.binding.IAgentActionFilter;
 import org.lightjason.agentspeak.action.binding.IAgentActionName;
 import org.lightjason.agentspeak.action.grid.EMovementDirection;
 import org.lightjason.agentspeak.configuration.IAgentConfiguration;
+import org.lightjason.agentspeak.generator.IActionGenerator;
+import org.lightjason.agentspeak.generator.ILambdaStreamingGenerator;
 import org.lightjason.example.miner.runtime.IRuntime;
 import org.lightjason.example.miner.ui.ISprite;
+import org.lightjason.example.miner.ui.ISpriteGenerator;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -96,23 +100,6 @@ public abstract class IBaseMovingAgent extends IBaseScenarioAgent implements IMo
     public final Sprite sprite()
     {
         return m_sprite;
-    }
-
-    @Override
-    public final void spriteinitialize( final int p_rows, final int p_columns, final int p_cellsize, final float p_unit )
-    {
-        /*
-        if ( m_texture == null )
-            m_texture = new Texture( Gdx.files.internal( m_texturepath ) );
-
-        m_spritecellsize = p_cellsize;
-        m_spriteunitsize = p_unit;
-
-        final Sprite l_sprite = new Sprite( m_texture );
-        l_sprite.setSize( m_spritecellsize, m_spritecellsize );
-        l_sprite.setOrigin( 1.5f / m_spritecellsize, 1.5f / m_spritecellsize );
-        l_sprite.setScale( m_spriteunitsize );
-        */
     }
 
     @Override
@@ -222,5 +209,46 @@ public abstract class IBaseMovingAgent extends IBaseScenarioAgent implements IMo
             CCommon.toNumber( m_position.getQuick( 1 ) ).intValue(),
             p_object
         );
+    }
+
+    /**
+     * agent generator
+     *
+     * @tparam V agent type
+     */
+    protected abstract static class IBaseMovementAgentGenerator extends IBaseScenarioAgentGenerator implements ISpriteGenerator
+    {
+        /**
+         * ctor
+         *
+         * @param p_asl asl
+         * @param p_actions actions
+         * @param p_lambda lambdas
+         * @param p_visibleobjects visible objects
+         * @param p_runtime execution pool;
+         */
+        protected IBaseMovementAgentGenerator( @Nonnull final InputStream p_asl, @Nonnull final IActionGenerator p_actions,
+                                               @Nonnull final ILambdaStreamingGenerator p_lambda, @Nonnull final Set<? extends ISprite> p_visibleobjects,
+                                               @Nonnull final IRuntime p_runtime )
+        {
+            super( p_asl, p_actions, p_lambda, p_visibleobjects, p_runtime );
+        }
+
+        @Override
+        public final void spriteinitialize( final int p_rows, final int p_columns, final int p_cellsize, final float p_unit )
+        {
+            /*
+            if ( m_texture == null )
+                m_texture = new Texture( Gdx.files.internal( m_texturepath ) );
+
+            m_spritecellsize = p_cellsize;
+            m_spriteunitsize = p_unit;
+
+            final Sprite l_sprite = new Sprite( m_texture );
+            l_sprite.setSize( m_spritecellsize, m_spritecellsize );
+            l_sprite.setOrigin( 1.5f / m_spritecellsize, 1.5f / m_spritecellsize );
+            l_sprite.setScale( m_spriteunitsize );
+            */
+        }
     }
 }

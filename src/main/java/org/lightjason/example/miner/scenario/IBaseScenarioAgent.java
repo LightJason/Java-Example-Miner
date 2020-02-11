@@ -119,7 +119,7 @@ public abstract class IBaseScenarioAgent extends IBaseAgent<IScenarioAgent> impl
          */
         protected final IRuntime m_runtime;
         /**
-         * svisible objects
+         * visible objects
          */
         protected final Set<? extends ISprite> m_visibleobjects;
 

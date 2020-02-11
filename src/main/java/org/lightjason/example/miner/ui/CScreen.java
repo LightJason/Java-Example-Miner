@@ -133,8 +133,8 @@ public final class CScreen extends ApplicationAdapter implements InputProcessor
         m_camera.position.set( m_environment.columns() / 2f, m_environment.rows() / 2f, 0 );
         m_camera.zoom = m_environment.cellsize();
 
-        // create sprites and particle systems
-        m_sprites.forEach( i -> i.spriteinitialize( m_environment.rows(), m_environment.columns(), m_environment.cellsize(), l_unit ) );
+        // create sprites
+        //m_sprites.forEach( i -> i.spriteinitialize( m_environment.rows(), m_environment.columns(), m_environment.cellsize(), l_unit ) );
         m_render.setView( m_camera );
 
         // set input processor

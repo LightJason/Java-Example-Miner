@@ -24,7 +24,6 @@
 package org.lightjason.example.miner.scenario;
 
 import cern.colt.matrix.tobject.ObjectMatrix2D;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import org.lightjason.agentspeak.configuration.IAgentConfiguration;
 import org.lightjason.agentspeak.generator.IActionGenerator;
 import org.lightjason.agentspeak.generator.ILambdaStreamingGenerator;
@@ -61,22 +60,10 @@ public final class CAgentTrader extends IBaseMovingAgent
         super( p_configuration, p_visibleobjects, p_runtime, p_grid );
     }
 
-    @Override
-    public Sprite sprite()
-    {
-        return null;
-    }
-
-    @Override
-    public void spriteinitialize( final int p_rows, final int p_columns, final int p_cellsize, final float p_unit )
-    {
-
-    }
-
     /**
      * agent generator
      */
-    public static final class CGenerator extends IBaseScenarioAgentGenerator
+    public static final class CGenerator extends IBaseMovementAgentGenerator
     {
 
         /**

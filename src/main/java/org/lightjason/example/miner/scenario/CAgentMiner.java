@@ -24,7 +24,6 @@
 package org.lightjason.example.miner.scenario;
 
 import cern.colt.matrix.tobject.ObjectMatrix2D;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import org.lightjason.agentspeak.configuration.IAgentConfiguration;
 import org.lightjason.agentspeak.generator.IActionGenerator;
 import org.lightjason.agentspeak.generator.ILambdaStreamingGenerator;

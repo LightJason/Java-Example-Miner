@@ -23,12 +23,14 @@
 
 package org.lightjason.example.miner.scenario;
 
+import org.lightjason.example.miner.ui.ISpriteGenerator;
+
 import java.util.function.Supplier;
 
 
 /**
  * gem factory interface
  */
-public interface IGemFactory extends Supplier<IGem>
+public interface IGemFactory extends Supplier<IGem>, ISpriteGenerator
 {
 }

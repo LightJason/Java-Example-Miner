@@ -21,92 +21,22 @@
  * @endcond
  */
 
-package org.lightjason.example.miner.scenario;
-
-import com.badlogic.gdx.graphics.g2d.Sprite;
-
-import javax.annotation.Nonnull;
-import java.text.MessageFormat;
-import java.util.concurrent.ThreadLocalRandom;
-
+package org.lightjason.example.miner.ui;
 
 /**
- * gem factory
+ * interface to create the sprite object
  */
-public enum EGem implements IGemFactory
+public interface ISpriteGenerator
 {
-    // red
-    RUBY,
-    // blue
-    SAPPHIRINE,
-    // violette
-    AMETHYST;
-
-
-    @Override
-    public IGem get()
-    {
-        return new CGem( this, ThreadLocalRandom.current().nextDouble() );
-    }
-
-    @Override
-    public void spriteinitialize( final int p_rows, final int p_columns, final int p_cellsize, final float p_unit )
-    {
-
-    }
-
-
 
     /**
-     * gem
+     * sprite initialize for correct painting initialization
+     *
+     * @param p_rows number of rows
+     * @param p_columns number of columns
+     * @param p_cellsize cellsize
+     * @param p_unit unit scale
      */
-    private static final class CGem implements IGem
-    {
-        /**
-         * type
-         */
-        private final EGem m_type;
-        /**
-         * value
-         */
-        private final Number m_value;
+    void spriteinitialize( final int p_rows, final int p_columns, final int p_cellsize, final float p_unit );
 
-        /**
-         * ctor
-         *
-         * @param p_type tpe
-         * @param p_value value
-         */
-        private CGem( final EGem p_type, final Number p_value )
-        {
-            m_type = p_type;
-            m_value = p_value;
-        }
-
-        @Nonnull
-        @Override
-        public Number value( @Nonnull final IScenarioAgent p_agent )
-        {
-            return m_value;
-        }
-
-        @Nonnull
-        @Override
-        public EGem type()
-        {
-            return m_type;
-        }
-
-        @Override
-        public String toString()
-        {
-            return MessageFormat.format( "{0}({1})", m_type, m_value );
-        }
-
-        @Override
-        public Sprite sprite()
-        {
-            return null;
-        }
-    }
 }
