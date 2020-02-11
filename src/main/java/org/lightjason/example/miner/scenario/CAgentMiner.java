@@ -61,19 +61,6 @@ public final class CAgentMiner extends IBaseMovingAgent
         super( p_configuration, p_visibleobjects, p_runtime, p_grid );
     }
 
-    @Override
-    public Sprite sprite()
-    {
-        return null;
-    }
-
-    @Override
-    public void spriteinitialize( final int p_rows, final int p_columns, final int p_cellsize, final float p_unit )
-    {
-
-    }
-
-
     /**
      * agent generator
      */

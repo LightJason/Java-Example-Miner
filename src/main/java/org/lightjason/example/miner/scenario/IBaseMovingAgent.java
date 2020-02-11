@@ -26,6 +26,7 @@ package org.lightjason.example.miner.scenario;
 import cern.colt.matrix.tdouble.DoubleMatrix1D;
 import cern.colt.matrix.tdouble.impl.DenseDoubleMatrix1D;
 import cern.colt.matrix.tobject.ObjectMatrix2D;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import org.lightjason.agentspeak.action.binding.IAgentAction;
 import org.lightjason.agentspeak.action.binding.IAgentActionFilter;
 import org.lightjason.agentspeak.action.binding.IAgentActionName;
@@ -69,6 +70,10 @@ public abstract class IBaseMovingAgent extends IBaseScenarioAgent implements IMo
      * view range
      */
     private final AtomicReference<Number> m_viewrange = new AtomicReference<>( 5 );
+    /**
+     * sprite
+     */
+    private Sprite m_sprite;
 
 
     /**
@@ -85,6 +90,29 @@ public abstract class IBaseMovingAgent extends IBaseScenarioAgent implements IMo
     {
         super( p_configuration, p_visibleobjects, p_runtime );
         m_grid = p_grid;
+    }
+
+    @Override
+    public final Sprite sprite()
+    {
+        return m_sprite;
+    }
+
+    @Override
+    public final void spriteinitialize( final int p_rows, final int p_columns, final int p_cellsize, final float p_unit )
+    {
+        /*
+        if ( m_texture == null )
+            m_texture = new Texture( Gdx.files.internal( m_texturepath ) );
+
+        m_spritecellsize = p_cellsize;
+        m_spriteunitsize = p_unit;
+
+        final Sprite l_sprite = new Sprite( m_texture );
+        l_sprite.setSize( m_spritecellsize, m_spritecellsize );
+        l_sprite.setOrigin( 1.5f / m_spritecellsize, 1.5f / m_spritecellsize );
+        l_sprite.setScale( m_spriteunitsize );
+        */
     }
 
     @Override
