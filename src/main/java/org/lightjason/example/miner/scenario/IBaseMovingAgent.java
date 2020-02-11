@@ -26,6 +26,8 @@ package org.lightjason.example.miner.scenario;
 import cern.colt.matrix.tdouble.DoubleMatrix1D;
 import cern.colt.matrix.tdouble.impl.DenseDoubleMatrix1D;
 import cern.colt.matrix.tobject.ObjectMatrix2D;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import org.lightjason.agentspeak.action.binding.IAgentAction;
 import org.lightjason.agentspeak.action.binding.IAgentActionFilter;
@@ -219,6 +221,11 @@ public abstract class IBaseMovingAgent extends IBaseScenarioAgent implements IMo
     protected abstract static class IBaseMovementAgentGenerator extends IBaseScenarioAgentGenerator implements ISpriteGenerator
     {
         /**
+         * texture reference
+         */
+        private final AtomicReference<Texture> m_texture = new AtomicReference<>();
+
+        /**
          * ctor
          *
          * @param p_asl asl
@@ -237,10 +244,9 @@ public abstract class IBaseMovingAgent extends IBaseScenarioAgent implements IMo
         @Override
         public final void spriteinitialize( final int p_rows, final int p_columns, final int p_cellsize, final float p_unit )
         {
-            /*
-            if ( m_texture == null )
-                m_texture = new Texture( Gdx.files.internal( m_texturepath ) );
+            m_texture.compareAndSet( null, new Texture( Gdx.files.internal( "" ) );
 
+            /*
             m_spritecellsize = p_cellsize;
             m_spriteunitsize = p_unit;
 
