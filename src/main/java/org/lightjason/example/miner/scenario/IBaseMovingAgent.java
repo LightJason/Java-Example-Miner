@@ -244,7 +244,7 @@ public abstract class IBaseMovingAgent extends IBaseScenarioAgent implements IMo
         @Override
         public final void spriteinitialize( final int p_rows, final int p_columns, final int p_cellsize, final float p_unit )
         {
-            m_texture.compareAndSet( null, new Texture( Gdx.files.internal( "" ) );
+            m_texture.compareAndSet( null, new Texture( Gdx.files.internal( "" ) ) );
 
             /*
             m_spritecellsize = p_cellsize;
