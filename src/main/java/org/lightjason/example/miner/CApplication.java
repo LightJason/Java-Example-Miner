@@ -101,6 +101,7 @@ public final class CApplication
                 ERuntime.CACHED
         ).generatesingle();
 
+        // https://www.gamefromscratch.com/post/2015/02/27/LibGDX-Video-Tutorial-Sprite-Animation.aspx
     }
     //Checkstyle:ON:UncommentedMain
 

@@ -60,7 +60,7 @@ public final class CScreen extends ApplicationAdapter implements InputProcessor
     /**
      * zoom speed
      */
-    private final int ZOOMSPEED = 2;
+    private static final int ZOOMSPEED = 2;
     /**
      * drag speed
      */
@@ -207,6 +207,12 @@ public final class CScreen extends ApplicationAdapter implements InputProcessor
     @Override
     public final boolean keyDown( final int p_key )
     {
+        if ( p_key == 46 )
+        {
+            m_camera.position.set( m_environment.columns() / 2f, m_environment.rows() / 2f, 0 );
+            m_camera.zoom = m_environment.cellsize();
+        }
+
         // if "s" key pressed, create a screenshot
         m_screenshottake = p_key == 47;
         return false;
