@@ -45,6 +45,10 @@ public final class CAgentMiner extends IBaseMovingAgent
      * serial id
      */
     private static final long serialVersionUID = -5782229014102610571L;
+    /**
+     * sprite image name
+     */
+    private static final String IMAGE = "miner.png";
 
     /**
      * ctor
@@ -63,7 +67,7 @@ public final class CAgentMiner extends IBaseMovingAgent
     /**
      * agent generator
      */
-    public static final class CGenerator extends IBaseScenarioAgentGenerator
+    public static final class CGenerator extends IBaseMovementAgentGenerator
     {
 
         /**
@@ -72,14 +76,12 @@ public final class CAgentMiner extends IBaseMovingAgent
          * @param p_asl asl
          * @param p_actions actions
          * @param p_lambda lambdas
-         * @param p_visibleobjects visible objects
          * @param p_runtime execution runtime
          */
         public CGenerator( @Nonnull final InputStream p_asl, @Nonnull final IActionGenerator p_actions,
-                           @Nonnull final ILambdaStreamingGenerator p_lambda, @Nonnull final Set<? extends ISprite> p_visibleobjects,
-                           @Nonnull final IRuntime p_runtime )
+                           @Nonnull final ILambdaStreamingGenerator p_lambda, @Nonnull final IRuntime p_runtime )
         {
-            super( p_asl, p_actions, p_lambda, p_visibleobjects, p_runtime );
+            super( p_asl, p_actions, p_lambda, p_runtime, IMAGE );
         }
 
         @Nonnull

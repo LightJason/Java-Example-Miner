@@ -50,7 +50,7 @@ public abstract class IBaseScenarioAgent extends IBaseAgent<IScenarioAgent> impl
     /**
      * visible objects
      */
-    protected final Set<? extends ISprite> m_visibleobjects;
+    protected Set<ISprite> m_visibleobjects;
     /**
      * agent properties
      */
@@ -63,16 +63,12 @@ public abstract class IBaseScenarioAgent extends IBaseAgent<IScenarioAgent> impl
     /**
      * ctor
      *  @param p_configuration agent configuration
-     * @param p_visibleobjects visible objects
      * @param p_runtime execution runtime
      */
-    public IBaseScenarioAgent( @Nonnull final IAgentConfiguration<IScenarioAgent> p_configuration,
-                               @Nonnull final Set<? extends ISprite> p_visibleobjects, @Nonnull final IRuntime p_runtime
-    )
+    public IBaseScenarioAgent( @Nonnull final IAgentConfiguration<IScenarioAgent> p_configuration, @Nonnull final IRuntime p_runtime )
     {
         super( p_configuration );
         m_runtime = p_runtime;
-        m_visibleobjects = p_visibleobjects;
 
         this.toruntime();
     }
@@ -121,7 +117,7 @@ public abstract class IBaseScenarioAgent extends IBaseAgent<IScenarioAgent> impl
         /**
          * visible objects
          */
-        protected final Set<? extends ISprite> m_visibleobjects;
+        protected Set<ISprite> m_visibleobjects;
 
         /**
          * ctor
@@ -129,16 +125,13 @@ public abstract class IBaseScenarioAgent extends IBaseAgent<IScenarioAgent> impl
          * @param p_asl asl
          * @param p_actions actions
          * @param p_lambda lambdas
-         * @param p_visibleobjects visible objects
          * @param p_runtime execution pool;
          */
         protected IBaseScenarioAgentGenerator( @Nonnull final InputStream p_asl, @Nonnull final IActionGenerator p_actions,
-                                               @Nonnull final ILambdaStreamingGenerator p_lambda, @Nonnull final Set<? extends ISprite> p_visibleobjects,
-                                               @Nonnull final IRuntime p_runtime )
+                                               @Nonnull final ILambdaStreamingGenerator p_lambda, @Nonnull final IRuntime p_runtime )
         {
             super( p_asl, p_actions, p_lambda );
             m_runtime = p_runtime;
-            m_visibleobjects = p_visibleobjects;
         }
     }
 }

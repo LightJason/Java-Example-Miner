@@ -45,6 +45,10 @@ public final class CAgentTrader extends IBaseMovingAgent
      * serial id
      */
     private static final long serialVersionUID = 1180220544453108361L;
+    /**
+     * sprite image name
+     */
+    private static final String IMAGE = "trader.png";
 
     /**
      * ctor
@@ -72,14 +76,13 @@ public final class CAgentTrader extends IBaseMovingAgent
          * @param p_asl asl string
          * @param p_actions actions
          * @param p_lambda lambdas
-         * @param p_visibleobjects visible objects
          * @param p_runtime runtime
          */
         public CGenerator( @Nonnull final InputStream p_asl, @Nonnull final IActionGenerator p_actions,
-                           @Nonnull final ILambdaStreamingGenerator p_lambda, @Nonnull final Set<? extends ISprite> p_visibleobjects,
+                           @Nonnull final ILambdaStreamingGenerator p_lambda,
                            @Nonnull final IRuntime p_runtime )
         {
-            super( p_asl, p_actions, p_lambda, p_visibleobjects, p_runtime );
+            super( p_asl, p_actions, p_lambda, p_runtime, IMAGE );
         }
 
         @Nonnull

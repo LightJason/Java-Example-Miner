@@ -23,26 +23,10 @@
 
 package org.lightjason.example.miner.scenario;
 
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import org.lightjason.example.miner.ui.ISprite;
-
-import javax.annotation.Nonnull;
-import java.util.Set;
+import org.lightjason.agentspeak.generator.IAgentGenerator;
+import org.lightjason.example.miner.ui.ISpriteGenerator;
 
 
-public enum ESolid implements ISolid
+public interface IVisuableAgentGenerator extends IAgentGenerator<IScenarioAgent>, ISpriteGenerator
 {
-    WALL;
-
-    @Override
-    public Sprite sprite()
-    {
-        return null;
-    }
-
-    @Override
-    public void spriteinitialize( @Nonnull final Set<ISprite> p_sprites )
-    {
-
-    }
 }

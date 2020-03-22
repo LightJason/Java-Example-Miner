@@ -38,7 +38,6 @@ import org.lightjason.agentspeak.generator.IActionGenerator;
 import org.lightjason.agentspeak.generator.ILambdaStreamingGenerator;
 import org.lightjason.example.miner.runtime.IRuntime;
 import org.lightjason.example.miner.ui.ISprite;
-import org.lightjason.example.miner.ui.ISpriteGenerator;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -94,7 +93,7 @@ public abstract class IBaseMovingAgent extends IBaseScenarioAgent implements IMo
                                 @Nonnull final Set<? extends ISprite> p_visibleobjects,
                                 @Nonnull final IRuntime p_runtime, @Nonnull final ObjectMatrix2D p_grid )
     {
-        super( p_configuration, p_visibleobjects, p_runtime );
+        super( p_configuration, p_runtime );
         m_grid = p_grid;
     }
 
@@ -218,12 +217,16 @@ public abstract class IBaseMovingAgent extends IBaseScenarioAgent implements IMo
      *
      * @tparam V agent type
      */
-    protected abstract static class IBaseMovementAgentGenerator extends IBaseScenarioAgentGenerator implements ISpriteGenerator
+    protected abstract static class IBaseMovementAgentGenerator extends IBaseScenarioAgentGenerator implements IVisuableAgentGenerator
     {
         /**
          * texture reference
          */
         private final AtomicReference<Texture> m_texture = new AtomicReference<>();
+        /**
+         * filename of the texture
+         */
+        private final String m_image;
 
         /**
          * ctor
@@ -231,20 +234,24 @@ public abstract class IBaseMovingAgent extends IBaseScenarioAgent implements IMo
          * @param p_asl asl
          * @param p_actions actions
          * @param p_lambda lambdas
-         * @param p_visibleobjects visible objects
-         * @param p_runtime execution pool;
+         * @param p_runtime execution pool
+         * @param p_image sprite image name
          */
         protected IBaseMovementAgentGenerator( @Nonnull final InputStream p_asl, @Nonnull final IActionGenerator p_actions,
-                                               @Nonnull final ILambdaStreamingGenerator p_lambda, @Nonnull final Set<? extends ISprite> p_visibleobjects,
-                                               @Nonnull final IRuntime p_runtime )
+                                               @Nonnull final ILambdaStreamingGenerator p_lambda,
+                                               @Nonnull final IRuntime p_runtime, @Nonnull final String p_image )
         {
-            super( p_asl, p_actions, p_lambda, p_visibleobjects, p_runtime );
+            super( p_asl, p_actions, p_lambda, p_runtime );
+            m_image = p_image;
         }
 
         @Override
-        public final void spriteinitialize( final int p_rows, final int p_columns, final int p_cellsize, final float p_unit )
+        public final void spriteinitialize( @Nonnull final Set<ISprite> p_sprites )
         {
-            m_texture.compareAndSet( null, new Texture( Gdx.files.internal( "" ) ) );
+            m_visibleobjects = p_sprites;
+            System.out.println( Gdx.files.classpath(  m_image ).file().getAbsolutePath() );
+
+            m_texture.compareAndSet( null, new Texture( Gdx.files.classpath(  m_image ) ) );
 
             /*
             m_spritecellsize = p_cellsize;

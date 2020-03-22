@@ -24,9 +24,11 @@
 package org.lightjason.example.miner.scenario;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import org.lightjason.example.miner.ui.ISprite;
 
 import javax.annotation.Nonnull;
 import java.text.MessageFormat;
+import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
 
@@ -50,7 +52,7 @@ public enum EGem implements IGemFactory
     }
 
     @Override
-    public void spriteinitialize( final int p_rows, final int p_columns, final int p_cellsize, final float p_unit )
+    public void spriteinitialize( @Nonnull final Set<ISprite> p_sprites )
     {
 
     }

@@ -31,7 +31,7 @@ import javax.annotation.Nonnull;
 /**
  * mocfing agent interface
  */
-public interface IMovingAgent extends ISprite
+public interface IMovingAgent extends IScenarioAgent, ISprite
 {
     /**
      * update the view range

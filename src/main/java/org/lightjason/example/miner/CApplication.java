@@ -33,6 +33,7 @@ import org.lightjason.agentspeak.generator.IActionGenerator;
 import org.lightjason.agentspeak.generator.ILambdaStreamingGenerator;
 import org.lightjason.example.miner.runtime.ERuntime;
 import org.lightjason.example.miner.scenario.CAgentEnvironment;
+import org.lightjason.example.miner.scenario.CAgentMiner;
 
 import javax.annotation.Nonnull;
 import java.util.stream.Stream;
@@ -89,16 +90,20 @@ public final class CApplication
         }
 
 
-        final IActionGenerator l_actions = new CActionGenerator(
-                Stream.of( "org.lightjason.agentspeak.action" ),
-                Stream.of( CAgentEnvironment.class )
-        );
+        final IActionGenerator l_actions = new CActionGenerator( Stream.of( "org.lightjason.agentspeak.action" ) );
 
         new CAgentEnvironment.CGenerator(
-                CApplication.class.getResourceAsStream( "environment.asl" ),
-                l_actions,
+            CApplication.class.getResourceAsStream( "environment.asl" ),
+            new CActionGenerator( Stream.empty(), Stream.of( CAgentEnvironment.class ) ).add( l_actions ),
+            ILambdaStreamingGenerator.EMPTY,
+            ERuntime.CACHED,
+
+            new CAgentMiner.CGenerator(
+                CApplication.class.getResourceAsStream( "miner.asl" ),
+                new CActionGenerator( Stream.empty(), Stream.of( CAgentMiner.class ) ).add( l_actions ),
                 ILambdaStreamingGenerator.EMPTY,
                 ERuntime.CACHED
+            )
         ).generatesingle();
 
         // https://www.gamefromscratch.com/post/2015/02/27/LibGDX-Video-Tutorial-Sprite-Animation.aspx

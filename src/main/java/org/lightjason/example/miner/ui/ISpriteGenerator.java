@@ -23,6 +23,10 @@
 
 package org.lightjason.example.miner.ui;
 
+import javax.annotation.Nonnull;
+import java.util.Set;
+
+
 /**
  * interface to create the sprite object
  */
@@ -31,12 +35,7 @@ public interface ISpriteGenerator
 
     /**
      * sprite initialize for correct painting initialization
-     *
-     * @param p_rows number of rows
-     * @param p_columns number of columns
-     * @param p_cellsize cellsize
-     * @param p_unit unit scale
      */
-    void spriteinitialize( final int p_rows, final int p_columns, final int p_cellsize, final float p_unit );
+    void spriteinitialize( @Nonnull final Set<ISprite> p_sprites );
 
 }

@@ -39,6 +39,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.BufferUtils;
 import com.badlogic.gdx.utils.ScreenUtils;
 import edu.umd.cs.findbugs.annotations.NonNull;
+import org.lightjason.example.miner.scenario.IVisuableAgentGenerator;
 
 import javax.annotation.Nonnull;
 import java.text.MessageFormat;
@@ -72,7 +73,7 @@ public final class CScreen extends ApplicationAdapter implements InputProcessor
     /**
      * sprite list
      */
-    private final Set<? extends ISprite> m_sprites;
+    private final Set<ISprite> m_sprites;
     /**
      * last camera position
      */
@@ -101,6 +102,10 @@ public final class CScreen extends ApplicationAdapter implements InputProcessor
      * flag for taking a screenshot
      */
     private volatile boolean m_screenshottake;
+    /**
+     * agent generator for visuablity
+     */
+    private final IVisuableAgentGenerator m_minergenerator;
 
 
 
@@ -110,10 +115,11 @@ public final class CScreen extends ApplicationAdapter implements InputProcessor
      * @param p_sprites list with executables
      * @param p_environment environment reference
      */
-    private CScreen( final Set<? extends ISprite> p_sprites, final ITileMap p_environment )
+    private CScreen( @Nonnull final Set<ISprite> p_sprites, @Nonnull final ITileMap p_environment, @Nonnull final IVisuableAgentGenerator p_minergenerator )
     {
         m_environment = p_environment;
         m_sprites = p_sprites;
+        m_minergenerator = p_minergenerator;
     }
 
     @Override
@@ -132,6 +138,9 @@ public final class CScreen extends ApplicationAdapter implements InputProcessor
         m_camera.setToOrtho( false, m_environment.columns() * l_unit, m_environment.rows() * l_unit );
         m_camera.position.set( m_environment.columns() / 2f, m_environment.rows() / 2f, 0 );
         m_camera.zoom = m_environment.cellsize();
+
+        // initialize agent visuablility structure
+        m_minergenerator.spriteinitialize( m_sprites );
 
         // create sprites
         //m_sprites.forEach( i -> i.spriteinitialize( m_environment.rows(), m_environment.columns(), m_environment.cellsize(), l_unit ) );
@@ -303,7 +312,8 @@ public final class CScreen extends ApplicationAdapter implements InputProcessor
      * @param p_environment environment agent
      */
     public static void open( @Nonnull final Number p_width, @Nonnull final Number p_height,
-                             @NonNull final Set<? extends ISprite> p_sprites, @NonNull final ITileMap p_environment )
+                             @NonNull final Set<ISprite> p_sprites, @NonNull final ITileMap p_environment,
+                             @Nonnull final IVisuableAgentGenerator p_minergenerator )
     {
         // force-exit must be disabled for avoid error exiting
         final LwjglApplicationConfiguration l_config = new LwjglApplicationConfiguration();
@@ -312,7 +322,7 @@ public final class CScreen extends ApplicationAdapter implements InputProcessor
         l_config.width = p_width.intValue();
         l_config.height = p_height.intValue();
 
-        new LwjglApplication( new CScreen( p_sprites, p_environment ), l_config );
+        new LwjglApplication( new CScreen( p_sprites, p_environment, p_minergenerator ), l_config );
     }
 
 }

@@ -41,7 +41,6 @@ import org.lightjason.example.miner.ui.CTileMap;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.io.InputStream;
-import java.util.Collections;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArraySet;
@@ -76,6 +75,10 @@ public final class CAgentEnvironment extends IBaseScenarioAgent implements IScen
      * grid
      */
     private final AtomicReference<ObjectMatrix2D> m_grid = new AtomicReference<>();
+    /**
+     * agent generator for miners
+     */
+    private final IVisuableAgentGenerator m_minergenerator;
 
     /**
      * ctor
@@ -84,9 +87,11 @@ public final class CAgentEnvironment extends IBaseScenarioAgent implements IScen
      * @param p_runtime execution runtime
      */
     private CAgentEnvironment( @Nonnull final IAgentConfiguration<IScenarioAgent> p_configuration,
-                               @Nonnull final IRuntime p_runtime )
+                               @Nonnull final IRuntime p_runtime, @Nonnull final IVisuableAgentGenerator p_minergenerator )
     {
-        super( p_configuration, new CopyOnWriteArraySet<>(), p_runtime );
+        super( p_configuration, p_runtime );
+        m_visibleobjects = new CopyOnWriteArraySet<>();
+        m_minergenerator = p_minergenerator;
     }
 
     @Nonnull
@@ -106,9 +111,15 @@ public final class CAgentEnvironment extends IBaseScenarioAgent implements IScen
     @IAgentActionName( name = "world/start" )
     private void worldstart( @Nonnull final Number p_width, @Nonnull final Number p_height )
     {
-        Objects.nonNull( m_grid.get() );
+        Objects.requireNonNull( m_grid.get() );
         m_iteration.set( 0 );
-        CScreen.open( p_width, p_height, m_visibleobjects, new CTileMap( m_grid.get().rows(), m_grid.get().columns(), 20 ) );
+        CScreen.open(
+            p_width,
+            p_height,
+            m_visibleobjects,
+            new CTileMap( m_grid.get().rows(), m_grid.get().columns(), 20 ),
+            m_minergenerator
+        );
     }
 
     /**
@@ -257,6 +268,11 @@ public final class CAgentEnvironment extends IBaseScenarioAgent implements IScen
     public static final class CGenerator extends IBaseScenarioAgentGenerator
     {
         /**
+         * agent miner generator
+         */
+        private final IVisuableAgentGenerator m_minergenerator;
+
+        /**
          * ctor
          *
          * @param p_asl asl string
@@ -265,16 +281,18 @@ public final class CAgentEnvironment extends IBaseScenarioAgent implements IScen
          * @param p_runtime runtime
          */
         public CGenerator( @Nonnull final InputStream p_asl, @Nonnull final IActionGenerator p_actions,
-                           @Nonnull final ILambdaStreamingGenerator p_lambda, @Nonnull final IRuntime p_runtime )
+                           @Nonnull final ILambdaStreamingGenerator p_lambda, @Nonnull final IRuntime p_runtime,
+                           @Nonnull final IVisuableAgentGenerator p_minergenerator )
         {
-            super( p_asl, p_actions, p_lambda, Collections.emptySet(), p_runtime );
+            super( p_asl, p_actions, p_lambda, p_runtime );
+            m_minergenerator = p_minergenerator;
         }
 
         @Nonnull
         @Override
         public IScenarioAgent generatesingle( @Nullable final Object... p_objects )
         {
-            return new CAgentEnvironment( m_configuration, m_runtime );
+            return new CAgentEnvironment( m_configuration, m_runtime, m_minergenerator );
         }
     }
 }
