@@ -30,6 +30,9 @@ import javax.annotation.Nonnull;
 import java.util.Set;
 
 
+/**
+ * solid factory
+ */
 public enum ESolid implements ISolid
 {
     WALL;

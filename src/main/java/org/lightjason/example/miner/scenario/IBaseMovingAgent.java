@@ -249,9 +249,8 @@ public abstract class IBaseMovingAgent extends IBaseScenarioAgent implements IMo
         public final void spriteinitialize( @Nonnull final Set<ISprite> p_sprites )
         {
             m_visibleobjects = p_sprites;
-            System.out.println( Gdx.files.classpath(  m_image ).file().getAbsolutePath() );
-
-            m_texture.compareAndSet( null, new Texture( Gdx.files.classpath(  m_image ) ) );
+            System.out.println( Gdx.files.internal(  "org/lightjason/examples/miner/" + m_image ) );
+            m_texture.compareAndSet( null, new Texture( Gdx.files.internal(  "org/lightjason/examples/miner/" + m_image ) ) );
 
             /*
             m_spritecellsize = p_cellsize;
