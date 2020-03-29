@@ -272,19 +272,6 @@ public abstract class IBaseMovingAgent extends IBaseScenarioAgent implements IMo
             {
                 throw new RuntimeException( l_exception );
             }
-
-
-
-
-            /*
-            m_spritecellsize = p_cellsize;
-            m_spriteunitsize = p_unit;
-
-            final Sprite l_sprite = new Sprite( m_texture );
-            l_sprite.setSize( m_spritecellsize, m_spritecellsize );
-            l_sprite.setOrigin( 1.5f / m_spritecellsize, 1.5f / m_spritecellsize );
-            l_sprite.setScale( m_spriteunitsize );
-            */
         }
     }
 }

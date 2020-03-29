@@ -88,6 +88,16 @@ public final class CAgentMiner extends IBaseMovingAgent
         @Override
         public IScenarioAgent generatesingle( @Nullable final Object... p_objects )
         {
+            /*
+            m_spritecellsize = p_cellsize;
+            m_spriteunitsize = p_unit;
+
+            final Sprite l_sprite = new Sprite( m_texture );
+            l_sprite.setSize( m_spritecellsize, m_spritecellsize );
+            l_sprite.setOrigin( 1.5f / m_spritecellsize, 1.5f / m_spritecellsize );
+            l_sprite.setScale( m_spriteunitsize );
+            */
+
             return new CAgentMiner( m_configuration, m_visibleobjects, m_runtime, (ObjectMatrix2D) p_objects[0] );
         }
     }
