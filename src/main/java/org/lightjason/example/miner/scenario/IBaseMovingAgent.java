@@ -247,6 +247,12 @@ public abstract class IBaseMovingAgent extends IBaseScenarioAgent implements IMo
             m_image = p_image;
         }
 
+        /**
+         * overwritten for initialization
+         * @param p_sprites set iwth sprites
+         * @bug not working in a Jar file because path is incorrect, must be refactored for Maven build
+         * @todo refactoring for Maven build
+         */
         @Override
         public final void spriteinitialize( @Nonnull final Set<ISprite> p_sprites )
         {
