@@ -36,6 +36,9 @@ import org.lightjason.example.miner.scenario.CAgentEnvironment;
 import org.lightjason.example.miner.scenario.CAgentMiner;
 
 import javax.annotation.Nonnull;
+import java.net.URISyntaxException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.stream.Stream;
 
 /**
@@ -109,5 +112,17 @@ public final class CApplication
         // https://www.gamefromscratch.com/post/2015/02/27/LibGDX-Video-Tutorial-Sprite-Animation.aspx
     }
     //Checkstyle:ON:UncommentedMain
+
+    /**
+     * returns the path of the application with the given append path
+     *
+     * @param p_path path
+     * @return path as URL
+     * @throws URISyntaxException is thrown on error
+     */
+    public static Path getPath( @Nonnull final String p_path ) throws URISyntaxException
+    {
+        return Paths.get( CApplication.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath(), p_path );
+    }
 
 }

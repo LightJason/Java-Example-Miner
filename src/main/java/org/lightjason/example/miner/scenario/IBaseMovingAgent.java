@@ -36,12 +36,14 @@ import org.lightjason.agentspeak.action.grid.EMovementDirection;
 import org.lightjason.agentspeak.configuration.IAgentConfiguration;
 import org.lightjason.agentspeak.generator.IActionGenerator;
 import org.lightjason.agentspeak.generator.ILambdaStreamingGenerator;
+import org.lightjason.example.miner.CApplication;
 import org.lightjason.example.miner.runtime.IRuntime;
 import org.lightjason.example.miner.ui.ISprite;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -248,9 +250,25 @@ public abstract class IBaseMovingAgent extends IBaseScenarioAgent implements IMo
         @Override
         public final void spriteinitialize( @Nonnull final Set<ISprite> p_sprites )
         {
-            m_visibleobjects = p_sprites;
-            System.out.println( Gdx.files.internal(  "org/lightjason/examples/miner/" + m_image ) );
-            m_texture.compareAndSet( null, new Texture( Gdx.files.internal(  "org/lightjason/examples/miner/" + m_image ) ) );
+            try
+            {
+                m_texture.compareAndSet(
+                    null,
+                    new Texture(
+                        Gdx.files.local(
+                            CApplication.getPath( "org/lightjason/examples/miner/" + m_image ).toAbsolutePath().toString().replace( Gdx.files.getLocalStoragePath(), "" )
+                        )
+                    )
+                );
+                m_visibleobjects = p_sprites;
+            }
+            catch ( final URISyntaxException l_exception )
+            {
+                throw new RuntimeException( l_exception );
+            }
+
+
+
 
             /*
             m_spritecellsize = p_cellsize;
