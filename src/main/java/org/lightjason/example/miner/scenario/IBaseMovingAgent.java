@@ -255,8 +255,8 @@ public abstract class IBaseMovingAgent extends IBaseScenarioAgent implements IMo
                 m_texture.compareAndSet(
                     null,
                     new Texture(
-                        Gdx.files.local(
-                            CApplication.getPath( "org/lightjason/examples/miner/" + m_image ).toAbsolutePath().toString().replace( Gdx.files.getLocalStoragePath(), "" )
+                        Gdx.files.absolute(
+                            CApplication.getPath( "org/lightjason/example/miner/" + m_image ).toAbsolutePath().toString()
                         )
                     )
                 );
