@@ -256,6 +256,8 @@ public abstract class IBaseMovingAgent extends IBaseScenarioAgent implements IMo
         @Override
         public final void spriteinitialize( @Nonnull final Set<ISprite> p_sprites )
         {
+            // https://github.com/libgdx/libgdx/wiki/File-handling#file-storage-types
+
             try
             {
                 m_texture.compareAndSet(
