@@ -24,15 +24,18 @@
 package org.lightjason.example.miner.scenario;
 
 import cern.colt.matrix.tobject.ObjectMatrix2D;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import org.lightjason.agentspeak.configuration.IAgentConfiguration;
 import org.lightjason.agentspeak.generator.IActionGenerator;
 import org.lightjason.agentspeak.generator.ILambdaStreamingGenerator;
 import org.lightjason.example.miner.runtime.IRuntime;
 import org.lightjason.example.miner.ui.ISprite;
+import org.lightjason.example.miner.ui.ITileMap;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.io.InputStream;
+import java.util.Objects;
 import java.util.Set;
 
 
@@ -54,14 +57,15 @@ public final class CAgentMiner extends IBaseMovingAgent
      * ctor
      *
      * @param p_configuration agent configuration
+     * @param p_sprite sprite of the agent
      * @param p_visibleobjects visible objects
      * @param p_runtime execution runtime
      * @param p_grid world grid
      */
-    private CAgentMiner( @Nonnull final IAgentConfiguration<IScenarioAgent> p_configuration, @Nonnull final Set<? extends ISprite> p_visibleobjects,
-                         @Nonnull final IRuntime p_runtime, @Nonnull final ObjectMatrix2D p_grid )
+    private CAgentMiner( @Nonnull final IAgentConfiguration<IScenarioAgent> p_configuration, @Nonnull final Sprite p_sprite,
+                         @Nonnull final Set<ISprite> p_visibleobjects, @Nonnull final IRuntime p_runtime, @Nonnull final ObjectMatrix2D p_grid )
     {
-        super( p_configuration, p_visibleobjects, p_runtime, p_grid );
+        super( p_configuration, p_sprite, p_visibleobjects, p_runtime, p_grid );
     }
 
     /**
@@ -88,17 +92,21 @@ public final class CAgentMiner extends IBaseMovingAgent
         @Override
         public IScenarioAgent generatesingle( @Nullable final Object... p_objects )
         {
-            /*
-            m_spritecellsize = p_cellsize;
-            m_spriteunitsize = p_unit;
+            Objects.requireNonNull( p_objects );
+            Objects.requireNonNull( p_objects[0] );
+            Objects.requireNonNull( p_objects[1] );
 
-            final Sprite l_sprite = new Sprite( m_texture );
-            l_sprite.setSize( m_spritecellsize, m_spritecellsize );
-            l_sprite.setOrigin( 1.5f / m_spritecellsize, 1.5f / m_spritecellsize );
-            l_sprite.setScale( m_spriteunitsize );
-            */
 
-            return new CAgentMiner( m_configuration, m_visibleobjects, m_runtime, (ObjectMatrix2D) p_objects[0] );
+            final IMovingAgent l_agent = new CAgentMiner(
+                m_configuration,
+                this.generateSprite( (ITileMap) p_objects[1] ),
+                m_visibleobjects,
+                m_runtime,
+                (ObjectMatrix2D) p_objects[0]
+            );
+
+            m_visibleobjects.add( l_agent );
+            return l_agent;
         }
     }
 }

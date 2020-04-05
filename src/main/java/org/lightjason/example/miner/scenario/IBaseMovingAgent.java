@@ -39,6 +39,7 @@ import org.lightjason.agentspeak.generator.ILambdaStreamingGenerator;
 import org.lightjason.example.miner.CApplication;
 import org.lightjason.example.miner.runtime.IRuntime;
 import org.lightjason.example.miner.ui.ISprite;
+import org.lightjason.example.miner.ui.ITileMap;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -47,6 +48,7 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -80,23 +82,26 @@ public abstract class IBaseMovingAgent extends IBaseScenarioAgent implements IMo
     /**
      * sprite
      */
-    private Sprite m_sprite;
+    private final Sprite m_sprite;
 
 
     /**
      * ctor
      *
      * @param p_configuration agent configuration
+     * @param p_sprite sprite of the agent
      * @param p_visibleobjects visible objects
      * @param p_runtime execution runtime
      * @param p_grid world grid
      */
     protected IBaseMovingAgent( @Nonnull final IAgentConfiguration<IScenarioAgent> p_configuration,
-                                @Nonnull final Set<? extends ISprite> p_visibleobjects,
+                                @Nonnull final Sprite p_sprite, @Nonnull final Set<ISprite> p_visibleobjects,
                                 @Nonnull final IRuntime p_runtime, @Nonnull final ObjectMatrix2D p_grid )
     {
         super( p_configuration, p_runtime );
         m_grid = p_grid;
+        m_sprite = p_sprite;
+        m_visibleobjects = p_visibleobjects;
     }
 
     @Override
@@ -224,7 +229,7 @@ public abstract class IBaseMovingAgent extends IBaseScenarioAgent implements IMo
         /**
          * texture reference
          */
-        private final AtomicReference<Texture> m_texture = new AtomicReference<>();
+        protected final AtomicReference<Texture> m_texture = new AtomicReference<>();
         /**
          * filename of the texture
          */
@@ -248,8 +253,26 @@ public abstract class IBaseMovingAgent extends IBaseScenarioAgent implements IMo
         }
 
         /**
+         * generate sprite
+         *
+         * @param p_map tilemap
+         * @return sprite
+         */
+        @Nonnull
+        protected final Sprite generateSprite( @Nonnull final ITileMap p_map )
+        {
+            final Sprite l_sprite = new Sprite( Objects.requireNonNull( m_texture.get() ) );
+
+            l_sprite.setSize( p_map.cellsize(), p_map.cellsize() );
+            l_sprite.setOrigin( 1.5f / p_map.cellsize(), 1.5f / p_map.cellsize() );
+            l_sprite.setScale( 1.0f / p_map.cellsize() );
+
+            return l_sprite;
+        }
+
+        /**
          * overwritten for initialization
-         * @param p_sprites set iwth sprites
+         * @param p_sprites set with sprites
          * @bug not working in a Jar file because path is incorrect, must be refactored for Maven build
          * @todo refactoring for Maven build
          */

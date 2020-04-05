@@ -89,9 +89,7 @@ public abstract class IBaseScenarioAgent extends IBaseAgent<IScenarioAgent> impl
     {
         super.call();
 
-        if ( this.runningplans().isEmpty() )
-            m_visibleobjects.remove( this );
-        else
+        if ( !this.runningplans().isEmpty() )
             this.toruntime();
 
         return this;

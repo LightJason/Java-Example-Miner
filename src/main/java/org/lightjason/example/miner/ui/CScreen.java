@@ -56,7 +56,7 @@ import java.util.Set;
  * @see <a href="https://github.com/libgdx/libgdx/wiki/Tile-maps"></a>
  * @see <a href="http://www.gamefromscratch.com/post/2014/04/16/LibGDX-Tutorial-11-Tiled-Maps-Part-1-Simple-Orthogonal-Maps.aspx"></a>
  */
-public final class CScreen extends ApplicationAdapter implements InputProcessor
+public final class CScreen extends ApplicationAdapter implements IScreen, InputProcessor
 {
     /**
      * zoom speed
@@ -325,4 +325,9 @@ public final class CScreen extends ApplicationAdapter implements InputProcessor
         new LwjglApplication( new CScreen( p_sprites, p_environment, p_minergenerator ), l_config );
     }
 
+    @Override
+    public ITileMap environment()
+    {
+        return m_environment;
+    }
 }
