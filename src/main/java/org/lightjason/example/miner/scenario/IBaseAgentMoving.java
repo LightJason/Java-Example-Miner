@@ -23,6 +23,7 @@
 
 package org.lightjason.example.miner.scenario;
 
+import cern.colt.function.tobject.ObjectProcedure;
 import cern.colt.matrix.tdouble.DoubleMatrix1D;
 import cern.colt.matrix.tdouble.impl.DenseDoubleMatrix1D;
 import cern.colt.matrix.tobject.ObjectMatrix2D;
@@ -50,6 +51,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicReference;
 
 
@@ -200,24 +202,46 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
             throw new RuntimeException( "empty route" );
 
 
-        this.setcurrentposition( null );
-        m_position.assign( p_direction.apply( m_position, m_route.get( 0 ), 1.5 ) );
-        this.setcurrentposition( this );
+        synchronized ( m_grid ) {
+            m_grid.setQuick(
+                CCommon.toNumber( m_position.getQuick( 0 ) ).intValue(),
+                CCommon.toNumber( m_position.getQuick( 1 ) ).intValue(),
+                null
+            );
+
+            m_position.assign( p_direction.apply( m_position, m_route.get( 0 ), 1.5 ) );
+
+            m_grid.setQuick(
+                CCommon.toNumber( m_position.getQuick( 0 ) ).intValue(),
+                CCommon.toNumber( m_position.getQuick( 1 ) ).intValue(),
+                this
+            );
+        }
     }
 
-    /**
-     * set current position
-     *
-     * @param p_object grid value
-     */
-    private void setcurrentposition( @Nullable final Object p_object )
+    protected void initializePosition()
     {
-        m_grid.setQuick(
-            CCommon.toNumber( m_position.getQuick( 0 ) ).intValue(),
-            CCommon.toNumber( m_position.getQuick( 1 ) ).intValue(),
-            p_object
-        );
+        int x = ThreadLocalRandom.current().nextInt( m_grid.columns() );
+        int y = ThreadLocalRandom.current().nextInt( m_grid.rows() );
+
+
+
+
+
+        CCommon.coordinates(
+            p_xcenter, p_ycenter, p_size,
+            x -> x.intValue() >= 0 && x.intValue() < m_grid.get().columns(),
+            y -> y.intValue() >= 0 && y.intValue() < m_grid.get().rows()
+        )
+               .filter( i -> Objects.isNull( m_grid.get().getQuick( i.getLeft().intValue(), i.getRight().intValue() ) ) )
+               .filter( i -> ThreadLocalRandom.current().nextDouble() <= CCommon.gaussian(
+                   EDistance.MANHATTAN.apply( l_center, new DenseDoubleMatrix1D( new double[]{i.getLeft().doubleValue(), i.getRight().doubleValue()} ) ),
+                   1, 0, p_size.doubleValue() ).doubleValue()
+               )
+               .forEach( i -> m_grid.get().setQuick( i.getLeft().intValue(), i.getRight().intValue(), l_gem.get() ) );
     }
+
+
 
     /**
      * agent generator
