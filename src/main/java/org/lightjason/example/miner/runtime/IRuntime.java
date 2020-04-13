@@ -23,7 +23,7 @@
 
 package org.lightjason.example.miner.runtime;
 
-import org.lightjason.example.miner.scenario.IScenarioAgent;
+import org.lightjason.example.miner.scenario.IAgentScenario;
 
 import java.util.function.Function;
 
@@ -31,7 +31,7 @@ import java.util.function.Function;
 /**
  * runtime interface
  */
-public interface IRuntime extends Function<IScenarioAgent, Boolean>
+public interface IRuntime extends Function<IAgentScenario<?>, Boolean>
 {
 
     /**

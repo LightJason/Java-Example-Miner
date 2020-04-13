@@ -5,6 +5,10 @@
     .world/start( 1200, 1000 );
     .generic/print("environment start").
 
++!world/start <-
+    .generic/print("world start")
+    .
+
 /*
 +!world/empty <-
     .generic/print("dead").

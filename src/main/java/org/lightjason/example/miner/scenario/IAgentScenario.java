@@ -31,6 +31,6 @@ import java.util.function.Supplier;
 /**
  * energy data
  */
-public interface IScenarioAgent extends IAgent<IScenarioAgent>, Supplier<IAgentProperties>
+public interface IAgentScenario<T extends IAgentScenario<?>> extends IAgent<T>, Supplier<IAgentProperties>
 {
 }

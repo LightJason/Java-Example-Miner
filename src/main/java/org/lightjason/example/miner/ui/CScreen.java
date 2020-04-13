@@ -39,11 +39,12 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.BufferUtils;
 import com.badlogic.gdx.utils.ScreenUtils;
 import edu.umd.cs.findbugs.annotations.NonNull;
-import org.lightjason.example.miner.scenario.IVisuableAgentGenerator;
+import org.lightjason.example.miner.scenario.IAgentMovingGenerator;
 
 import javax.annotation.Nonnull;
 import java.text.MessageFormat;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicReference;
 
 
 /**
@@ -58,6 +59,10 @@ import java.util.Set;
  */
 public final class CScreen extends ApplicationAdapter implements IScreen, InputProcessor
 {
+    /**
+     * instance
+     */
+    public static final AtomicReference<IScreen> SCREEN = new AtomicReference<>();
     /**
      * zoom speed
      */
@@ -105,7 +110,7 @@ public final class CScreen extends ApplicationAdapter implements IScreen, InputP
     /**
      * agent generator for visuablity
      */
-    private final IVisuableAgentGenerator m_minergenerator;
+    private final IAgentMovingGenerator m_minergenerator;
 
 
 
@@ -115,7 +120,7 @@ public final class CScreen extends ApplicationAdapter implements IScreen, InputP
      * @param p_sprites list with executables
      * @param p_environment environment reference
      */
-    private CScreen( @Nonnull final Set<ISprite> p_sprites, @Nonnull final ITileMap p_environment, @Nonnull final IVisuableAgentGenerator p_minergenerator )
+    private CScreen( @Nonnull final Set<ISprite> p_sprites, @Nonnull final ITileMap p_environment, @Nonnull final IAgentMovingGenerator p_minergenerator )
     {
         m_environment = p_environment;
         m_sprites = p_sprites;
@@ -303,6 +308,12 @@ public final class CScreen extends ApplicationAdapter implements IScreen, InputP
         return this;
     }
 
+    @Override
+    public ITileMap environment()
+    {
+        return m_environment;
+    }
+
     /**
      * factory to create a screen
      *
@@ -313,7 +324,7 @@ public final class CScreen extends ApplicationAdapter implements IScreen, InputP
      */
     public static void open( @Nonnull final Number p_width, @Nonnull final Number p_height,
                              @NonNull final Set<ISprite> p_sprites, @NonNull final ITileMap p_environment,
-                             @Nonnull final IVisuableAgentGenerator p_minergenerator )
+                             @Nonnull final IAgentMovingGenerator p_minergenerator )
     {
         // force-exit must be disabled for avoid error exiting
         final LwjglApplicationConfiguration l_config = new LwjglApplicationConfiguration();
@@ -322,12 +333,9 @@ public final class CScreen extends ApplicationAdapter implements IScreen, InputP
         l_config.width = p_width.intValue();
         l_config.height = p_height.intValue();
 
-        new LwjglApplication( new CScreen( p_sprites, p_environment, p_minergenerator ), l_config );
+        final CScreen l_screen = new CScreen( p_sprites, p_environment, p_minergenerator );
+        SCREEN.compareAndSet( null,  l_screen );
+        new LwjglApplication( l_screen, l_config );
     }
 
-    @Override
-    public ITileMap environment()
-    {
-        return m_environment;
-    }
 }

@@ -87,7 +87,7 @@ public enum EGem implements IGemFactory
 
         @Nonnull
         @Override
-        public Number value( @Nonnull final IScenarioAgent p_agent )
+        public Number value( @Nonnull final IAgentScenario<?> p_agent )
         {
             return m_value;
         }

@@ -23,22 +23,22 @@
 
 package org.lightjason.example.miner.scenario;
 
-import cern.colt.matrix.tobject.ObjectMatrix2D;
+import org.lightjason.example.miner.ui.ISprite;
 
 import javax.annotation.Nonnull;
 
 
 /**
- * scenario interface
+ * mocfing agent interface
  */
-public interface IScenarioEnvironment
+public interface IAgentMoving extends IAgentScenario<IAgentMoving>, ISprite
 {
     /**
-     * returns the object grid
+     * update the view range
      *
-     * @return grid
+     * @param p_value view range
+     * @return self-reference
      */
-    @Nonnull
-    ObjectMatrix2D grid();
+    IAgentMoving viewrange( @Nonnull final Number p_value );
 
 }

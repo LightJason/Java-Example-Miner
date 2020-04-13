@@ -53,7 +53,7 @@ import java.util.stream.IntStream;
  * environment agent
  */
 @IAgentAction
-public final class CAgentEnvironment extends IBaseScenarioAgent implements IScenarioEnvironment
+public final class CAgentEnvironment extends IBaseAgentScenario<IAgentEnvironment> implements IAgentEnvironment
 {
     /**
      * serial id
@@ -63,6 +63,10 @@ public final class CAgentEnvironment extends IBaseScenarioAgent implements IScen
      * trigger for empty world
      */
     private static final ITrigger TRIGGEREMPTY = ITrigger.EType.ADDGOAL.builddefault( CLiteral.of( "world/empty" ) );
+    /**
+     * trigger for world starts
+     */
+    private static final ITrigger TRIGGERWORLDSTART = ITrigger.EType.ADDGOAL.builddefault( CLiteral.of( "world/start" ) );
     /**
      * functor of trigger for iteration
      */
@@ -78,7 +82,7 @@ public final class CAgentEnvironment extends IBaseScenarioAgent implements IScen
     /**
      * agent generator for miners
      */
-    private final IVisuableAgentGenerator m_minergenerator;
+    private final IAgentMovingGenerator m_minergenerator;
 
     /**
      * ctor
@@ -86,8 +90,8 @@ public final class CAgentEnvironment extends IBaseScenarioAgent implements IScen
      * @param p_configuration agent configuration
      * @param p_runtime execution runtime
      */
-    private CAgentEnvironment( @Nonnull final IAgentConfiguration<IScenarioAgent> p_configuration,
-                               @Nonnull final IRuntime p_runtime, @Nonnull final IVisuableAgentGenerator p_minergenerator )
+    private CAgentEnvironment( @Nonnull final IAgentConfiguration<IAgentEnvironment> p_configuration,
+                               @Nonnull final IRuntime p_runtime, @Nonnull final IAgentMovingGenerator p_minergenerator )
     {
         super( p_configuration, p_runtime );
         m_visibleobjects = new CopyOnWriteArraySet<>();
@@ -120,6 +124,8 @@ public final class CAgentEnvironment extends IBaseScenarioAgent implements IScen
             new CTileMap( m_grid.get().rows(), m_grid.get().columns(), 20 ),
             m_minergenerator
         );
+
+        this.trigger( TRIGGERWORLDSTART );
     }
 
     /**
@@ -137,16 +143,14 @@ public final class CAgentEnvironment extends IBaseScenarioAgent implements IScen
 
     /**
      * adds a miner
-     *
-     * @param p_gem gem name
-     * @param p_xcenter x-center value
-     * @param p_ycenter y-center value
-     * @param p_size size of the mine
      */
     @IAgentActionFilter
     @IAgentActionName( name = "miner/create" )
-    private void minercreate( @Nonnull final String p_gem, @Nonnull final Number p_xcenter, @Nonnull final Number p_ycenter, @Nonnull final Number p_size )
+    private void minercreate()
     {
+        //final IAgentMovingGenerator l_agent = m_minergenerator.generatesingle( m_grid.get(), CScreen.SCREEN.get() );
+
+
         /*
         Objects.requireNonNull( m_grid.get() );
         final DoubleMatrix1D l_center = new SparseDoubleMatrix1D( new double[]{p_ycenter.doubleValue(), p_xcenter.doubleValue()} );
@@ -217,7 +221,7 @@ public final class CAgentEnvironment extends IBaseScenarioAgent implements IScen
      */
     @IAgentActionFilter
     @IAgentActionName( name = "energy/get" )
-    private Number energyget( @Nonnull final IScenarioAgent p_agent )
+    private Number energyget( @Nonnull final IAgentScenario<?> p_agent )
     {
         return p_agent.get().energy();
     }
@@ -230,7 +234,7 @@ public final class CAgentEnvironment extends IBaseScenarioAgent implements IScen
      */
     @IAgentActionFilter
     @IAgentActionName( name = "energy/take" )
-    private void energytake( @Nonnull final IScenarioAgent p_agent, @Nonnull final Number p_value )
+    private void energytake( @Nonnull final IAgentScenario<?> p_agent, @Nonnull final Number p_value )
     {
         p_agent.get().energy( -p_value.doubleValue() );
         this.get().energy( p_value );
@@ -244,14 +248,14 @@ public final class CAgentEnvironment extends IBaseScenarioAgent implements IScen
      */
     @IAgentActionFilter
     @IAgentActionName( name = "energy/add" )
-    private void anergyadd( @Nonnull final IScenarioAgent p_agent, @Nonnull final Number p_value )
+    private void anergyadd( @Nonnull final IAgentScenario<?> p_agent, @Nonnull final Number p_value )
     {
         p_agent.get().energy( p_value );
         this.get().energy( -p_value.doubleValue() );
     }
 
     @Override
-    public IScenarioAgent call() throws Exception
+    public IAgentEnvironment call() throws Exception
     {
         super.call();
 
@@ -259,18 +263,18 @@ public final class CAgentEnvironment extends IBaseScenarioAgent implements IScen
             this.trigger( TRIGGEREMPTY );
 
         this.trigger( ITrigger.EType.ADDGOAL.builddefault( CLiteral.of( TRIGGERITERATION, CRawTerm.of( m_iteration.getAndIncrement() ) ) ) );
-        return this.toruntime();
+        return (IAgentEnvironment) this.toruntime();
     }
 
     /**
      * agent generator
      */
-    public static final class CGenerator extends IBaseScenarioAgentGenerator
+    public static final class CGenerator extends IBaseScenarioAgentGenerator<IAgentEnvironment>
     {
         /**
          * agent miner generator
          */
-        private final IVisuableAgentGenerator m_minergenerator;
+        private final IAgentMovingGenerator m_minergenerator;
 
         /**
          * ctor
@@ -282,7 +286,7 @@ public final class CAgentEnvironment extends IBaseScenarioAgent implements IScen
          */
         public CGenerator( @Nonnull final InputStream p_asl, @Nonnull final IActionGenerator p_actions,
                            @Nonnull final ILambdaStreamingGenerator p_lambda, @Nonnull final IRuntime p_runtime,
-                           @Nonnull final IVisuableAgentGenerator p_minergenerator )
+                           @Nonnull final IAgentMovingGenerator p_minergenerator )
         {
             super( p_asl, p_actions, p_lambda, p_runtime );
             m_minergenerator = p_minergenerator;
@@ -290,7 +294,7 @@ public final class CAgentEnvironment extends IBaseScenarioAgent implements IScen
 
         @Nonnull
         @Override
-        public IScenarioAgent generatesingle( @Nullable final Object... p_objects )
+        public IAgentEnvironment generatesingle( @Nullable final Object... p_objects )
         {
             return new CAgentEnvironment( m_configuration, m_runtime, m_minergenerator );
         }

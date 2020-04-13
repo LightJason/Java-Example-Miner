@@ -23,13 +23,10 @@
 
 package org.lightjason.example.miner.scenario;
 
-import java.util.function.Supplier;
-import java.util.stream.Stream;
+import org.lightjason.agentspeak.generator.IAgentGenerator;
+import org.lightjason.example.miner.ui.ISpriteGenerator;
 
 
-/**
- * scenario interface
- */
-public interface IScenario extends Supplier<Stream<IScenarioAgent>>
+public interface IAgentMovingGenerator extends IAgentGenerator<IAgentMoving>, ISpriteGenerator
 {
 }

@@ -42,7 +42,7 @@ import java.util.Set;
 /**
  * miner agent
  */
-public final class CAgentMiner extends IBaseMovingAgent
+public final class CAgentMiner extends IBaseAgentMoving
 {
     /**
      * serial id
@@ -62,7 +62,7 @@ public final class CAgentMiner extends IBaseMovingAgent
      * @param p_runtime execution runtime
      * @param p_grid world grid
      */
-    private CAgentMiner( @Nonnull final IAgentConfiguration<IScenarioAgent> p_configuration, @Nonnull final Sprite p_sprite,
+    private CAgentMiner( @Nonnull final IAgentConfiguration<IAgentMoving> p_configuration, @Nonnull final Sprite p_sprite,
                          @Nonnull final Set<ISprite> p_visibleobjects, @Nonnull final IRuntime p_runtime, @Nonnull final ObjectMatrix2D p_grid )
     {
         super( p_configuration, p_sprite, p_visibleobjects, p_runtime, p_grid );
@@ -71,7 +71,7 @@ public final class CAgentMiner extends IBaseMovingAgent
     /**
      * agent generator
      */
-    public static final class CGenerator extends IBaseMovementAgentGenerator
+    public static final class CGenerator extends IBaseMovingAgentGenerator
     {
 
         /**
@@ -90,14 +90,14 @@ public final class CAgentMiner extends IBaseMovingAgent
 
         @Nonnull
         @Override
-        public IScenarioAgent generatesingle( @Nullable final Object... p_objects )
+        public IAgentMoving generatesingle( @Nullable final Object... p_objects )
         {
             Objects.requireNonNull( p_objects );
             Objects.requireNonNull( p_objects[0] );
             Objects.requireNonNull( p_objects[1] );
 
 
-            final IMovingAgent l_agent = new CAgentMiner(
+            final IAgentMoving l_agent = new CAgentMiner(
                 m_configuration,
                 this.generateSprite( (ITileMap) p_objects[1] ),
                 m_visibleobjects,

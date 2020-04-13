@@ -23,74 +23,114 @@
 
 package org.lightjason.example.miner.scenario;
 
-import cern.colt.matrix.tobject.ObjectMatrix2D;
-import com.badlogic.gdx.graphics.g2d.Sprite;
+import org.lightjason.agentspeak.agent.IBaseAgent;
 import org.lightjason.agentspeak.configuration.IAgentConfiguration;
 import org.lightjason.agentspeak.generator.IActionGenerator;
+import org.lightjason.agentspeak.generator.IBaseAgentGenerator;
 import org.lightjason.agentspeak.generator.ILambdaStreamingGenerator;
 import org.lightjason.example.miner.runtime.IRuntime;
 import org.lightjason.example.miner.ui.ISprite;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.io.InputStream;
 import java.util.Set;
 
 
 /**
- * trader agent
+ * scenario base agent
+ *
+ * @tparam T agent type
  */
-public final class CAgentTrader extends IBaseMovingAgent
+public abstract class IBaseAgentScenario<T extends IAgentScenario<?>> extends IBaseAgent<T> implements IAgentScenario<T>
 {
     /**
      * serial id
      */
-    private static final long serialVersionUID = 1180220544453108361L;
+    private static final long serialVersionUID = 4159418649578529062L;
     /**
-     * sprite image name
+     * visible objects
      */
-    private static final String IMAGE = "trader.png";
+    protected Set<ISprite> m_visibleobjects;
+    /**
+     * agent properties
+     */
+    private final IAgentProperties m_properties = new CAgentProperties();
+    /**
+     * execution runtime
+     */
+    private final IRuntime m_runtime;
 
     /**
      * ctor
-     *
-     * @param p_configuration agent configuration
-     * @param p_visibleobjects visible objects
+     *  @param p_configuration agent configuration
      * @param p_runtime execution runtime
-     * @param p_grid world grid
      */
-    private CAgentTrader( @Nonnull final IAgentConfiguration<IScenarioAgent> p_configuration, @Nonnull final Sprite p_sprite,
-                          @Nonnull final Set<ISprite> p_visibleobjects, @Nonnull final IRuntime p_runtime, @Nonnull final ObjectMatrix2D p_grid  )
+    public IBaseAgentScenario( @Nonnull final IAgentConfiguration<T> p_configuration, @Nonnull final IRuntime p_runtime )
     {
-        super( p_configuration, p_sprite, p_visibleobjects, p_runtime, p_grid );
+        super( p_configuration );
+        m_runtime = p_runtime;
+
+        this.toruntime();
+    }
+
+    /**
+     * pushs the agent explicit to the runtime
+     */
+    protected final IAgentScenario<?> toruntime()
+    {
+        if ( !m_runtime.apply( this ) )
+            m_visibleobjects.remove( this );
+
+        return this;
+    }
+
+    @Override
+    @SuppressWarnings( "unchecked" )
+    public T call() throws Exception
+    {
+        super.call();
+
+        if ( !this.runningplans().isEmpty() )
+            this.toruntime();
+
+        return (T)this;
+    }
+
+    @Override
+    public final IAgentProperties get()
+    {
+        return m_properties;
     }
 
     /**
      * agent generator
+     *
+     * @tparam V agent type
      */
-    public static final class CGenerator extends IBaseMovementAgentGenerator
+    protected abstract static class IBaseScenarioAgentGenerator<T extends IAgentScenario<?>> extends IBaseAgentGenerator<T>
     {
+        /**
+         * execution runtime
+         */
+        protected final IRuntime m_runtime;
+        /**
+         * visible objects
+         */
+        protected Set<ISprite> m_visibleobjects;
 
         /**
          * ctor
          *
-         * @param p_asl asl string
+         * @param p_asl asl
          * @param p_actions actions
          * @param p_lambda lambdas
-         * @param p_runtime runtime
+         * @param p_runtime execution pool;
          */
-        public CGenerator( @Nonnull final InputStream p_asl, @Nonnull final IActionGenerator p_actions,
-                           @Nonnull final ILambdaStreamingGenerator p_lambda,
-                           @Nonnull final IRuntime p_runtime )
+        protected IBaseScenarioAgentGenerator( @Nonnull final InputStream p_asl, @Nonnull final IActionGenerator p_actions,
+                                               @Nonnull final ILambdaStreamingGenerator p_lambda, @Nonnull final IRuntime p_runtime )
         {
-            super( p_asl, p_actions, p_lambda, p_runtime, IMAGE );
-        }
-
-        @Nonnull
-        @Override
-        public IScenarioAgent generatesingle( @Nullable final Object... p_objects )
-        {
-            return null;
+            super( p_asl, p_actions, p_lambda );
+            m_runtime = p_runtime;
         }
     }
 }

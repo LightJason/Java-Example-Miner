@@ -24,7 +24,7 @@
 package org.lightjason.example.miner.runtime;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
-import org.lightjason.example.miner.scenario.IScenarioAgent;
+import org.lightjason.example.miner.scenario.IAgentScenario;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -56,7 +56,7 @@ public enum ERuntime implements IRuntime
 
 
     @Override
-    public Boolean apply( @NonNull final IScenarioAgent p_agent )
+    public Boolean apply( @NonNull final IAgentScenario<?> p_agent )
     {
         if ( m_pool.isShutdown() || m_pool.isTerminated() )
             return false;

@@ -57,7 +57,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * agent with moving structure
  */
 @IAgentAction
-public abstract class IBaseMovingAgent extends IBaseScenarioAgent implements IMovingAgent
+public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> implements IAgentMoving
 {
     /**
      * serial id
@@ -94,7 +94,7 @@ public abstract class IBaseMovingAgent extends IBaseScenarioAgent implements IMo
      * @param p_runtime execution runtime
      * @param p_grid world grid
      */
-    protected IBaseMovingAgent( @Nonnull final IAgentConfiguration<IScenarioAgent> p_configuration,
+    protected IBaseAgentMoving( @Nonnull final IAgentConfiguration<IAgentMoving> p_configuration,
                                 @Nonnull final Sprite p_sprite, @Nonnull final Set<ISprite> p_visibleobjects,
                                 @Nonnull final IRuntime p_runtime, @Nonnull final ObjectMatrix2D p_grid )
     {
@@ -111,14 +111,14 @@ public abstract class IBaseMovingAgent extends IBaseScenarioAgent implements IMo
     }
 
     @Override
-    public final IMovingAgent viewrange( @Nonnull final Number p_value )
+    public final IAgentMoving viewrange( @Nonnull final Number p_value )
     {
         m_viewrange.getAndUpdate( i -> i.doubleValue() + p_value.doubleValue() );
         return this;
     }
 
     @Override
-    public IScenarioAgent call() throws Exception
+    public IAgentMoving call() throws Exception
     {
         if ( this.runningplans().isEmpty() )
             this.setcurrentposition( null );
@@ -224,7 +224,7 @@ public abstract class IBaseMovingAgent extends IBaseScenarioAgent implements IMo
      *
      * @tparam V agent type
      */
-    protected abstract static class IBaseMovementAgentGenerator extends IBaseScenarioAgentGenerator implements IVisuableAgentGenerator
+    protected abstract static class IBaseMovingAgentGenerator extends IBaseScenarioAgentGenerator<IAgentMoving> implements IAgentMovingGenerator
     {
         /**
          * texture reference
@@ -244,9 +244,9 @@ public abstract class IBaseMovingAgent extends IBaseScenarioAgent implements IMo
          * @param p_runtime execution pool
          * @param p_image sprite image name
          */
-        protected IBaseMovementAgentGenerator( @Nonnull final InputStream p_asl, @Nonnull final IActionGenerator p_actions,
-                                               @Nonnull final ILambdaStreamingGenerator p_lambda,
-                                               @Nonnull final IRuntime p_runtime, @Nonnull final String p_image )
+        protected IBaseMovingAgentGenerator( @Nonnull final InputStream p_asl, @Nonnull final IActionGenerator p_actions,
+                                             @Nonnull final ILambdaStreamingGenerator p_lambda,
+                                             @Nonnull final IRuntime p_runtime, @Nonnull final String p_image )
         {
             super( p_asl, p_actions, p_lambda, p_runtime );
             m_image = p_image;

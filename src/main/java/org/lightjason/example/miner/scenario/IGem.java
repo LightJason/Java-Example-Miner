@@ -41,7 +41,7 @@ public interface IGem extends ISprite
      * @return value
      */
     @Nonnull
-    Number value( @Nonnull final IScenarioAgent p_agent );
+    Number value( @Nonnull final IAgentScenario<?> p_agent );
 
     /**
      * returns gem type
