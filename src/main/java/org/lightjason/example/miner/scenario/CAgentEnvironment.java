@@ -150,25 +150,6 @@ public final class CAgentEnvironment extends IBaseAgentScenario<IAgentEnvironmen
     {
         m_minergenerator.generatesingle( m_grid.get(), CScreen.SCREEN.get() );
 
-
-        /*
-        Objects.requireNonNull( m_grid.get() );
-        final DoubleMatrix1D l_center = new SparseDoubleMatrix1D( new double[]{p_ycenter.doubleValue(), p_xcenter.doubleValue()} );
-        final EGem l_gem = EGem.valueOf( p_gem.trim().toUpperCase( Locale.ROOT ) );
-
-        CCommon.coordinates(
-            p_xcenter, p_ycenter, p_size,
-            x -> x.intValue() >= 0 && x.intValue() < m_grid.get().columns(),
-            y -> y.intValue() >= 0 && y.intValue() < m_grid.get().rows()
-        )
-            .filter( i -> Objects.isNull( m_grid.get().getQuick( i.getLeft().intValue(), i.getRight().intValue() ) ) )
-               .filter( i -> ThreadLocalRandom.current().nextDouble() <= CCommon.gaussian(
-                   EDistance.MANHATTAN.apply( l_center, new DenseDoubleMatrix1D( new double[]{i.getLeft().doubleValue(), i.getRight().doubleValue()} ) ),
-                1, 0, p_size.doubleValue() ).doubleValue()
-               )
-            .forEach( i -> m_grid.get().setQuick( i.getLeft().intValue(), i.getRight().intValue(), l_gem.get() ) );
-
-         */
     }
 
     /**

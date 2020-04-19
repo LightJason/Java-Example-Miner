@@ -6,7 +6,8 @@
     .generic/print("environment start").
 
 +!world/start <-
-    .generic/print("world start")
+    .generic/print("world start");
+    .miner/create
     .
 
 /*
