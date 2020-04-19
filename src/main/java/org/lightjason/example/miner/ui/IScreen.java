@@ -34,6 +34,6 @@ public interface IScreen
      *
      * @return tilemap
      */
-    ITileMap environment();
+    ITileMap tilemap();
 
 }

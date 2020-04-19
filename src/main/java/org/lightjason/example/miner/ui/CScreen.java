@@ -309,7 +309,7 @@ public final class CScreen extends ApplicationAdapter implements IScreen, InputP
     }
 
     @Override
-    public ITileMap environment()
+    public ITileMap tilemap()
     {
         return m_environment;
     }
