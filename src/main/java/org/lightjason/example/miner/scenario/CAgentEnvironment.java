@@ -149,7 +149,6 @@ public final class CAgentEnvironment extends IBaseAgentScenario<IAgentEnvironmen
     private void minercreate()
     {
         m_minergenerator.generatesingle( m_grid.get() );
-
     }
 
     /**

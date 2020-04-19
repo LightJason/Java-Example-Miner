@@ -41,6 +41,7 @@ import org.lightjason.example.miner.runtime.IRuntime;
 import org.lightjason.example.miner.ui.ISprite;
 import org.lightjason.example.miner.ui.ITileMap;
 
+import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import java.io.InputStream;
 import java.net.URISyntaxException;
@@ -287,7 +288,7 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
             final Sprite l_sprite = new Sprite( Objects.requireNonNull( m_texture.get() ) );
 
             l_sprite.setSize( p_map.cellsize(), p_map.cellsize() );
-            l_sprite.setOrigin( 1.5f / p_map.cellsize(), 1.5f / p_map.cellsize() );
+            l_sprite.setOrigin( 1.0f / p_map.cellsize(), 1.0f / p_map.cellsize() );
             l_sprite.setScale( 1.0f / p_map.cellsize() );
 
             return l_sprite;
@@ -306,20 +307,44 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
 
             try
             {
-                m_texture.compareAndSet(
-                    null,
-                    new Texture(
-                        Gdx.files.absolute(
-                            CApplication.getPath( "org/lightjason/example/miner/" + m_image ).toAbsolutePath().toString()
-                        )
-                    )
-                );
                 m_visibleobjects = p_sprites;
+                m_texture.compareAndSet( null, new Texture(
+                    Gdx.files.absolute(
+                        CApplication.getPath( "org/lightjason/example/miner/" + m_image ).toAbsolutePath().toString()
+                    )
+                ) );
+
             }
             catch ( final URISyntaxException l_exception )
             {
                 throw new RuntimeException( l_exception );
             }
+        }
+
+        /**
+         * wait until visualization object list
+         *
+         * @param p_time wait time
+         * @param p_loop number of loops
+         */
+        protected final void waitforvisualization( @Nonnegative int p_time, @Nonnegative int p_loop )
+        {
+            int l_loop = 0;
+
+            while ( Objects.isNull( m_visibleobjects ) && l_loop < p_loop )
+            {
+                l_loop++;
+                try
+                {
+                    Thread.sleep( p_time );
+                }
+                catch ( final InterruptedException l_exception )
+                {
+                    // ignore any error
+                }
+            }
+
+            Objects.requireNonNull( m_visibleobjects );
         }
     }
 }

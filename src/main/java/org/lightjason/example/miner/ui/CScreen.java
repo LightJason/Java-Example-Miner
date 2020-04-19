@@ -143,13 +143,10 @@ public final class CScreen extends ApplicationAdapter implements IScreen, InputP
         m_camera.setToOrtho( false, m_environment.columns() * l_unit, m_environment.rows() * l_unit );
         m_camera.position.set( m_environment.columns() / 2f, m_environment.rows() / 2f, 0 );
         m_camera.zoom = m_environment.cellsize();
-
-        // initialize agent visuablility structure
-        m_minergenerator.spriteinitialize( m_sprites );
-
-        // create sprites
-        //m_sprites.forEach( i -> i.spriteinitialize( m_environment.rows(), m_environment.columns(), m_environment.cellsize(), l_unit ) );
         m_render.setView( m_camera );
+
+        // initialize agent visiblility structure
+        m_minergenerator.spriteinitialize( m_sprites );
 
         // set input processor
         Gdx.input.setInputProcessor( this );
