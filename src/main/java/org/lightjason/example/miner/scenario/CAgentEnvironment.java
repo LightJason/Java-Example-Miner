@@ -148,7 +148,7 @@ public final class CAgentEnvironment extends IBaseAgentScenario<IAgentEnvironmen
     @IAgentActionName( name = "miner/create" )
     private void minercreate()
     {
-        m_minergenerator.generatesingle( m_grid.get(), CScreen.SCREEN.get() );
+        m_minergenerator.generatesingle( m_grid.get() );
 
     }
 
