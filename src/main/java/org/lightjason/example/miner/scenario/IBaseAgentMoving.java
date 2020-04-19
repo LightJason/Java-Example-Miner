@@ -23,7 +23,6 @@
 
 package org.lightjason.example.miner.scenario;
 
-import cern.colt.function.tobject.ObjectProcedure;
 import cern.colt.matrix.tdouble.DoubleMatrix1D;
 import cern.colt.matrix.tdouble.impl.DenseDoubleMatrix1D;
 import cern.colt.matrix.tobject.ObjectMatrix2D;
@@ -43,7 +42,6 @@ import org.lightjason.example.miner.ui.ISprite;
 import org.lightjason.example.miner.ui.ITileMap;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -104,6 +102,23 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
         m_grid = p_grid;
         m_sprite = p_sprite;
         m_visibleobjects = p_visibleobjects;
+
+        synchronized ( m_grid )
+        {
+
+            int l_xpos = ThreadLocalRandom.current().nextInt( m_grid.columns() );
+            int l_ypos = ThreadLocalRandom.current().nextInt( m_grid.rows() );
+
+            while ( Objects.nonNull( m_grid.getQuick( l_ypos, l_xpos ) ) )
+            {
+                l_xpos = ThreadLocalRandom.current().nextInt( m_grid.columns() );
+                l_ypos = ThreadLocalRandom.current().nextInt( m_grid.rows() );
+            }
+
+            m_grid.setQuick( l_ypos, l_xpos, this );
+            m_position.set( 0, l_ypos );
+            m_position.set( 1, l_xpos );
+        }
     }
 
     @Override
@@ -123,7 +138,7 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
     public IAgentMoving call() throws Exception
     {
         if ( this.runningplans().isEmpty() )
-            this.setcurrentposition( null );
+            this.removePosition();
 
         return super.call();
     }
@@ -202,13 +217,9 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
             throw new RuntimeException( "empty route" );
 
 
-        synchronized ( m_grid ) {
-            m_grid.setQuick(
-                CCommon.toNumber( m_position.getQuick( 0 ) ).intValue(),
-                CCommon.toNumber( m_position.getQuick( 1 ) ).intValue(),
-                null
-            );
-
+        synchronized ( m_grid )
+        {
+            this.removePosition();
             m_position.assign( p_direction.apply( m_position, m_route.get( 0 ), 1.5 ) );
 
             m_grid.setQuick(
@@ -219,29 +230,17 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
         }
     }
 
-    protected void initializePosition()
+    /**
+     * remove position
+     */
+    protected final void removePosition()
     {
-        int x = ThreadLocalRandom.current().nextInt( m_grid.columns() );
-        int y = ThreadLocalRandom.current().nextInt( m_grid.rows() );
-
-
-
-
-
-        CCommon.coordinates(
-            p_xcenter, p_ycenter, p_size,
-            x -> x.intValue() >= 0 && x.intValue() < m_grid.get().columns(),
-            y -> y.intValue() >= 0 && y.intValue() < m_grid.get().rows()
-        )
-               .filter( i -> Objects.isNull( m_grid.get().getQuick( i.getLeft().intValue(), i.getRight().intValue() ) ) )
-               .filter( i -> ThreadLocalRandom.current().nextDouble() <= CCommon.gaussian(
-                   EDistance.MANHATTAN.apply( l_center, new DenseDoubleMatrix1D( new double[]{i.getLeft().doubleValue(), i.getRight().doubleValue()} ) ),
-                   1, 0, p_size.doubleValue() ).doubleValue()
-               )
-               .forEach( i -> m_grid.get().setQuick( i.getLeft().intValue(), i.getRight().intValue(), l_gem.get() ) );
+        m_grid.setQuick(
+            CCommon.toNumber( m_position.getQuick( 0 ) ).intValue(),
+            CCommon.toNumber( m_position.getQuick( 1 ) ).intValue(),
+            null
+        );
     }
-
-
 
     /**
      * agent generator

@@ -25,7 +25,6 @@ package org.lightjason.example.miner.scenario;
 
 import cern.colt.matrix.tobject.ObjectMatrix2D;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.maps.tiled.TiledMap;
 import org.lightjason.agentspeak.configuration.IAgentConfiguration;
 import org.lightjason.agentspeak.generator.IActionGenerator;
 import org.lightjason.agentspeak.generator.ILambdaStreamingGenerator;
@@ -68,6 +67,7 @@ public final class CAgentMiner extends IBaseAgentMoving
     {
         super( p_configuration, p_sprite, p_visibleobjects, p_runtime, p_grid );
     }
+
 
     /**
      * agent generator
