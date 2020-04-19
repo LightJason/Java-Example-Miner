@@ -155,13 +155,17 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
     }
 
     /**
-     * creates a random round to a target position within the view range
+     * creates a random route a target position within the view range
      * and clears an existing route
      */
     @IAgentActionFilter
     @IAgentActionName( name = "route/random" )
     private void routerandom()
     {
+        int l_xpos = ThreadLocalRandom.current().nextInt( m_viewrange.get().intValue() / 2 );
+        int l_ypos = ThreadLocalRandom.current().nextInt( m_viewrange.get().intValue() / 2 );
+
+
         m_route.clear();
     }
 
@@ -177,7 +181,7 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
 
     @IAgentActionFilter
     @IAgentActionName( name = "route/append" )
-    private void routefappend()
+    private void routeappend()
     {
 
     }
@@ -186,7 +190,7 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
     @IAgentActionName( name = "route/clear" )
     private void routeclear()
     {
-
+        m_route.clear();
     }
 
     @IAgentActionFilter
