@@ -29,6 +29,7 @@ import org.lightjason.agentspeak.configuration.IAgentConfiguration;
 import org.lightjason.agentspeak.generator.IActionGenerator;
 import org.lightjason.agentspeak.generator.ILambdaStreamingGenerator;
 import org.lightjason.example.miner.runtime.IRuntime;
+import org.lightjason.example.miner.ui.IScreen;
 import org.lightjason.example.miner.ui.ISprite;
 import org.lightjason.example.miner.ui.ITileMap;
 
@@ -97,12 +98,12 @@ public final class CAgentMiner extends IBaseAgentMoving
             Objects.requireNonNull( p_objects[0] );
             Objects.requireNonNull( p_objects[1] );
 
-            final ITileMap l_tilemap = (ITileMap) p_objects[1];
+            final IScreen l_screen = (IScreen) p_objects[1];
             final ObjectMatrix2D l_grid = (ObjectMatrix2D) p_objects[0];
 
             final IAgentMoving l_agent = new CAgentMiner(
                 m_configuration,
-                this.generateSprite( l_tilemap ),
+                this.generateSprite( l_screen.environment() ),
                 m_visibleobjects,
                 m_runtime,
                 l_grid
