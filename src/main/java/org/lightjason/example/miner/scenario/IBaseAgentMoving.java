@@ -120,6 +120,16 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
             m_position.set( 0, l_ypos );
             m_position.set( 1, l_xpos );
         }
+
+        this.position2sprite();
+    }
+
+    /**
+     * sets the position vector to sprite
+     */
+    private void position2sprite()
+    {
+        m_sprite.setPosition( CCommon.toNumber( m_position.getQuick( 0 ) ).intValue(), CCommon.toNumber( m_position.getQuick( 1 ) ).intValue() );
     }
 
     @Override
@@ -229,6 +239,8 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
                 this
             );
         }
+
+        this.position2sprite();
     }
 
     /**
@@ -287,8 +299,8 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
         {
             final Sprite l_sprite = new Sprite( Objects.requireNonNull( m_texture.get() ) );
 
-            l_sprite.setSize( p_map.cellsize(), p_map.cellsize() );
-            l_sprite.setOrigin( 1.0f / p_map.cellsize(), 1.0f / p_map.cellsize() );
+            l_sprite.setSize( p_map.cellsize() * 1.1f, p_map.cellsize() * 1.1f );
+            l_sprite.setOrigin( 1.0f / p_map.cellsize() - 0.2f, 1.0f / p_map.cellsize() - 0.15f );
             l_sprite.setScale( 1.0f / p_map.cellsize() );
 
             return l_sprite;
