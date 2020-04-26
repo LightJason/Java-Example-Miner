@@ -24,8 +24,10 @@
 package org.lightjason.example.miner.scenario;
 
 import cern.colt.matrix.tdouble.DoubleMatrix1D;
+import cern.colt.matrix.tdouble.algo.DenseDoubleAlgebra;
 import cern.colt.matrix.tdouble.impl.DenseDoubleMatrix1D;
 import cern.colt.matrix.tobject.ObjectMatrix2D;
+import cern.jet.math.tdouble.DoubleFunctions;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -42,13 +44,9 @@ import org.lightjason.example.miner.ui.CScreen;
 import org.lightjason.example.miner.ui.ISprite;
 import org.lightjason.example.miner.ui.ITileMap;
 
-import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import java.io.InputStream;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
@@ -70,9 +68,9 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
      */
     private final ObjectMatrix2D m_grid;
     /**
-     * current route
+     * current goal position
      */
-    private final List<DoubleMatrix1D> m_route = Collections.synchronizedList( new ArrayList<>() );
+    private final DoubleMatrix1D m_goal = new DenseDoubleMatrix1D( 2 );
     /**
      * current position
      */
@@ -98,7 +96,8 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
      */
     protected IBaseAgentMoving( @Nonnull final IAgentConfiguration<IAgentMoving> p_configuration,
                                 @Nonnull final Sprite p_sprite, @Nonnull final Set<ISprite> p_visibleobjects,
-                                @Nonnull final IRuntime p_runtime, @Nonnull final ObjectMatrix2D p_grid )
+                                @Nonnull final IRuntime p_runtime, @Nonnull final ObjectMatrix2D p_grid
+    )
     {
         super( p_configuration, p_runtime );
         m_grid = p_grid;
@@ -155,43 +154,18 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
         return super.call();
     }
 
-    /**
-     * creates a random route a target position within the view range
-     * and clears an existing route
-     */
     @IAgentActionFilter
-    @IAgentActionName( name = "route/random" )
-    private void routerandom()
+    @IAgentActionName( name = "walk/goal" )
+    private void setgoal( @Nonnull final Number p_xpos, @Nonnull final Number p_ypos )
     {
-        int l_xpos = ThreadLocalRandom.current().nextInt( m_viewrange.get().intValue() / 2 );
-        int l_ypos = ThreadLocalRandom.current().nextInt( m_viewrange.get().intValue() / 2 );
+        if ( p_xpos.intValue() < 0 || p_xpos.intValue() > m_grid.columns() || p_ypos.intValue() < 0 || p_ypos.intValue() > m_grid.rows() )
+            throw new RuntimeException( "position outside grid" );
 
+        final DoubleMatrix1D l_new = new DenseDoubleMatrix1D( new double[]{p_ypos.doubleValue(), p_xpos.doubleValue()} );
+        if ( DenseDoubleAlgebra.DEFAULT.norm2( l_new.copy().assign( m_position, DoubleFunctions.minus ) ) > m_viewrange.get().doubleValue() )
+            throw new RuntimeException( "position outside of the view range" );
 
-        m_route.clear();
-    }
-
-    /**
-     * build route from the current position and clears an existing route
-     */
-    @IAgentActionFilter
-    @IAgentActionName( name = "route/find" )
-    private void routefind()
-    {
-        m_route.clear();
-    }
-
-    @IAgentActionFilter
-    @IAgentActionName( name = "route/append" )
-    private void routeappend()
-    {
-
-    }
-
-    @IAgentActionFilter
-    @IAgentActionName( name = "route/clear" )
-    private void routeclear()
-    {
-        m_route.clear();
+        m_goal.assign( l_new );
     }
 
     @IAgentActionFilter
@@ -229,14 +203,10 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
      */
     private void walk( @Nonnull final EMovementDirection p_direction )
     {
-        if ( m_route.isEmpty() )
-            throw new RuntimeException( "empty route" );
-
-
         synchronized ( m_grid )
         {
             this.removePosition();
-            m_position.assign( p_direction.apply( m_position, m_route.get( 0 ), 1.5 ) );
+            m_position.assign( p_direction.apply( m_position, m_goal, 1.5 ) );
 
             m_grid.setQuick(
                 CCommon.toNumber( m_position.getQuick( 0 ) ).intValue(),
