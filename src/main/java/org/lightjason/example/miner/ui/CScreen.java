@@ -64,6 +64,14 @@ public final class CScreen extends ApplicationAdapter implements IScreen, InputP
      */
     public static final AtomicReference<IScreen> SCREEN = new AtomicReference<>();
     /**
+     * wait loops for visualization
+     */
+    public static final int WAITLOOPS = 1000;
+    /**
+     * time for each wait loop
+     */
+    public static final int WAITTIME = 1000;
+    /**
      * zoom speed
      */
     private static final int ZOOMSPEED = 2;

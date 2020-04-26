@@ -38,6 +38,7 @@ import org.lightjason.agentspeak.generator.IActionGenerator;
 import org.lightjason.agentspeak.generator.ILambdaStreamingGenerator;
 import org.lightjason.example.miner.CApplication;
 import org.lightjason.example.miner.runtime.IRuntime;
+import org.lightjason.example.miner.ui.CScreen;
 import org.lightjason.example.miner.ui.ISprite;
 import org.lightjason.example.miner.ui.ITileMap;
 
@@ -339,20 +340,17 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
 
         /**
          * wait until visualization object list
-         *
-         * @param p_time wait time
-         * @param p_loop number of loops
          */
-        protected final void waitforvisualization( @Nonnegative int p_time, @Nonnegative int p_loop )
+        protected final void waitforvisualization()
         {
             int l_loop = 0;
 
-            while ( Objects.isNull( m_visibleobjects ) && l_loop < p_loop )
+            while ( Objects.isNull( m_visibleobjects ) && l_loop < CScreen.WAITLOOPS )
             {
                 l_loop++;
                 try
                 {
-                    Thread.sleep( p_time );
+                    Thread.sleep( CScreen.WAITTIME );
                 }
                 catch ( final InterruptedException l_exception )
                 {
