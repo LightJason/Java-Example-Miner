@@ -207,7 +207,6 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
         {
             this.removePosition();
             m_position.assign( p_direction.apply( m_position, m_goal, 1.5 ) );
-            System.out.println(m_position);
 
             m_grid.setQuick(
                 CCommon.toNumber( m_position.getQuick( 0 ) ).intValue(),
@@ -310,9 +309,9 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
         }
 
         /**
-         * wait until visualization object list
+         * wait until objects are initialize
          */
-        protected final void waitforvisualization()
+        protected final void waitForInitialize()
         {
             int l_loop = 0;
 

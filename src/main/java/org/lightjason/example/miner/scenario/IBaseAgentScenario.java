@@ -70,7 +70,6 @@ public abstract class IBaseAgentScenario<T extends IAgentScenario<?>> extends IB
     {
         super( p_configuration );
         m_runtime = p_runtime;
-        m_runtime.apply( this );
     }
 
     @Override

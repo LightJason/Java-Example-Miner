@@ -2,14 +2,13 @@
 
 +!main <-
     .generic/print("miner starts running");
-    //!main.
-    .walk/goal(0, 0);
+    //.walk/goal(0, 0);
     !run.
 
 -!main <-
     .generic/print("main error").
 
-+!run <-:
++!run <-
     .generic/print("run").
     .walk/forward;
     !run.

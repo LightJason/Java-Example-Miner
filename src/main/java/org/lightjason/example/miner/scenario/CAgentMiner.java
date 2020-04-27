@@ -100,7 +100,7 @@ public final class CAgentMiner extends IBaseAgentMoving
             Objects.requireNonNull( p_objects[0] );
             final ObjectMatrix2D l_grid = (ObjectMatrix2D) p_objects[0];
 
-            this.waitforvisualization();
+            this.waitForInitialize();
 
             final IAgentMoving l_agent = new CAgentMiner(
                 m_configuration,
@@ -111,6 +111,7 @@ public final class CAgentMiner extends IBaseAgentMoving
             );
 
             m_visibleobjects.add( l_agent );
+            m_runtime.apply( l_agent );
             return l_agent;
         }
     }

@@ -96,6 +96,7 @@ public final class CAgentEnvironment extends IBaseAgentScenario<IAgentEnvironmen
         super( p_configuration, p_runtime );
         m_visibleobjects = new CopyOnWriteArraySet<>();
         m_minergenerator = p_minergenerator;
+        p_runtime.apply( this );
     }
 
     @Nonnull
