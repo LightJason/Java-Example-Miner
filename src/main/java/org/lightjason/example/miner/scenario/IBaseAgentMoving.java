@@ -27,7 +27,6 @@ import cern.colt.matrix.tdouble.DoubleMatrix1D;
 import cern.colt.matrix.tdouble.algo.DenseDoubleAlgebra;
 import cern.colt.matrix.tdouble.impl.DenseDoubleMatrix1D;
 import cern.colt.matrix.tobject.ObjectMatrix2D;
-import cern.jet.math.tdouble.DoubleFunctions;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -148,8 +147,8 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
     @Override
     public IAgentMoving call() throws Exception
     {
-        if ( this.runningplans().isEmpty() )
-            this.removePosition();
+        //if ( this.runningplans().isEmpty() )
+        //    this.removePosition();
 
         return super.call();
     }
@@ -158,12 +157,13 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
     @IAgentActionName( name = "walk/goal" )
     private void setgoal( @Nonnull final Number p_xpos, @Nonnull final Number p_ypos )
     {
-        if ( p_xpos.intValue() < 0 || p_xpos.intValue() > m_grid.columns() || p_ypos.intValue() < 0 || p_ypos.intValue() > m_grid.rows() )
+        if ( p_xpos.intValue() < 0 || p_xpos.intValue() >= m_grid.columns() || p_ypos.intValue() < 0 || p_ypos.intValue() >= m_grid.rows() )
             throw new RuntimeException( "position outside grid" );
 
         final DoubleMatrix1D l_new = new DenseDoubleMatrix1D( new double[]{p_ypos.doubleValue(), p_xpos.doubleValue()} );
-        if ( DenseDoubleAlgebra.DEFAULT.norm2( l_new.copy().assign( m_position, DoubleFunctions.minus ) ) > m_viewrange.get().doubleValue() )
-            throw new RuntimeException( "position outside of the view range" );
+
+        //if ( DenseDoubleAlgebra.DEFAULT.norm2( l_new.copy().assign( m_position, DoubleFunctions.minus ) ) > m_viewrange.get().doubleValue() )
+        //    throw new RuntimeException( "position outside of the view range" );
 
         m_goal.assign( l_new );
     }
@@ -207,6 +207,7 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
         {
             this.removePosition();
             m_position.assign( p_direction.apply( m_position, m_goal, 1.5 ) );
+            System.out.println(m_position);
 
             m_grid.setQuick(
                 CCommon.toNumber( m_position.getQuick( 0 ) ).intValue(),

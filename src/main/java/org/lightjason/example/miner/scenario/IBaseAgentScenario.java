@@ -33,6 +33,7 @@ import org.lightjason.example.miner.ui.ISprite;
 
 import javax.annotation.Nonnull;
 import java.io.InputStream;
+import java.util.Objects;
 import java.util.Set;
 
 
@@ -69,31 +70,18 @@ public abstract class IBaseAgentScenario<T extends IAgentScenario<?>> extends IB
     {
         super( p_configuration );
         m_runtime = p_runtime;
-
-        this.toruntime();
-    }
-
-    /**
-     * pushs the agent explicit to the runtime
-     */
-    protected final IAgentScenario<?> toruntime()
-    {
-        if ( !m_runtime.apply( this ) )
-            m_visibleobjects.remove( this );
-
-        return this;
+        m_runtime.apply( this );
     }
 
     @Override
-    @SuppressWarnings( "unchecked" )
     public T call() throws Exception
     {
         super.call();
 
-        if ( !this.runningplans().isEmpty() )
-            this.toruntime();
+        if ( !m_runtime.apply( this ) && Objects.nonNull( m_visibleobjects ) )
+            m_visibleobjects.remove( this );
 
-        return (T)this;
+        return this.raw();
     }
 
     @Override

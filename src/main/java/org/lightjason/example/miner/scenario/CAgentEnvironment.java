@@ -243,7 +243,7 @@ public final class CAgentEnvironment extends IBaseAgentScenario<IAgentEnvironmen
             this.trigger( TRIGGEREMPTY );
 
         this.trigger( ITrigger.EType.ADDGOAL.builddefault( CLiteral.of( TRIGGERITERATION, CRawTerm.of( m_iteration.getAndIncrement() ) ) ) );
-        return (IAgentEnvironment) this.toruntime();
+        return this;
     }
 
     /**
