@@ -33,7 +33,6 @@ import org.lightjason.example.miner.ui.ISprite;
 
 import javax.annotation.Nonnull;
 import java.io.InputStream;
-import java.util.Objects;
 import java.util.Set;
 
 
@@ -75,10 +74,10 @@ public abstract class IBaseAgentScenario<T extends IAgentScenario<?>> extends IB
     @Override
     public T call() throws Exception
     {
-        super.call();
+        m_runtime.apply( super.call() );
 
-        if ( !m_runtime.apply( this ) && Objects.nonNull( m_visibleobjects ) )
-            m_visibleobjects.remove( this );
+        //if ( !m_runtime.apply( this ) && Objects.nonNull( m_visibleobjects ) )
+        //    m_visibleobjects.remove( this );
 
         return this.raw();
     }

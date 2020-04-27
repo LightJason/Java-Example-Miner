@@ -24,7 +24,6 @@
 package org.lightjason.example.miner.scenario;
 
 import cern.colt.matrix.tdouble.DoubleMatrix1D;
-import cern.colt.matrix.tdouble.algo.DenseDoubleAlgebra;
 import cern.colt.matrix.tdouble.impl.DenseDoubleMatrix1D;
 import cern.colt.matrix.tobject.ObjectMatrix2D;
 import com.badlogic.gdx.Gdx;
@@ -142,15 +141,6 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
     {
         m_viewrange.getAndUpdate( i -> i.doubleValue() + p_value.doubleValue() );
         return this;
-    }
-
-    @Override
-    public IAgentMoving call() throws Exception
-    {
-        //if ( this.runningplans().isEmpty() )
-        //    this.removePosition();
-
-        return super.call();
     }
 
     @IAgentActionFilter

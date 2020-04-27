@@ -7,13 +7,11 @@
 
 +!world/start <-
     .generic/print("world start");
-    .miner/create
-    .
+    .miner/create.
 
-/*
 +!world/empty <-
-    .generic/print("dead").
-
+    .generic/print("world empty").
+/*
 +!world/iteration(N) <-
-    .generic/print("iteration", N).
+    .generic/print("world iteration", N).
 */
