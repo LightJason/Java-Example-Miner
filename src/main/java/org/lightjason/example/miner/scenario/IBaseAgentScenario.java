@@ -29,6 +29,7 @@ import org.lightjason.agentspeak.generator.IActionGenerator;
 import org.lightjason.agentspeak.generator.IBaseAgentGenerator;
 import org.lightjason.agentspeak.generator.ILambdaStreamingGenerator;
 import org.lightjason.example.miner.runtime.IRuntime;
+import org.lightjason.example.miner.runtime.ISleeper;
 import org.lightjason.example.miner.ui.ISprite;
 
 import javax.annotation.Nonnull;
@@ -59,22 +60,28 @@ public abstract class IBaseAgentScenario<T extends IAgentScenario<?>> extends IB
      * execution runtime
      */
     private final IRuntime m_runtime;
+    /**
+     * sleeper object
+     */
+    private final ISleeper m_sleeper;
 
     /**
      * ctor
      *  @param p_configuration agent configuration
      * @param p_runtime execution runtime
      */
-    public IBaseAgentScenario( @Nonnull final IAgentConfiguration<T> p_configuration, @Nonnull final IRuntime p_runtime )
+    public IBaseAgentScenario( @Nonnull final IAgentConfiguration<T> p_configuration, @Nonnull final IRuntime p_runtime, @Nonnull final ISleeper p_sleeper )
     {
         super( p_configuration );
         m_runtime = p_runtime;
+        m_sleeper = p_sleeper;
     }
 
     @Override
     public T call() throws Exception
     {
         m_runtime.apply( super.call() );
+        m_sleeper.sleep();
 
         //if ( !m_runtime.apply( this ) && Objects.nonNull( m_visibleobjects ) )
         //    m_visibleobjects.remove( this );
@@ -100,9 +107,14 @@ public abstract class IBaseAgentScenario<T extends IAgentScenario<?>> extends IB
          */
         protected final IRuntime m_runtime;
         /**
+         * sleeper
+         */
+        protected final ISleeper m_sleeper;
+        /**
          * visible objects
          */
         protected Set<ISprite> m_visibleobjects;
+
 
         /**
          * ctor
@@ -110,13 +122,16 @@ public abstract class IBaseAgentScenario<T extends IAgentScenario<?>> extends IB
          * @param p_asl asl
          * @param p_actions actions
          * @param p_lambda lambdas
-         * @param p_runtime execution pool;
+         * @param p_runtime execution pool
+         * @param p_sleeper sleeper object
          */
         protected IBaseScenarioAgentGenerator( @Nonnull final InputStream p_asl, @Nonnull final IActionGenerator p_actions,
-                                               @Nonnull final ILambdaStreamingGenerator p_lambda, @Nonnull final IRuntime p_runtime )
+                                               @Nonnull final ILambdaStreamingGenerator p_lambda, @Nonnull final IRuntime p_runtime,
+                                               @Nonnull final ISleeper p_sleeper )
         {
             super( p_asl, p_actions, p_lambda );
             m_runtime = p_runtime;
+            m_sleeper = p_sleeper;
         }
     }
 }

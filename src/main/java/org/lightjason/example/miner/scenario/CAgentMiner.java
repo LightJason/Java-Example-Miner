@@ -29,6 +29,7 @@ import org.lightjason.agentspeak.configuration.IAgentConfiguration;
 import org.lightjason.agentspeak.generator.IActionGenerator;
 import org.lightjason.agentspeak.generator.ILambdaStreamingGenerator;
 import org.lightjason.example.miner.runtime.IRuntime;
+import org.lightjason.example.miner.runtime.ISleeper;
 import org.lightjason.example.miner.ui.CScreen;
 import org.lightjason.example.miner.ui.ISprite;
 
@@ -63,12 +64,14 @@ public final class CAgentMiner extends IBaseAgentMoving
      * @param p_sprite sprite of the agent
      * @param p_visibleobjects visible objects
      * @param p_runtime execution runtime
+     * @param p_sleeper sleeper object
      * @param p_grid world grid
      */
     private CAgentMiner( @Nonnull final IAgentConfiguration<IAgentMoving> p_configuration, @Nonnull final Sprite p_sprite,
-                         @Nonnull final Set<ISprite> p_visibleobjects, @Nonnull final IRuntime p_runtime, @Nonnull final ObjectMatrix2D p_grid )
+                         @Nonnull final Set<ISprite> p_visibleobjects, @Nonnull final IRuntime p_runtime, @Nonnull final ISleeper p_sleeper,
+                         @Nonnull final ObjectMatrix2D p_grid )
     {
-        super( p_configuration, p_sprite, p_visibleobjects, p_runtime, p_grid );
+        super( p_configuration, p_sprite, p_visibleobjects, p_runtime, p_sleeper, p_grid );
     }
 
     /**
@@ -84,11 +87,12 @@ public final class CAgentMiner extends IBaseAgentMoving
          * @param p_actions actions
          * @param p_lambda lambdas
          * @param p_runtime execution runtime
+         * @param p_sleeper sleeper object
          */
         public CGenerator( @Nonnull final InputStream p_asl, @Nonnull final IActionGenerator p_actions,
-                           @Nonnull final ILambdaStreamingGenerator p_lambda, @Nonnull final IRuntime p_runtime )
+                           @Nonnull final ILambdaStreamingGenerator p_lambda, @Nonnull final IRuntime p_runtime, @Nonnull final ISleeper p_sleeper )
         {
-            super( p_asl, p_actions, p_lambda, p_runtime, IMAGE );
+            super( p_asl, p_actions, p_lambda, p_runtime, p_sleeper, IMAGE );
         }
 
         @Nonnull
@@ -106,6 +110,7 @@ public final class CAgentMiner extends IBaseAgentMoving
                 this.generateSprite( CScreen.SCREEN.get().tilemap() ),
                 m_visibleobjects,
                 m_runtime,
+                m_sleeper,
                 l_grid
             );
 

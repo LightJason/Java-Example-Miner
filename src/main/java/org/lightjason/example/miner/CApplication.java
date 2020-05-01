@@ -31,7 +31,9 @@ import org.lightjason.agentspeak.common.CCommon;
 import org.lightjason.agentspeak.generator.CActionGenerator;
 import org.lightjason.agentspeak.generator.IActionGenerator;
 import org.lightjason.agentspeak.generator.ILambdaStreamingGenerator;
+import org.lightjason.example.miner.runtime.CSleeper;
 import org.lightjason.example.miner.runtime.ERuntime;
+import org.lightjason.example.miner.runtime.ISleeper;
 import org.lightjason.example.miner.scenario.CAgentEnvironment;
 import org.lightjason.example.miner.scenario.CAgentMiner;
 
@@ -70,6 +72,7 @@ public final class CApplication
         l_clioptions.addOption( "environment", true, CCommon.languagestring( CApplication.class, "environment" ) );
         l_clioptions.addOption( "port", true, CCommon.languagestring( CApplication.class, "port" ) );
         l_clioptions.addOption( "host", true, CCommon.languagestring( CApplication.class, "host" ) );
+        l_clioptions.addOption( "sleep", true, CCommon.languagestring( CApplication.class, "sleep" ) );
 
         final CommandLine l_cli;
         try
@@ -93,6 +96,7 @@ public final class CApplication
         }
 
 
+        final ISleeper l_sleeper = getSleeper( l_cli.getOptionValue( "sleep", "" ) );
         final IActionGenerator l_actions = new CActionGenerator( Stream.of( "org.lightjason.agentspeak.action" ) );
 
         new CAgentEnvironment.CGenerator(
@@ -100,12 +104,14 @@ public final class CApplication
             new CActionGenerator( Stream.empty(), Stream.of( CAgentEnvironment.class ) ).add( l_actions ),
             ILambdaStreamingGenerator.EMPTY,
             ERuntime.CACHED,
+            ISleeper.EMPTY,
 
             new CAgentMiner.CGenerator(
                 CApplication.class.getResourceAsStream( "miner.asl" ),
                 new CActionGenerator( Stream.empty(), Stream.of( CAgentMiner.class ) ).add( l_actions ),
                 ILambdaStreamingGenerator.EMPTY,
-                ERuntime.CACHED
+                ERuntime.CACHED,
+                ISleeper.EMPTY
             )
         ).generatesingle();
 
@@ -125,4 +131,21 @@ public final class CApplication
         return Paths.get( CApplication.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath(), p_path );
     }
 
+    /**
+     * build the sleeper
+     *
+     * @param p_time time as string
+     * @return sleeper object
+     */
+    private static ISleeper getSleeper( @Nonnull final String p_time )
+    {
+        if ( p_time.isBlank() || p_time.isEmpty() )
+            return ISleeper.EMPTY;
+
+        final long l_time = Long.parseLong( p_time );
+        if ( l_time <= 0 )
+            return ISleeper.EMPTY;
+
+        return new CSleeper( l_time );
+    }
 }

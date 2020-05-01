@@ -35,6 +35,7 @@ import org.lightjason.agentspeak.language.CLiteral;
 import org.lightjason.agentspeak.language.CRawTerm;
 import org.lightjason.agentspeak.language.execution.instantiable.plan.trigger.ITrigger;
 import org.lightjason.example.miner.runtime.IRuntime;
+import org.lightjason.example.miner.runtime.ISleeper;
 import org.lightjason.example.miner.ui.CScreen;
 import org.lightjason.example.miner.ui.CTileMap;
 
@@ -89,11 +90,13 @@ public final class CAgentEnvironment extends IBaseAgentScenario<IAgentEnvironmen
      *
      * @param p_configuration agent configuration
      * @param p_runtime execution runtime
+     * @param p_sleeper sleeper object
      */
     private CAgentEnvironment( @Nonnull final IAgentConfiguration<IAgentEnvironment> p_configuration,
-                               @Nonnull final IRuntime p_runtime, @Nonnull final IAgentMovingGenerator p_minergenerator )
+                               @Nonnull final IRuntime p_runtime, @Nonnull final ISleeper p_sleeper,
+                               @Nonnull final IAgentMovingGenerator p_minergenerator )
     {
-        super( p_configuration, p_runtime );
+        super( p_configuration, p_runtime, p_sleeper );
         m_visibleobjects = new CopyOnWriteArraySet<>();
         m_minergenerator = p_minergenerator;
         p_runtime.apply( this );
@@ -264,12 +267,13 @@ public final class CAgentEnvironment extends IBaseAgentScenario<IAgentEnvironmen
          * @param p_actions actions
          * @param p_lambda lambdas
          * @param p_runtime runtime
+         * @param p_sleeper sleeper object
          */
         public CGenerator( @Nonnull final InputStream p_asl, @Nonnull final IActionGenerator p_actions,
-                           @Nonnull final ILambdaStreamingGenerator p_lambda, @Nonnull final IRuntime p_runtime,
+                           @Nonnull final ILambdaStreamingGenerator p_lambda, @Nonnull final IRuntime p_runtime, @Nonnull final ISleeper p_sleeper,
                            @Nonnull final IAgentMovingGenerator p_minergenerator )
         {
-            super( p_asl, p_actions, p_lambda, p_runtime );
+            super( p_asl, p_actions, p_lambda, p_runtime, p_sleeper );
             m_minergenerator = p_minergenerator;
         }
 
@@ -277,7 +281,7 @@ public final class CAgentEnvironment extends IBaseAgentScenario<IAgentEnvironmen
         @Override
         public IAgentEnvironment generatesingle( @Nullable final Object... p_objects )
         {
-            return new CAgentEnvironment( m_configuration, m_runtime, m_minergenerator );
+            return new CAgentEnvironment( m_configuration, m_runtime, m_sleeper, m_minergenerator );
         }
     }
 }

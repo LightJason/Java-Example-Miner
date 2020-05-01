@@ -38,6 +38,7 @@ import org.lightjason.agentspeak.generator.IActionGenerator;
 import org.lightjason.agentspeak.generator.ILambdaStreamingGenerator;
 import org.lightjason.example.miner.CApplication;
 import org.lightjason.example.miner.runtime.IRuntime;
+import org.lightjason.example.miner.runtime.ISleeper;
 import org.lightjason.example.miner.ui.CScreen;
 import org.lightjason.example.miner.ui.ISprite;
 import org.lightjason.example.miner.ui.ITileMap;
@@ -94,10 +95,10 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
      */
     protected IBaseAgentMoving( @Nonnull final IAgentConfiguration<IAgentMoving> p_configuration,
                                 @Nonnull final Sprite p_sprite, @Nonnull final Set<ISprite> p_visibleobjects,
-                                @Nonnull final IRuntime p_runtime, @Nonnull final ObjectMatrix2D p_grid
+                                @Nonnull final IRuntime p_runtime, @Nonnull final ISleeper p_sleeper, @Nonnull final ObjectMatrix2D p_grid
     )
     {
-        super( p_configuration, p_runtime );
+        super( p_configuration, p_runtime, p_sleeper );
         m_grid = p_grid;
         m_sprite = p_sprite;
         m_visibleobjects = p_visibleobjects;
@@ -243,13 +244,14 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
          * @param p_actions actions
          * @param p_lambda lambdas
          * @param p_runtime execution pool
+         * @param p_sleeper sleeper object
          * @param p_image sprite image name
          */
         protected IBaseMovingAgentGenerator( @Nonnull final InputStream p_asl, @Nonnull final IActionGenerator p_actions,
                                              @Nonnull final ILambdaStreamingGenerator p_lambda,
-                                             @Nonnull final IRuntime p_runtime, @Nonnull final String p_image )
+                                             @Nonnull final IRuntime p_runtime, @Nonnull final ISleeper p_sleeper, @Nonnull final String p_image )
         {
-            super( p_asl, p_actions, p_lambda, p_runtime );
+            super( p_asl, p_actions, p_lambda, p_runtime, p_sleeper );
             m_image = p_image;
         }
 
