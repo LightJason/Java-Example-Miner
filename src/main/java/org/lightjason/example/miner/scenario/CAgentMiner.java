@@ -71,7 +71,6 @@ public final class CAgentMiner extends IBaseAgentMoving
         super( p_configuration, p_sprite, p_visibleobjects, p_runtime, p_grid );
     }
 
-
     /**
      * agent generator
      */
