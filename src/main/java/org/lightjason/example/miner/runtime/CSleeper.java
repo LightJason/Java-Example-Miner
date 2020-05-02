@@ -55,6 +55,7 @@ public final class CSleeper implements ISleeper
         }
         catch ( final InterruptedException l_exception )
         {
+            // ignore any error
         }
     }
 }

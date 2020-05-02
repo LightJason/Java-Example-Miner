@@ -104,14 +104,14 @@ public final class CApplication
             new CActionGenerator( Stream.empty(), Stream.of( CAgentEnvironment.class ) ).add( l_actions ),
             ILambdaStreamingGenerator.EMPTY,
             ERuntime.CACHED,
-            ISleeper.EMPTY,
+            l_sleeper,
 
             new CAgentMiner.CGenerator(
                 CApplication.class.getResourceAsStream( "miner.asl" ),
                 new CActionGenerator( Stream.empty(), Stream.of( CAgentMiner.class ) ).add( l_actions ),
                 ILambdaStreamingGenerator.EMPTY,
                 ERuntime.CACHED,
-                ISleeper.EMPTY
+                l_sleeper
             )
         ).generatesingle();
 

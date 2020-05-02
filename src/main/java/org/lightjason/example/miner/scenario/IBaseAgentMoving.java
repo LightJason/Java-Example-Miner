@@ -197,7 +197,7 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
         synchronized ( m_grid )
         {
             this.removePosition();
-            m_position.assign( p_direction.apply( m_position, m_goal, 1.5 ) );
+            m_position.assign( p_direction.apply( m_position, m_goal, 0.1 ) );
 
             m_grid.setQuick(
                 CCommon.toNumber( m_position.getQuick( 0 ) ).intValue(),

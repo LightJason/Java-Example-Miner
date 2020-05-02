@@ -226,15 +226,34 @@ public final class CScreen extends ApplicationAdapter implements IScreen, InputP
     @Override
     public final boolean keyDown( final int p_key )
     {
-        if ( p_key == 46 )
+        switch ( p_key )
         {
-            m_camera.position.set( m_environment.columns() / 2f, m_environment.rows() / 2f, 0 );
-            m_camera.zoom = m_environment.cellsize();
+
+            // r key
+            case 46:
+                m_camera.position.set( m_environment.columns() / 2f, m_environment.rows() / 2f, 0 );
+                m_camera.zoom = m_environment.cellsize();
+                return false;
+
+            // s key
+            case 47:
+                m_screenshottake = true;
+                return false;
+
+            // + key
+            case 72:
+                m_camera.zoom *= 1 - ZOOMSPEED;
+                return false;
+
+            // - key
+            case 76:
+                m_camera.zoom *= 1 + ZOOMSPEED;
+                return false;
+
+            default:
+                return false;
         }
 
-        // if "s" key pressed, create a screenshot
-        m_screenshottake = p_key == 47;
-        return false;
     }
 
     @Override
@@ -334,7 +353,7 @@ public final class CScreen extends ApplicationAdapter implements IScreen, InputP
         // force-exit must be disabled for avoid error exiting
         final LwjglApplicationConfiguration l_config = new LwjglApplicationConfiguration();
 
-        l_config.forceExit = false;
+        l_config.forceExit = true;
         l_config.width = p_width.intValue();
         l_config.height = p_height.intValue();
 
