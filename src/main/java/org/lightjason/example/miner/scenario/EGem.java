@@ -52,9 +52,8 @@ public enum EGem implements IGemFactory
     }
 
     @Override
-    public void spriteinitialize( @Nonnull final Set<ISprite> p_sprites )
+    public void spriteinitialize( @Nonnull final Set<ISprite> p_sprites, final float p_unit )
     {
-
     }
 
 

@@ -23,6 +23,7 @@
 
 package org.lightjason.example.miner.ui;
 
+import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import java.util.Set;
 
@@ -35,7 +36,9 @@ public interface ISpriteGenerator
 
     /**
      * sprite initialize for correct painting initialization
+     * @param p_sprites sprite set
+     * @param p_unit unit value
      */
-    void spriteinitialize( @Nonnull final Set<ISprite> p_sprites );
+    void spriteinitialize( @Nonnull final Set<ISprite> p_sprites, @Nonnegative float p_unit );
 
 }

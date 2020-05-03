@@ -154,7 +154,7 @@ public final class CScreen extends ApplicationAdapter implements IScreen, InputP
         m_render.setView( m_camera );
 
         // initialize agent visiblility structure
-        m_minergenerator.spriteinitialize( m_sprites );
+        m_minergenerator.spriteinitialize( m_sprites, l_unit );
 
         // set input processor
         Gdx.input.setInputProcessor( this );
@@ -178,11 +178,7 @@ public final class CScreen extends ApplicationAdapter implements IScreen, InputP
         // object sprite painting
         m_spritebatch.setProjectionMatrix( m_camera.combined );
         m_spritebatch.begin();
-
         m_sprites.forEach( i -> i.sprite().draw( m_spritebatch ) );
-
-        final float l_delta = Gdx.graphics.getDeltaTime();
-
         m_spritebatch.end();
 
 

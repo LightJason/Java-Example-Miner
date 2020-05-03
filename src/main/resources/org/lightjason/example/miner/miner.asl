@@ -1,8 +1,8 @@
 !main.
 
 +!main <-
-    .generic/print("miner starts running");
-    !run
+    .generic/print("miner starts running")
+    //!run
 .
 
 +!run <-

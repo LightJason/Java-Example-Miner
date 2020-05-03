@@ -43,6 +43,7 @@ import org.lightjason.example.miner.ui.CScreen;
 import org.lightjason.example.miner.ui.ISprite;
 import org.lightjason.example.miner.ui.ITileMap;
 
+import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import java.io.InputStream;
 import java.net.URISyntaxException;
@@ -194,10 +195,11 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
      */
     private void walk( @Nonnull final EMovementDirection p_direction )
     {
+        System.out.println( m_position );
         synchronized ( m_grid )
         {
             this.removePosition();
-            m_position.assign( p_direction.apply( m_position, m_goal, 0.1 ) );
+            m_position.assign( p_direction.apply( m_position, m_goal, 1.0 / CScreen.SCREEN.get().tilemap().cellsize() ) );
 
             m_grid.setQuick(
                 CCommon.toNumber( m_position.getQuick( 0 ) ).intValue(),
@@ -207,6 +209,8 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
         }
 
         this.position2sprite();
+        System.out.println( m_position );
+        System.out.println();
     }
 
     /**
@@ -231,7 +235,11 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
         /**
          * texture reference
          */
-        protected final AtomicReference<Texture> m_texture = new AtomicReference<>();
+        private final AtomicReference<Texture> m_texture = new AtomicReference<>();
+        /**
+         * unit value
+         */
+        private final AtomicReference<Float> m_unit = new AtomicReference<>();
         /**
          * filename of the texture
          */
@@ -267,8 +275,8 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
             final Sprite l_sprite = new Sprite( Objects.requireNonNull( m_texture.get() ) );
 
             l_sprite.setSize( p_map.cellsize() * 1.1f, p_map.cellsize() * 1.1f );
-            l_sprite.setOrigin( 1.0f / p_map.cellsize() - 0.2f, 1.0f / p_map.cellsize() - 0.15f );
-            l_sprite.setScale( 1.0f / p_map.cellsize() );
+            l_sprite.setOrigin( m_unit.get() - 0.2f, m_unit.get() - 0.15f );
+            l_sprite.setScale( m_unit.get() );
 
             return l_sprite;
         }
@@ -276,17 +284,19 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
         /**
          * overwritten for initialization
          * @param p_sprites set with sprites
+         * @param p_unit unit scale
          * @bug not working in a Jar file because path is incorrect, must be refactored for Maven build
          * @todo refactoring for Maven build
          */
         @Override
-        public final void spriteinitialize( @Nonnull final Set<ISprite> p_sprites )
+        public final void spriteinitialize( @Nonnull final Set<ISprite> p_sprites, @Nonnegative float p_unit )
         {
             // https://github.com/libgdx/libgdx/wiki/File-handling#file-storage-types
 
             try
             {
                 m_visibleobjects = p_sprites;
+                m_unit.compareAndSet( null, p_unit );
                 m_texture.compareAndSet( null, new Texture(
                     Gdx.files.absolute(
                         CApplication.getPath( "org/lightjason/example/miner/" + m_image ).toAbsolutePath().toString()
