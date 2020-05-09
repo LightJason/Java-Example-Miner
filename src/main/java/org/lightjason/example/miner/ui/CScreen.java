@@ -229,21 +229,25 @@ public final class CScreen extends ApplicationAdapter implements IScreen, InputP
             case 46:
                 m_camera.position.set( m_environment.columns() / 2f, m_environment.rows() / 2f, 0 );
                 m_camera.zoom = m_environment.cellsize();
+                m_camera.update();
                 return false;
 
             // s key
             case 47:
                 m_screenshottake = true;
+                m_camera.update();
                 return false;
 
             // + key
             case 72:
                 m_camera.zoom *= 1 - ZOOMSPEED;
+                m_camera.update();
                 return false;
 
             // - key
             case 76:
                 m_camera.zoom *= 1 + ZOOMSPEED;
+                m_camera.update();
                 return false;
 
             default:
@@ -302,6 +306,7 @@ public final class CScreen extends ApplicationAdapter implements IScreen, InputP
         m_camera.zoom *= p_amount > 0
                          ? 1 + ZOOMSPEED
                          : 1 - ZOOMSPEED;
+        m_camera.update();
         return false;
     }
 
