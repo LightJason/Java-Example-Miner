@@ -163,7 +163,7 @@ public final class CAgentEnvironment extends IBaseAgentScenario<IAgentEnvironmen
      */
     @IAgentActionFilter
     @IAgentActionName( name = "solid/create" )
-    public void solidhorizontalcreate( @Nonnull final Number p_xstart, @Nonnull final Number p_ystart, @Nonnull final Number p_xstop, @Nonnull final Number p_ystop  )
+    public void solidcreate( @Nonnull final Number p_xstart, @Nonnull final Number p_ystart, @Nonnull final Number p_xstop, @Nonnull final Number p_ystop  )
     {
         Objects.requireNonNull( m_grid.get() );
 
