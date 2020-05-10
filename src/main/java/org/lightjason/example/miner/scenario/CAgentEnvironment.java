@@ -42,12 +42,10 @@ import org.lightjason.example.miner.ui.CTileMap;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.io.InputStream;
-import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.IntStream;
 
 
 /**
@@ -158,14 +156,14 @@ public final class CAgentEnvironment extends IBaseAgentScenario<IAgentEnvironmen
     /**
      * creates a solid element
      *
-     * @param p_solid solid
      * @param p_xstart start x-position
      * @param p_ystart start y-position
-     * @param p_size x-size
+     * @param p_xstop stop x-position
+     * @param p_ystop stop y-position
      */
     @IAgentActionFilter
     @IAgentActionName( name = "solid/create" )
-    public void solidhorizontalcreate( @Nonnull final Number p_xstart, @Nonnull final Number p_ystart, @Nonnull final Number p_xstap, @Nonnull final Number p_ystop  )
+    public void solidhorizontalcreate( @Nonnull final Number p_xstart, @Nonnull final Number p_ystart, @Nonnull final Number p_xstop, @Nonnull final Number p_ystop  )
     {
         Objects.requireNonNull( m_grid.get() );
 
