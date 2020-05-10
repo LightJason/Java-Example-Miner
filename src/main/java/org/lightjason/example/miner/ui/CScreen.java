@@ -240,15 +240,11 @@ public final class CScreen extends ApplicationAdapter implements IScreen, InputP
 
             // + key
             case 72:
-                m_camera.zoom *= 1 - ZOOMSPEED;
-                m_camera.update();
-                return false;
+                return this.zoom( -1 );
 
             // - key
             case 76:
-                m_camera.zoom *= 1 + ZOOMSPEED;
-                m_camera.update();
-                return false;
+                return this.zoom( +1 );
 
             default:
                 return false;
@@ -284,6 +280,7 @@ public final class CScreen extends ApplicationAdapter implements IScreen, InputP
     @Override
     public final boolean touchDragged( final int p_screenx, final int p_screeny, final int p_pointer )
     {
+        System.out.println( p_screenx, p_screeny );
         m_camera.translate(
             new Vector3().set( p_screenx, p_screeny, 0 )
                          .sub( m_lasttouch )
@@ -303,9 +300,18 @@ public final class CScreen extends ApplicationAdapter implements IScreen, InputP
     @Override
     public final boolean scrolled( final int p_amount )
     {
-        m_camera.zoom *= p_amount > 0
-                         ? 1 + ZOOMSPEED
-                         : 1 - ZOOMSPEED;
+        return this.zoom( p_amount );
+    }
+
+    /**
+     * zooming
+     *
+     * @param p_amount level
+     * @return flag
+     */
+    private boolean zoom( final int p_amount )
+    {
+        m_camera.zoom += p_amount * ZOOMSPEED;
         m_camera.update();
         return false;
     }

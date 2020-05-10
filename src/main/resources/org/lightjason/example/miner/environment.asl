@@ -2,7 +2,7 @@
 
 +!main <-
     .world/create(250, 250);
-    .world/start( 1200, 1000 );
+    .world/start( 1000, 1000 );
     .generic/print("environment start").
 
 +!world/start <-
