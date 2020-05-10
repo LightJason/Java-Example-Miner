@@ -156,7 +156,7 @@ public final class CAgentEnvironment extends IBaseAgentScenario<IAgentEnvironmen
     }
 
     /**
-     * creates a horizontal solid
+     * creates a solid element
      *
      * @param p_solid solid
      * @param p_xstart start x-position
@@ -164,37 +164,17 @@ public final class CAgentEnvironment extends IBaseAgentScenario<IAgentEnvironmen
      * @param p_size x-size
      */
     @IAgentActionFilter
-    @IAgentActionName( name = "solid/horizontal" )
-    public void solidhorizontalcreate( @Nonnull final String p_solid, @Nonnull final Number p_xstart, @Nonnull final Number p_ystart, @Nonnull final Number p_size )
+    @IAgentActionName( name = "solid/create" )
+    public void solidhorizontalcreate( @Nonnull final Number p_xstart, @Nonnull final Number p_ystart, @Nonnull final Number p_xstap, @Nonnull final Number p_ystop  )
     {
         Objects.requireNonNull( m_grid.get() );
-        final ISolid l_solid = ESolid.valueOf( p_solid.trim().toUpperCase( Locale.ROOT ) );
 
+        /*
         IntStream.range( p_xstart.intValue(), p_xstart.intValue() + p_size.intValue() )
                  .parallel()
                  .filter( x -> x >= 0 && x < m_grid.get().columns() )
                  .forEach( x -> m_grid.get().setQuick( p_ystart.intValue(), x, l_solid ) );
-    }
-
-    /**
-     * creates a vertical solid
-     *
-     * @param p_solid solid
-     * @param p_xstart start x-position
-     * @param p_ystart start y-position
-     * @param p_size y-size
-     */
-    @IAgentActionFilter
-    @IAgentActionName( name = "solid/vertical" )
-    public void solidverticalcreate( @Nonnull final String p_solid, @Nonnull final Number p_xstart, @Nonnull final Number p_ystart, @Nonnull final Number p_size )
-    {
-        Objects.requireNonNull( m_grid.get() );
-        final ISolid l_solid = ESolid.valueOf( p_solid.trim().toUpperCase( Locale.ROOT ) );
-
-        IntStream.range( p_ystart.intValue(), p_ystart.intValue() + p_size.intValue() )
-                 .parallel()
-                 .filter( y -> y >= 0 && y < m_grid.get().rows() )
-                 .forEach( y -> m_grid.get().setQuick( y, p_xstart.intValue(), l_solid ) );
+         */
     }
 
     /**

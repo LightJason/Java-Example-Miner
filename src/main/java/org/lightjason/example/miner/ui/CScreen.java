@@ -280,7 +280,7 @@ public final class CScreen extends ApplicationAdapter implements IScreen, InputP
     @Override
     public final boolean touchDragged( final int p_screenx, final int p_screeny, final int p_pointer )
     {
-        System.out.println( p_screenx, p_screeny );
+        System.out.println(MessageFormat.format( "{0}   {1}", p_screenx, p_screeny ) );
         m_camera.translate(
             new Vector3().set( p_screenx, p_screeny, 0 )
                          .sub( m_lasttouch )
