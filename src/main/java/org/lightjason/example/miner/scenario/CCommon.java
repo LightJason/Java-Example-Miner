@@ -23,12 +23,15 @@
 
 package org.lightjason.example.miner.scenario;
 
+import cern.colt.matrix.tdouble.DoubleMatrix1D;
+import cern.colt.matrix.tobject.ObjectMatrix2D;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Objects;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Predicate;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -95,6 +98,62 @@ public final class CCommon
                                                 .boxed()
                                                 .filter( p_yfilter )
                                                 .map( y -> new ImmutablePair<>( y, x ) ) );
+    }
+
+    /**
+     * gets an object from the grid
+     *
+     * @param p_grid grid
+     * @param p_position position vector
+     * @return object or null
+     */
+    @Nonnull
+    public static Object getGrid( @Nonnull final ObjectMatrix2D p_grid, @Nonnull final DoubleMatrix1D p_position )
+    {
+        return p_grid.getQuick(
+                CCommon.toNumber( p_position.getQuick( 0 ) ).intValue(),
+                CCommon.toNumber( p_position.getQuick( 1 ) ).intValue()
+        );
+    }
+
+    /**
+     * sets an object to the grid if position is empty
+     * @param p_grid grid
+     * @param p_position position vector
+     * @param p_object object or null
+     * @return is object can be placed
+     */
+    public static boolean setGrid( @Nonnull final ObjectMatrix2D p_grid, @Nonnull final DoubleMatrix1D p_position, @Nullable final Object p_object )
+    {
+        synchronized ( p_grid )
+        {
+            if ( Objects.nonNull( p_grid.getQuick(
+                    CCommon.toNumber( p_position.getQuick( 0 ) ).intValue(),
+                    CCommon.toNumber( p_position.getQuick( 1 ) ).intValue()
+            ) ) )
+                return false;
+
+            p_grid.setQuick(
+                    CCommon.toNumber( p_position.getQuick( 0 ) ).intValue(),
+                    CCommon.toNumber( p_position.getQuick( 1 ) ).intValue(),
+                    p_object
+            );
+        }
+        return true;
+    }
+
+    /**
+     * sets a random position based on grid size
+     *
+     * @param p_grid grid
+     * @param p_position position vector
+     * @return modified input vector
+     */
+    public static DoubleMatrix1D randomPostion( @Nonnull final ObjectMatrix2D p_grid, @Nonnull final DoubleMatrix1D p_position )
+    {
+        p_position.setQuick( 0, ThreadLocalRandom.current().nextInt( p_grid.rows() ) );
+        p_position.setQuick( 1, ThreadLocalRandom.current().nextInt( p_grid.columns() ) );
+        return p_position;
     }
 
 }

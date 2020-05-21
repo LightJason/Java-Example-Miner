@@ -47,9 +47,9 @@ import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import java.io.InputStream;
 import java.net.URISyntaxException;
+import java.text.MessageFormat;
 import java.util.Objects;
 import java.util.Set;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicReference;
 
 
@@ -96,40 +96,18 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
      */
     protected IBaseAgentMoving( @Nonnull final IAgentConfiguration<IAgentMoving> p_configuration,
                                 @Nonnull final Sprite p_sprite, @Nonnull final Set<ISprite> p_visibleobjects,
-                                @Nonnull final IRuntime p_runtime, @Nonnull final ISleeper p_sleeper, @Nonnull final ObjectMatrix2D p_grid
-    )
+                                @Nonnull final IRuntime p_runtime, @Nonnull final ISleeper p_sleeper, @Nonnull final ObjectMatrix2D p_grid )
     {
         super( p_configuration, p_runtime, p_sleeper );
         m_grid = p_grid;
         m_sprite = p_sprite;
         m_visibleobjects = p_visibleobjects;
 
-        synchronized ( m_grid )
-        {
+        CCommon.randomPostion( m_grid, m_position );
+        while ( !CCommon.setGrid( m_grid, m_position, this ) )
+            CCommon.randomPostion( m_grid, m_position );
 
-            int l_xpos = ThreadLocalRandom.current().nextInt( m_grid.columns() );
-            int l_ypos = ThreadLocalRandom.current().nextInt( m_grid.rows() );
-
-            while ( Objects.nonNull( m_grid.getQuick( l_ypos, l_xpos ) ) )
-            {
-                l_xpos = ThreadLocalRandom.current().nextInt( m_grid.columns() );
-                l_ypos = ThreadLocalRandom.current().nextInt( m_grid.rows() );
-            }
-
-            m_grid.setQuick( l_ypos, l_xpos, this );
-            m_position.set( 0, l_ypos );
-            m_position.set( 1, l_xpos );
-        }
-
-        this.position2sprite();
-    }
-
-    /**
-     * sets the position vector to sprite
-     */
-    private void position2sprite()
-    {
-        m_sprite.setPosition( CCommon.toNumber( m_position.getQuick( 0 ) ).intValue(), CCommon.toNumber( m_position.getQuick( 1 ) ).intValue() );
+        org.lightjason.example.miner.ui.CCommon.setSprite( m_sprite, m_position );
     }
 
     @Override
@@ -195,34 +173,15 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
      */
     private void walk( @Nonnull final EMovementDirection p_direction )
     {
-        System.out.println( m_position );
-        synchronized ( m_grid )
-        {
-            this.removePosition();
-            m_position.assign( p_direction.apply( m_position, m_goal, 1.0 / CScreen.SCREEN.get().tilemap().cellsize() ) );
-
-            m_grid.setQuick(
-                CCommon.toNumber( m_position.getQuick( 0 ) ).intValue(),
-                CCommon.toNumber( m_position.getQuick( 1 ) ).intValue(),
-                this
+        final DoubleMatrix1D l_new = p_direction.apply( m_position, m_goal, 1 );
+        if ( !CCommon.setGrid( m_grid, l_new, this ) )
+            throw new RuntimeException(
+                    MessageFormat.format( "postion [{0} / {1}] not empty", l_new.getQuick( 0 ), l_new.getQuick( 1 ) )
             );
-        }
 
-        this.position2sprite();
-        System.out.println( m_position );
-        System.out.println();
-    }
-
-    /**
-     * remove position
-     */
-    protected final void removePosition()
-    {
-        m_grid.setQuick(
-            CCommon.toNumber( m_position.getQuick( 0 ) ).intValue(),
-            CCommon.toNumber( m_position.getQuick( 1 ) ).intValue(),
-            null
-        );
+        CCommon.setGrid( m_grid, m_position, null );
+        m_position.assign( l_new );
+        org.lightjason.example.miner.ui.CCommon.setSprite( m_sprite, m_position );
     }
 
     /**
