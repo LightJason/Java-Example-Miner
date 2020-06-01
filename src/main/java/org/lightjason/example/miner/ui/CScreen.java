@@ -222,8 +222,24 @@ public final class CScreen extends ApplicationAdapter implements IScreen, InputP
     @Override
     public final boolean keyDown( final int p_key )
     {
+        System.out.println(p_key);
         switch ( p_key )
         {
+            // left key
+            case 21:
+                return false;
+
+            // up key
+            case 19:
+                return false;
+
+            // right key
+            case 22:
+                return false;
+
+            // down key
+            case 20:
+                return false;
 
             // r key
             case 46:
@@ -280,7 +296,18 @@ public final class CScreen extends ApplicationAdapter implements IScreen, InputP
     @Override
     public final boolean touchDragged( final int p_screenx, final int p_screeny, final int p_pointer )
     {
-        System.out.println( MessageFormat.format( "{0}   {1}", p_screenx, p_screeny ) );
+        return move( p_screenx, p_screeny );
+    }
+
+    /**
+     * move the grid structure
+     *
+     * @param p_screenx new screen-x position
+     * @param p_screeny new sceenn-y position
+     * @return
+     */
+    private boolean move( final int p_screenx, final int p_screeny )
+    {
         m_camera.translate(
             new Vector3().set( p_screenx, p_screeny, 0 )
                          .sub( m_lasttouch )
