@@ -72,17 +72,9 @@ public final class CScreen extends ApplicationAdapter implements IScreen, InputP
      */
     public static final int WAITTIME = 1000;
     /**
-     * zoom speed
+     * zoom & drag changing speed
      */
-    private static final int ZOOMSPEED = 2;
-    /**
-     * drag speed
-     */
-    private static final int DRAGSPEED = 80;
-    /**
-     * move speed
-     */
-    private static final int MOVESPEED = 5;
+    private static final int CHANGESPEED = 2;
     /**
      * environment tilemap reference
      */
@@ -157,6 +149,9 @@ public final class CScreen extends ApplicationAdapter implements IScreen, InputP
         m_camera.zoom = m_environment.cellsize();
         m_render.setView( m_camera );
 
+        m_lasttouch.x = Gdx.graphics.getWidth() / 2f;
+        m_lasttouch.y = Gdx.graphics.getHeight() / 2f;
+
         // initialize agent visiblility structure
         m_minergenerator.spriteinitialize( m_sprites, l_unit );
 
@@ -230,19 +225,19 @@ public final class CScreen extends ApplicationAdapter implements IScreen, InputP
         {
             // left key
             case 21:
-                return this.move( Gdx.graphics.getWidth() / 2 - MOVESPEED, Gdx.graphics.getHeight() / 2 );
+                return this.move( m_lasttouch.x + CHANGESPEED, m_lasttouch.y );
 
             // up key
             case 19:
-                return this.move( Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2 - MOVESPEED );
+                return this.move( m_lasttouch.x, m_lasttouch.y + CHANGESPEED );
 
             // right key
             case 22:
-                return this.move( Gdx.graphics.getWidth() / 2 + MOVESPEED, Gdx.graphics.getHeight() / 2 );
+                return this.move( m_lasttouch.x - CHANGESPEED, m_lasttouch.y );
 
             // down key
             case 20:
-                return this.move( Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2 + MOVESPEED );
+                return this.move( m_lasttouch.x, m_lasttouch.y - CHANGESPEED );
 
             // r key
             case 46:
@@ -307,16 +302,17 @@ public final class CScreen extends ApplicationAdapter implements IScreen, InputP
      *
      * @param p_screenx new screen-x position
      * @param p_screeny new sceenn-y position
-     * @return
+     * @return default bool
      */
-    private boolean move( final int p_screenx, final int p_screeny )
+    private boolean move( final float p_screenx, final float p_screeny )
     {
         m_camera.translate(
             new Vector3().set( p_screenx, p_screeny, 0 )
                          .sub( m_lasttouch )
-                         .scl( -DRAGSPEED, DRAGSPEED, 0 )
+                         .scl( -CHANGESPEED, CHANGESPEED, 0 )
                          .scl( m_camera.zoom )
         );
+        m_camera.update();
         m_lasttouch.set( p_screenx, p_screeny, 0 );
         return false;
     }
@@ -341,7 +337,7 @@ public final class CScreen extends ApplicationAdapter implements IScreen, InputP
      */
     private boolean zoom( final int p_amount )
     {
-        m_camera.zoom += p_amount * ZOOMSPEED;
+        m_camera.zoom += p_amount * CHANGESPEED;
         m_camera.update();
         return false;
     }
