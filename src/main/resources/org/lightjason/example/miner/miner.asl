@@ -1,11 +1,11 @@
 !main.
 
 +!main <-
-    .generic/print("miner starts running")
-    //!run
+    .generic/print("miner starts running");
+    !run
 .
 
 +!run <-
-    .walk/forward;
+    //.walk/forward;
     !run
 .

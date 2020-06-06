@@ -180,7 +180,6 @@ public final class CScreen extends ApplicationAdapter implements IScreen, InputP
         m_sprites.forEach( i -> i.sprite().draw( m_spritebatch ) );
         m_spritebatch.end();
 
-
         // take screenshot at the rendering end
         this.screenshot();
     }
@@ -386,7 +385,7 @@ public final class CScreen extends ApplicationAdapter implements IScreen, InputP
         // force-exit must be disabled for avoid error exiting
         final LwjglApplicationConfiguration l_config = new LwjglApplicationConfiguration();
 
-        l_config.forceExit = true;
+        l_config.forceExit = false;
         l_config.width = p_width.intValue();
         l_config.height = p_height.intValue();
 

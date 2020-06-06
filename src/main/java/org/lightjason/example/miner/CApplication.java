@@ -96,7 +96,7 @@ public final class CApplication
         }
 
 
-        final ISleeper l_sleeper = getSleeper( l_cli.getOptionValue( "sleep", "" ) );
+        final ISleeper l_sleeper = getSleeper( l_cli.getOptionValue( "sleep", "2000" ) );
         final IActionGenerator l_actions = new CActionGenerator( Stream.of( "org.lightjason.agentspeak.action" ) );
 
         new CAgentEnvironment.CGenerator(

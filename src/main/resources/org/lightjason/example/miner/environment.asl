@@ -1,7 +1,7 @@
 !main.
 
 +!main <-
-    .world/create(250, 250);
+    .world/create(50, 50);
     .world/start( 1000, 1000 );
     .generic/print("environment start")
     .
