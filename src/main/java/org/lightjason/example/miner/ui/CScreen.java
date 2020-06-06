@@ -80,6 +80,10 @@ public final class CScreen extends ApplicationAdapter implements IScreen, InputP
      */
     private static final int DRAGSPEED = 80;
     /**
+     * move speed
+     */
+    private static final int MOVESPEED = 5;
+    /**
      * environment tilemap reference
      */
     private final ITileMap m_environment;
@@ -222,24 +226,23 @@ public final class CScreen extends ApplicationAdapter implements IScreen, InputP
     @Override
     public final boolean keyDown( final int p_key )
     {
-        System.out.println(p_key);
         switch ( p_key )
         {
             // left key
             case 21:
-                return false;
+                return this.move( Gdx.graphics.getWidth() / 2 - MOVESPEED, Gdx.graphics.getHeight() / 2 );
 
             // up key
             case 19:
-                return false;
+                return this.move( Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2 - MOVESPEED );
 
             // right key
             case 22:
-                return false;
+                return this.move( Gdx.graphics.getWidth() / 2 + MOVESPEED, Gdx.graphics.getHeight() / 2 );
 
             // down key
             case 20:
-                return false;
+                return this.move( Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2 + MOVESPEED );
 
             // r key
             case 46:

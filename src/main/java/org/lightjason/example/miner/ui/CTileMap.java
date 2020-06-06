@@ -41,6 +41,18 @@ import java.util.stream.IntStream;
 public final class CTileMap implements ITileMap
 {
     /**
+     * highlight color
+     */
+    private static final float HIGHLIGHT = 0.75f;
+    /**
+     * darklight color
+     */
+    private static final float DARKLIGHT = 0.5f;
+    /**
+     * color alpha value
+     */
+    private static final float ALPHA = 0.4f;
+    /**
      * cell size
      */
     private int m_cellsize;
@@ -74,9 +86,9 @@ public final class CTileMap implements ITileMap
 
         // create background checkerboard with a tile map
         final Pixmap l_pixmap = new Pixmap( 2 * m_cellsize, m_cellsize, Pixmap.Format.RGBA8888 );
-        l_pixmap.setColor( new Color( 0.5f, 0.5f, 0.5f, 0.2f ) );
+        l_pixmap.setColor( new Color( HIGHLIGHT, HIGHLIGHT, HIGHLIGHT, ALPHA ) );
         l_pixmap.fillRectangle( 0, 0, m_cellsize, m_cellsize );
-        l_pixmap.setColor( new Color( 0.3f, 0.3f, 0.3f, 0.2f ) );
+        l_pixmap.setColor( new Color( DARKLIGHT, DARKLIGHT, DARKLIGHT, ALPHA ) );
         l_pixmap.fillRectangle( m_cellsize, 0, m_cellsize, m_cellsize );
 
         final Texture l_texture = new Texture( l_pixmap );
