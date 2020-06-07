@@ -6,6 +6,6 @@
 .
 
 +!run <-
-    //.walk/forward;
+    .walk/forward;
     !run
 .

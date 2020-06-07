@@ -24,6 +24,7 @@
 package org.lightjason.example.miner.scenario;
 
 import cern.colt.matrix.tdouble.DoubleMatrix1D;
+import cern.colt.matrix.tdouble.algo.DoubleFormatter;
 import cern.colt.matrix.tobject.ObjectMatrix2D;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
@@ -42,6 +43,19 @@ import java.util.stream.Stream;
  */
 public final class CCommon
 {
+
+    /**
+     * formatter definition
+     */
+    public static final DoubleFormatter FORMATTER;
+
+    static
+    {
+        FORMATTER = new DoubleFormatter();
+        FORMATTER.setRowSeparator( "; " );
+        FORMATTER.setColumnSeparator( " " );
+        FORMATTER.setPrintShape( false );
+    }
 
     /**
      * ctor
@@ -106,7 +120,7 @@ public final class CCommon
      * @param p_object object or null
      * @return is object can be placed
      */
-    public static synchronized boolean setGrid( @Nonnull final ObjectMatrix2D p_grid, @Nonnull final DoubleMatrix1D p_position, @Nullable final Object p_object )
+    public static boolean setGrid( @Nonnull final ObjectMatrix2D p_grid, @Nonnull final DoubleMatrix1D p_position, @Nullable final Object p_object )
     {
         if ( Objects.nonNull( p_grid.getQuick( yposition( p_position ).intValue(), xposition( p_position ).intValue() ) ) )
             return false;

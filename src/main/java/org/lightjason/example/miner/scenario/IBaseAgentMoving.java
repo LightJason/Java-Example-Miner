@@ -103,12 +103,9 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
         m_sprite = p_sprite;
         m_visibleobjects = p_visibleobjects;
 
-        System.out.println("xxx");
-        System.out.println(CCommon.randomPostion( m_grid, m_position ));
-        System.out.println("yyy");
         CCommon.setGrid( m_grid, m_position, this );
-        //while ( !CCommon.setGrid( m_grid, m_position, this ) )
-        //    CCommon.randomPostion( m_grid, m_position );
+        while ( !CCommon.setGrid( m_grid, m_position, this ) )
+            CCommon.randomPostion( m_grid, m_position );
 
         org.lightjason.example.miner.ui.CCommon.setSprite( m_sprite, m_position );
     }
@@ -176,13 +173,18 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
      */
     private void walk( @Nonnull final EMovementDirection p_direction )
     {
-        final DoubleMatrix1D l_new = p_direction.apply( m_position, m_goal, 1 );
-        if ( !CCommon.setGrid( m_grid, l_new, this ) )
-            throw new RuntimeException(
-                    MessageFormat.format( "postion [{0} / {1}] not empty", l_new.getQuick( 0 ), l_new.getQuick( 1 ) )
-            );
+        final DoubleMatrix1D l_new = p_direction.apply( m_position, m_goal, 0.3 );
 
-        CCommon.setGrid( m_grid, m_position, null );
+        synchronized ( m_goal )
+        {
+            if ( !CCommon.setGrid( m_grid, l_new, this ) )
+                throw new RuntimeException(
+                    MessageFormat.format( "postion [{0} / {1}] not empty", l_new.getQuick( 0 ), l_new.getQuick( 1 ) )
+                );
+
+            CCommon.setGrid( m_grid, m_position, null );
+        }
+
         m_position.assign( l_new );
         org.lightjason.example.miner.ui.CCommon.setSprite( m_sprite, m_position );
     }

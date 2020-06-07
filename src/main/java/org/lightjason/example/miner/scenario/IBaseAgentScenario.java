@@ -80,12 +80,12 @@ public abstract class IBaseAgentScenario<T extends IAgentScenario<?>> extends IB
     @Override
     public T call() throws Exception
     {
-        m_runtime.apply( super.call() );
         m_sleeper.sleep();
 
         //if ( !m_runtime.apply( this ) && Objects.nonNull( m_visibleobjects ) )
         //    m_visibleobjects.remove( this );
 
+        m_runtime.apply( super.call() );
         return this.raw();
     }
 

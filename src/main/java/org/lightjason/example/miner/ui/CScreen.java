@@ -219,6 +219,11 @@ public final class CScreen extends ApplicationAdapter implements IScreen, InputP
             case 22:
                 return this.move( m_lasttouch.x - CHANGESPEED, m_lasttouch.y );
 
+            // e key
+            case 33:
+                Gdx.app.exit();
+                return false;
+
             // down key
             case 20:
                 return this.move( m_lasttouch.x, m_lasttouch.y - CHANGESPEED );
@@ -370,7 +375,7 @@ public final class CScreen extends ApplicationAdapter implements IScreen, InputP
         // force-exit must be disabled for avoid error exiting
         final LwjglApplicationConfiguration l_config = new LwjglApplicationConfiguration();
 
-        l_config.forceExit = false;
+        l_config.forceExit = true;
         l_config.width = p_width.intValue();
         l_config.height = p_height.intValue();
 
