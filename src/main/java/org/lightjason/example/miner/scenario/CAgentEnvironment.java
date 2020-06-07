@@ -82,6 +82,10 @@ public final class CAgentEnvironment extends IBaseAgentScenario<IAgentEnvironmen
      * agent generator for miners
      */
     private final IAgentMovingGenerator m_minergenerator;
+    /**
+     * solid generator
+     */
+    private final ISolid.ISolidGenerator m_solidgenerator = new CSolid.CGenerator( 0.92, 0.64, 0.2 );
 
     /**
      * ctor
@@ -156,16 +160,21 @@ public final class CAgentEnvironment extends IBaseAgentScenario<IAgentEnvironmen
     /**
      * creates a solid element
      *
-     * @param p_xstart start x-position
-     * @param p_ystart start y-position
-     * @param p_xstop stop x-position
-     * @param p_ystop stop y-position
+     * @param p_xupperleft x-position upper-left corner
+     * @param p_yupperleft y-position upper-left corner
+     * @param p_width p_width
+     * @param p_height height
      */
     @IAgentActionFilter
     @IAgentActionName( name = "solid/create" )
-    public void solidcreate( @Nonnull final Number p_xstart, @Nonnull final Number p_ystart, @Nonnull final Number p_xstop, @Nonnull final Number p_ystop  )
+    public void solidcreate( @Nonnull final Number p_xupperleft, @Nonnull final Number p_yupperleft,
+                             @Nonnull final Number p_width, @Nonnull final Number p_height  )
     {
         Objects.requireNonNull( m_grid.get() );
+        m_visibleobjects.add(
+            m_solidgenerator.generate( p_xupperleft, p_yupperleft, p_width, p_height )
+                            .gridposition( m_grid.get() )
+        );
 
         /*
         IntStream.range( p_xstart.intValue(), p_xstart.intValue() + p_size.intValue() )

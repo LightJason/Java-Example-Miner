@@ -23,6 +23,7 @@
 
 package org.lightjason.example.miner.scenario;
 
+import cern.colt.matrix.tobject.ObjectMatrix2D;
 import org.lightjason.example.miner.ui.ISprite;
 import org.lightjason.example.miner.ui.ISpriteGenerator;
 
@@ -34,6 +35,13 @@ import javax.annotation.Nonnull;
  */
 public interface ISolid extends ISprite
 {
+
+    /**
+     * add the solid to the grid
+     * @param p_grid grid
+     * @return self-reference
+     */
+    ISolid gridposition( @Nonnull final ObjectMatrix2D p_grid );
 
     /**
      * solid generator

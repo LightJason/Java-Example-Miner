@@ -23,6 +23,7 @@
 
 package org.lightjason.example.miner.scenario;
 
+import cern.colt.matrix.tobject.ObjectMatrix2D;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -58,6 +59,12 @@ public final class CSolid implements ISolid
     public Sprite sprite()
     {
         return m_sprite;
+    }
+
+    @Override
+    public ISolid gridposition( @Nonnull final ObjectMatrix2D p_grid )
+    {
+        return this;
     }
 
 
