@@ -139,28 +139,28 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
     }
 
     @IAgentActionFilter
-    @IAgentActionName( name = "walk/forward" )
+    @IAgentActionName( name = "move/forward" )
     private void walkstraight()
     {
         this.walk( EMovementDirection.FORWARD );
     }
 
     @IAgentActionFilter
-    @IAgentActionName( name = "walk/left" )
+    @IAgentActionName( name = "move/left" )
     private void walkleft()
     {
         this.walk( EMovementDirection.LEFT );
     }
 
     @IAgentActionFilter
-    @IAgentActionName( name = "walk/right" )
+    @IAgentActionName( name = "move/right" )
     private void walkright()
     {
         this.walk( EMovementDirection.RIGHT );
     }
 
     @IAgentActionFilter
-    @IAgentActionName( name = "walk/backward" )
+    @IAgentActionName( name = "move/backward" )
     private void walkbackward()
     {
         this.walk( EMovementDirection.BACKWARD );
