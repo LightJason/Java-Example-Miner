@@ -41,4 +41,8 @@ public interface ISpriteGenerator
      */
     void spriteinitialize( @Nonnull final Set<ISprite> p_sprites, @Nonnegative float p_unit );
 
+    /**
+     * calls the dispose of the ui object
+     */
+    void dispose();
 }

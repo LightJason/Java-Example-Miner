@@ -51,14 +51,84 @@ public final class CCommon
     }
 
     /**
-     * number casting
+     * returns the x position of the position vector
      *
-     * @param p_value any number value
-     * @return number object
+     * @param p_position position vector
+     * @return x position
      */
-    public static Number toNumber( @Nonnull final Number p_value )
+    public static Number xposition( @Nonnull final DoubleMatrix1D p_position )
     {
-        return p_value;
+        return p_position.getQuick( 1 );
+    }
+
+    /**
+     * returns the y position of the position vector
+     *
+     * @param p_position position vector
+     * @return y position
+     */
+    public static Number yposition( @Nonnull final DoubleMatrix1D p_position )
+    {
+        return p_position.getQuick( 0 );
+    }
+
+    /**
+     * set the new position values into the position vector
+     * @param p_position position vector
+     * @param p_xvalue new x value
+     * @param p_yvalue new y value
+     * @return position vector
+     */
+    public static DoubleMatrix1D setPosition( @Nonnull final DoubleMatrix1D p_position, @Nonnull final Number p_xvalue, @Nonnull final Number p_yvalue )
+    {
+        p_position.setQuick( 0, p_yvalue.doubleValue() );
+        p_position.setQuick( 1, p_xvalue.doubleValue() );
+        return p_position;
+    }
+
+    /**
+     * gets an object from the grid
+     *
+     * @param p_grid grid
+     * @param p_position position vector
+     * @return object or null
+     */
+    @Nonnull
+    public static Object getGrid( @Nonnull final ObjectMatrix2D p_grid, @Nonnull final DoubleMatrix1D p_position )
+    {
+        return p_grid.getQuick( yposition( p_position ).intValue(), xposition( p_position ).intValue() );
+    }
+
+    /**
+     * sets an object to the grid if position is empty
+     * @param p_grid grid
+     * @param p_position position vector
+     * @param p_object object or null
+     * @return is object can be placed
+     */
+    public static synchronized boolean setGrid( @Nonnull final ObjectMatrix2D p_grid, @Nonnull final DoubleMatrix1D p_position, @Nullable final Object p_object )
+    {
+        if ( Objects.nonNull( p_grid.getQuick( yposition( p_position ).intValue(), xposition( p_position ).intValue() ) ) )
+            return false;
+
+        p_grid.setQuick( yposition( p_position ).intValue(), xposition( p_position ).intValue(), p_object );
+        return true;
+    }
+
+    /**
+     * sets a random position based on grid size
+     *
+     * @param p_grid grid
+     * @param p_position position vector
+     * @return modified input vector
+     */
+    public static DoubleMatrix1D randomPostion( @Nonnull final ObjectMatrix2D p_grid, @Nonnull final DoubleMatrix1D p_position )
+    {
+        return setPosition(
+            p_position,
+            ThreadLocalRandom.current().nextInt( p_grid.rows() ),
+            ThreadLocalRandom.current().nextInt( p_grid.columns() )
+        );
     }
 
     /**
@@ -98,62 +168,6 @@ public final class CCommon
                                                 .boxed()
                                                 .filter( p_yfilter )
                                                 .map( y -> new ImmutablePair<>( y, x ) ) );
-    }
-
-    /**
-     * gets an object from the grid
-     *
-     * @param p_grid grid
-     * @param p_position position vector
-     * @return object or null
-     */
-    @Nonnull
-    public static Object getGrid( @Nonnull final ObjectMatrix2D p_grid, @Nonnull final DoubleMatrix1D p_position )
-    {
-        return p_grid.getQuick(
-                CCommon.toNumber( p_position.getQuick( 0 ) ).intValue(),
-                CCommon.toNumber( p_position.getQuick( 1 ) ).intValue()
-        );
-    }
-
-    /**
-     * sets an object to the grid if position is empty
-     * @param p_grid grid
-     * @param p_position position vector
-     * @param p_object object or null
-     * @return is object can be placed
-     */
-    public static boolean setGrid( @Nonnull final ObjectMatrix2D p_grid, @Nonnull final DoubleMatrix1D p_position, @Nullable final Object p_object )
-    {
-        synchronized ( p_grid )
-        {
-            if ( Objects.nonNull( p_grid.getQuick(
-                    CCommon.toNumber( p_position.getQuick( 0 ) ).intValue(),
-                    CCommon.toNumber( p_position.getQuick( 1 ) ).intValue()
-            ) ) )
-                return false;
-
-            p_grid.setQuick(
-                    CCommon.toNumber( p_position.getQuick( 0 ) ).intValue(),
-                    CCommon.toNumber( p_position.getQuick( 1 ) ).intValue(),
-                    p_object
-            );
-        }
-        return true;
-    }
-
-    /**
-     * sets a random position based on grid size
-     *
-     * @param p_grid grid
-     * @param p_position position vector
-     * @return modified input vector
-     */
-    public static DoubleMatrix1D randomPostion( @Nonnull final ObjectMatrix2D p_grid, @Nonnull final DoubleMatrix1D p_position )
-    {
-        p_position.setQuick( 0, ThreadLocalRandom.current().nextInt( p_grid.rows() ) );
-        p_position.setQuick( 1, ThreadLocalRandom.current().nextInt( p_grid.columns() ) );
-        return p_position;
     }
 
 }

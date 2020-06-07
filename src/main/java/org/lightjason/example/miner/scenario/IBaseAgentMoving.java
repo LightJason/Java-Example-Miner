@@ -103,13 +103,12 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
         m_sprite = p_sprite;
         m_visibleobjects = p_visibleobjects;
 
-        /*
-        CCommon.randomPostion( m_grid, m_position );
-        while ( !CCommon.setGrid( m_grid, m_position, this ) )
-            CCommon.randomPostion( m_grid, m_position );
-        */
-        m_position.setQuick( 0, 5 );
-        m_position.setQuick( 1, 5 );
+        System.out.println("xxx");
+        System.out.println(CCommon.randomPostion( m_grid, m_position ));
+        System.out.println("yyy");
+        CCommon.setGrid( m_grid, m_position, this );
+        //while ( !CCommon.setGrid( m_grid, m_position, this ) )
+        //    CCommon.randomPostion( m_grid, m_position );
 
         org.lightjason.example.miner.ui.CCommon.setSprite( m_sprite, m_position );
     }
@@ -271,6 +270,12 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
             {
                 throw new RuntimeException( l_exception );
             }
+        }
+
+        @Override
+        public void dispose()
+        {
+            Objects.requireNonNull( m_texture.get() ).dispose();
         }
 
         /**

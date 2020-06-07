@@ -104,10 +104,6 @@ public final class CScreen extends ApplicationAdapter implements IScreen, InputP
      */
     private int m_iteration;
     /**
-     * flag for disposed screen
-     */
-    private volatile boolean m_isdisposed;
-    /**
      * flag for taking a screenshot
      */
     private volatile boolean m_screenshottake;
@@ -187,21 +183,10 @@ public final class CScreen extends ApplicationAdapter implements IScreen, InputP
     @Override
     public final void dispose()
     {
-        // dispose flag is set to stop parallel simulation execution outside the screen
-        m_isdisposed = true;
         m_spritebatch.dispose();
         m_render.dispose();
+        m_minergenerator.dispose();
         super.dispose();
-    }
-
-    /**
-     * returns if the screen is disposed
-     *
-     * @return disposed flag
-     */
-    public final boolean isDisposed()
-    {
-        return m_isdisposed;
     }
 
 

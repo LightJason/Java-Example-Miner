@@ -50,8 +50,8 @@ public final class CCommon
     public static void setSprite( @Nonnull final Sprite p_sprite, @Nonnull final DoubleMatrix1D p_position )
     {
         p_sprite.setPosition(
-            org.lightjason.example.miner.scenario.CCommon.toNumber( p_position.getQuick( 1 ) ).intValue(),
-            org.lightjason.example.miner.scenario.CCommon.toNumber( p_position.getQuick( 0 ) ).intValue()
+            org.lightjason.example.miner.scenario.CCommon.xposition( p_position ).intValue(),
+            org.lightjason.example.miner.scenario.CCommon.yposition( p_position ).intValue()
         );
     }
 }
