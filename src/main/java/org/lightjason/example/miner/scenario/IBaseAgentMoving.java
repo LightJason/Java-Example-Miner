@@ -248,12 +248,13 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
         /**
          * overwritten for initialization
          * @param p_sprites set with sprites
+         * @param p_cellsize
          * @param p_unit unit scale
          * @bug not working in a Jar file because path is incorrect, must be refactored for Maven build
          * @todo refactoring for Maven build
          */
         @Override
-        public final void spriteinitialize( @Nonnull final Set<ISprite> p_sprites, @Nonnegative float p_unit )
+        public final void spriteinitialize( @Nonnull final Set<ISprite> p_sprites, @Nonnegative final int p_cellsize, @Nonnegative final float p_unit )
         {
             // https://github.com/libgdx/libgdx/wiki/File-handling#file-storage-types
 

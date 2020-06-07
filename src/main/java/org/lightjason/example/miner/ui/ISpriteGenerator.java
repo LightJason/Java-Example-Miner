@@ -37,9 +37,10 @@ public interface ISpriteGenerator
     /**
      * sprite initialize for correct painting initialization
      * @param p_sprites sprite set
+     * @param p_cellsize cellsize
      * @param p_unit unit value
      */
-    void spriteinitialize( @Nonnull final Set<ISprite> p_sprites, @Nonnegative float p_unit );
+    void spriteinitialize( @Nonnull final Set<ISprite> p_sprites, @Nonnegative final int p_cellsize, @Nonnegative final float p_unit );
 
     /**
      * calls the dispose of the ui object

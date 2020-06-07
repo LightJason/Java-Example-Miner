@@ -29,7 +29,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import org.lightjason.example.miner.ui.ISprite;
 
+import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
+import java.util.Objects;
 import java.util.Set;
 
 
@@ -39,38 +41,110 @@ import java.util.Set;
 public final class CSolid implements ISolid
 {
     /**
-     * color of the solid block
+     * sprite
      */
-    private static final Color COLOR = new Color( 1f, 0.73f, 0.2f, 1f );
+    private final Sprite m_sprite;
+
+    /**
+     * ctor
+     * @param p_sprite sprite
+     */
+    private CSolid( @Nonnull final Sprite p_sprite )
+    {
+        m_sprite = p_sprite;
+    }
 
     @Override
     public Sprite sprite()
     {
-        return null;
+        return m_sprite;
     }
 
-    @Override
-    public void spriteinitialize( @Nonnull final Set<ISprite> p_sprites, final float p_unit )
+
+    /**
+     * solid generator
+     */
+    public static final class CGenerator implements ISolidGenerator
     {
-        // variables are defined as size1 = x-size & size2 = y-size
-        final float l_size1 = p_cellsize * (int) m_position.getQuick( 3 );
-        final float l_size2 = p_cellsize * (int) m_position.getQuick( 2 );
+        /**
+         * color of the solid block
+         */
+        private final Color m_color;
+        /**
+         * pixmap
+         */
+        private Pixmap m_pixmap;
+        /**
+         * texture
+         */
+        private Texture m_texture;
+        /**
+         * cellsize
+         */
+        private Number m_cellsize;
+        /**
+         * unit
+         */
+        private Number m_unit;
 
-        // create a colored block of the item
-        final Pixmap l_pixmap = new Pixmap( p_cellsize, p_cellsize, Pixmap.Format.RGBA8888 );
-        l_pixmap.setColor( m_color );
-        l_pixmap.fillRectangle( 0, 0, (int) l_size2, (int) l_size1 );
+        /**
+         * ctor
+         *
+         * @param p_red red in [0,1]
+         * @param p_green green in [0,1]
+         * @param p_blue blue in [0,1]
+         */
+        public CGenerator( @Nonnegative final Number p_red, @Nonnegative final Number p_green,
+                           @Nonnegative final Number p_blue )
+        {
+            this( p_red, p_green, p_blue, 1 );
+        }
 
-        // add the square to a sprite (for visualization) and use 100% of cell size
-        m_sprite = new Sprite( new Texture( l_pixmap ), 0, 0, (int) l_size2, (int) l_size1 );
-        m_sprite.setSize( l_size1, l_size2 );
-        m_sprite.setOrigin( 1.5f / p_cellsize, 1.5f / p_cellsize );
-        m_sprite.setPosition( (float) m_position.get( 1 ), (float) m_position.get( 0 ) );
-        m_sprite.setScale( p_unit );
-    }
+        /**
+         * ctor
+         *
+         * @param p_red red in [0,1]
+         * @param p_green green in [0,1]
+         * @param p_blue blue in [0,1]
+         * @param p_alpha alpha in [0,1]
+         */
+        public CGenerator( @Nonnegative final Number p_red, @Nonnegative final Number p_green,
+                           @Nonnegative final Number p_blue, @Nonnegative final Number p_alpha )
+        {
+            m_color = new Color( p_red.floatValue(), p_green.floatValue(), p_blue.floatValue(), p_alpha.floatValue() );
+        }
 
-    @Override
-    public void dispose()
-    {
+        @Override
+        public void spriteinitialize( @Nonnull final Set<ISprite> p_sprites, final int p_cellsize, final float p_unit )
+        {
+            m_unit = p_unit;
+            m_cellsize = p_cellsize;
+
+            m_pixmap = new Pixmap( m_cellsize.intValue(), m_cellsize.intValue(), Pixmap.Format.RGBA8888 );
+            m_pixmap.setColor( m_color );
+            m_pixmap.fillRectangle( 0, 0, m_cellsize.intValue(), m_cellsize.intValue() );
+
+            m_texture = new Texture( m_pixmap );
+        }
+
+        @Override
+        public void dispose()
+        {
+            Objects.requireNonNull( m_texture ).dispose();
+            Objects.requireNonNull( m_pixmap ).dispose();
+        }
+
+        @Override
+        public ISolid generate( @Nonnull final Number p_xupperleft, @Nonnull final Number p_yupperleft, @Nonnull final Number p_width,
+                                @Nonnull final Number p_height )
+        {
+            final Sprite l_sprite = new Sprite( m_texture, 0, 0, m_cellsize.intValue(), m_cellsize.intValue() );
+            l_sprite.setSize( m_cellsize.floatValue() * p_width.floatValue(), m_cellsize.floatValue() * p_height.floatValue() );
+            l_sprite.setOrigin( 1.5f / m_cellsize.floatValue(), 1.5f / m_cellsize.floatValue() );
+            l_sprite.setPosition( p_xupperleft.floatValue(), p_yupperleft.floatValue() );
+            l_sprite.setScale( m_unit.floatValue() );
+
+            return new CSolid( l_sprite );
+        }
     }
 }

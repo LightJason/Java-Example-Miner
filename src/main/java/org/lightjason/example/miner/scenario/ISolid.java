@@ -26,7 +26,31 @@ package org.lightjason.example.miner.scenario;
 import org.lightjason.example.miner.ui.ISprite;
 import org.lightjason.example.miner.ui.ISpriteGenerator;
 
+import javax.annotation.Nonnull;
 
-public interface ISolid extends ISprite, ISpriteGenerator
+
+/**
+ * solid interface
+ */
+public interface ISolid extends ISprite
 {
+
+    /**
+     * solid generator
+     */
+    interface ISolidGenerator extends ISpriteGenerator
+    {
+
+        /**
+         * generates a new solid element
+         * @param p_xupperleft x-position upper-left corner
+         * @param p_yupperleft y-position upper-left corner
+         * @param p_width p_width
+         * @param p_height height
+         * @return solid element
+         */
+        ISolid generate( @Nonnull final Number p_xupperleft, @Nonnull final Number p_yupperleft,
+                         @Nonnull final Number p_width, @Nonnull final Number p_height );
+
+    }
 }

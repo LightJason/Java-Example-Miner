@@ -149,7 +149,7 @@ public final class CScreen extends ApplicationAdapter implements IScreen, InputP
         m_lasttouch.y = Gdx.graphics.getHeight() / 2f;
 
         // initialize agent visiblility structure
-        m_minergenerator.spriteinitialize( m_sprites, l_unit );
+        m_minergenerator.spriteinitialize( m_sprites, m_tilemap.cellsize(), l_unit );
 
         // set input processor
         Gdx.input.setInputProcessor( this );
