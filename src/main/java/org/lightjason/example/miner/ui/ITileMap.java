@@ -33,11 +33,28 @@ import java.util.function.Supplier;
  */
 public interface ITileMap extends Supplier<TiledMap>
 {
-
+    /**
+     * cell size
+     *
+     * @return cell size
+     */
     int cellsize();
 
+    /**
+     * number of rows
+     * @return number of rows (y-value)
+     */
     int rows();
 
+    /**
+     * number of columns
+     * @return number of columns (x-value)
+     */
     int columns();
+
+    /**
+     * calls the dispose of the ui object
+     */
+    void dispose();
 
 }

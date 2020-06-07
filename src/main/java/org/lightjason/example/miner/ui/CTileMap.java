@@ -32,6 +32,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
 
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.IntStream;
 
 
@@ -64,6 +65,14 @@ public final class CTileMap implements ITileMap
      * number of columns
      */
     private int m_columns;
+    /**
+     * pixmap object
+     */
+    private final AtomicReference<Pixmap> m_pixmap = new AtomicReference<>();
+    /**
+     * texture reference
+     */
+    private final AtomicReference<Texture> m_texture = new AtomicReference<>();
 
     /**
      * ctor
@@ -85,17 +94,15 @@ public final class CTileMap implements ITileMap
     {
 
         // create background checkerboard with a tile map
-        final Pixmap l_pixmap = new Pixmap( 2 * m_cellsize, m_cellsize, Pixmap.Format.RGBA8888 );
-        l_pixmap.setColor( new Color( HIGHLIGHT, HIGHLIGHT, HIGHLIGHT, ALPHA ) );
-        l_pixmap.fillRectangle( 0, 0, m_cellsize, m_cellsize );
-        l_pixmap.setColor( new Color( DARKLIGHT, DARKLIGHT, DARKLIGHT, ALPHA ) );
-        l_pixmap.fillRectangle( m_cellsize, 0, m_cellsize, m_cellsize );
+        m_pixmap.compareAndSet( null, new Pixmap( 2 * m_cellsize, m_cellsize, Pixmap.Format.RGBA8888 ) );
+        m_pixmap.get().setColor( new Color( HIGHLIGHT, HIGHLIGHT, HIGHLIGHT, ALPHA ) );
+        m_pixmap.get().fillRectangle( 0, 0, m_cellsize, m_cellsize );
+        m_pixmap.get().setColor( new Color( DARKLIGHT, DARKLIGHT, DARKLIGHT, ALPHA ) );
+        m_pixmap.get().fillRectangle( m_cellsize, 0, m_cellsize, m_cellsize );
 
-        final Texture l_texture = new Texture( l_pixmap );
-        l_pixmap.dispose();
-
-        final TiledMapTile l_region1 = new StaticTiledMapTile( new TextureRegion( l_texture, 0, 0, m_cellsize, m_cellsize ) );
-        final TiledMapTile l_region2 = new StaticTiledMapTile( new TextureRegion( l_texture, m_cellsize, 0, m_cellsize, m_cellsize ) );
+        m_texture.compareAndSet( null, new Texture( m_pixmap.get() ) );
+        final TiledMapTile l_region1 = new StaticTiledMapTile( new TextureRegion( m_texture.get(), 0, 0, m_cellsize, m_cellsize ) );
+        final TiledMapTile l_region2 = new StaticTiledMapTile( new TextureRegion( m_texture.get(), m_cellsize, 0, m_cellsize, m_cellsize ) );
 
         // create tilemap
         final TiledMap l_map = new TiledMap();
@@ -139,5 +146,12 @@ public final class CTileMap implements ITileMap
     public int columns()
     {
         return m_columns;
+    }
+
+    @Override
+    public void dispose()
+    {
+        m_texture.get().dispose();
+        m_pixmap.get().dispose();
     }
 }

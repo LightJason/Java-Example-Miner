@@ -78,7 +78,7 @@ public final class CScreen extends ApplicationAdapter implements IScreen, InputP
     /**
      * environment tilemap reference
      */
-    private final ITileMap m_environment;
+    private final ITileMap m_tilemap;
     /**
      * sprite list
      */
@@ -118,11 +118,11 @@ public final class CScreen extends ApplicationAdapter implements IScreen, InputP
      * ctor
      *
      * @param p_sprites list with executables
-     * @param p_environment environment reference
+     * @param p_tilemap tilemap
      */
-    private CScreen( @Nonnull final Set<ISprite> p_sprites, @Nonnull final ITileMap p_environment, @Nonnull final IAgentMovingGenerator p_minergenerator )
+    private CScreen( @Nonnull final Set<ISprite> p_sprites, @Nonnull final ITileMap p_tilemap, @Nonnull final IAgentMovingGenerator p_minergenerator )
     {
-        m_environment = p_environment;
+        m_tilemap = p_tilemap;
         m_sprites = p_sprites;
         m_minergenerator = p_minergenerator;
     }
@@ -131,18 +131,18 @@ public final class CScreen extends ApplicationAdapter implements IScreen, InputP
     public final void create()
     {
         // create orthogonal camera perspective
-        final float l_unit = 1.0f / m_environment.cellsize();
+        final float l_unit = 1.0f / m_tilemap.cellsize();
 
         // create execution structure for painting
         m_spritebatch = new SpriteBatch();
 
         // create environment view and put all objects in it
-        m_render = new OrthogonalTiledMapRenderer( m_environment.get(), l_unit, m_spritebatch );
+        m_render = new OrthogonalTiledMapRenderer( m_tilemap.get(), l_unit, m_spritebatch );
 
-        m_camera = new OrthographicCamera( m_environment.columns(), m_environment.rows() );
-        m_camera.setToOrtho( false, m_environment.columns() * l_unit, m_environment.rows() * l_unit );
-        m_camera.position.set( m_environment.columns() / 2f, m_environment.rows() / 2f, 0 );
-        m_camera.zoom = m_environment.cellsize();
+        m_camera = new OrthographicCamera( m_tilemap.columns(), m_tilemap.rows() );
+        m_camera.setToOrtho( false, m_tilemap.columns() * l_unit, m_tilemap.rows() * l_unit );
+        m_camera.position.set( m_tilemap.columns() / 2f, m_tilemap.rows() / 2f, 0 );
+        m_camera.zoom = m_tilemap.cellsize();
         m_render.setView( m_camera );
 
         m_lasttouch.x = Gdx.graphics.getWidth() / 2f;
@@ -183,6 +183,7 @@ public final class CScreen extends ApplicationAdapter implements IScreen, InputP
     @Override
     public final void dispose()
     {
+        m_tilemap.dispose();
         m_spritebatch.dispose();
         m_render.dispose();
         m_minergenerator.dispose();
@@ -230,8 +231,8 @@ public final class CScreen extends ApplicationAdapter implements IScreen, InputP
 
             // r key
             case 46:
-                m_camera.position.set( m_environment.columns() / 2f, m_environment.rows() / 2f, 0 );
-                m_camera.zoom = m_environment.cellsize();
+                m_camera.position.set( m_tilemap.columns() / 2f, m_tilemap.rows() / 2f, 0 );
+                m_camera.zoom = m_tilemap.cellsize();
                 m_camera.update();
                 return false;
 
@@ -357,7 +358,7 @@ public final class CScreen extends ApplicationAdapter implements IScreen, InputP
     @Override
     public ITileMap tilemap()
     {
-        return m_environment;
+        return m_tilemap;
     }
 
     /**
@@ -366,10 +367,10 @@ public final class CScreen extends ApplicationAdapter implements IScreen, InputP
      * @param p_width window width
      * @param p_height window height
      * @param p_sprites set with sprites / agents
-     * @param p_environment environment agent
+     * @param p_tilemap tilemap
      */
     public static void open( @Nonnull final Number p_width, @Nonnull final Number p_height,
-                             @NonNull final Set<ISprite> p_sprites, @NonNull final ITileMap p_environment,
+                             @NonNull final Set<ISprite> p_sprites, @NonNull final ITileMap p_tilemap,
                              @Nonnull final IAgentMovingGenerator p_minergenerator )
     {
         // force-exit must be disabled for avoid error exiting
@@ -379,7 +380,7 @@ public final class CScreen extends ApplicationAdapter implements IScreen, InputP
         l_config.width = p_width.intValue();
         l_config.height = p_height.intValue();
 
-        final CScreen l_screen = new CScreen( p_sprites, p_environment, p_minergenerator );
+        final CScreen l_screen = new CScreen( p_sprites, p_tilemap, p_minergenerator );
         SCREEN.compareAndSet( null,  l_screen );
         new LwjglApplication( l_screen, l_config );
     }
