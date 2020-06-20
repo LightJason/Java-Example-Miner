@@ -40,6 +40,7 @@ import com.badlogic.gdx.utils.BufferUtils;
 import com.badlogic.gdx.utils.ScreenUtils;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import org.lightjason.example.miner.scenario.IAgentMovingGenerator;
+import org.lightjason.example.miner.scenario.ISolid;
 
 import javax.annotation.Nonnull;
 import java.text.MessageFormat;
@@ -111,6 +112,10 @@ public final class CScreen extends ApplicationAdapter implements IScreen, InputP
      * agent generator for visuablity
      */
     private final IAgentMovingGenerator m_minergenerator;
+    /**
+     * solid generator
+     */
+    private final ISolid.ISolidGenerator m_solidgenerator;
 
 
 
@@ -120,11 +125,14 @@ public final class CScreen extends ApplicationAdapter implements IScreen, InputP
      * @param p_sprites list with executables
      * @param p_tilemap tilemap
      */
-    private CScreen( @Nonnull final Set<ISprite> p_sprites, @Nonnull final ITileMap p_tilemap, @Nonnull final IAgentMovingGenerator p_minergenerator )
+    private CScreen( @Nonnull final Set<ISprite> p_sprites, @Nonnull final ITileMap p_tilemap,
+                     @Nonnull final IAgentMovingGenerator p_minergenerator,
+                     @Nonnull final ISolid.ISolidGenerator p_solidgenerator )
     {
         m_tilemap = p_tilemap;
         m_sprites = p_sprites;
         m_minergenerator = p_minergenerator;
+        m_solidgenerator = p_solidgenerator;
     }
 
     @Override
@@ -148,8 +156,9 @@ public final class CScreen extends ApplicationAdapter implements IScreen, InputP
         m_lasttouch.x = Gdx.graphics.getWidth() / 2f;
         m_lasttouch.y = Gdx.graphics.getHeight() / 2f;
 
-        // initialize agent visiblility structure
+        // initialize external visiblility structure
         m_minergenerator.spriteinitialize( m_sprites, m_tilemap.cellsize(), l_unit );
+        m_solidgenerator.spriteinitialize( m_sprites, m_tilemap.cellsize(), l_unit );
 
         // set input processor
         Gdx.input.setInputProcessor( this );
@@ -371,7 +380,8 @@ public final class CScreen extends ApplicationAdapter implements IScreen, InputP
      */
     public static void open( @Nonnull final Number p_width, @Nonnull final Number p_height,
                              @NonNull final Set<ISprite> p_sprites, @NonNull final ITileMap p_tilemap,
-                             @Nonnull final IAgentMovingGenerator p_minergenerator )
+                             @Nonnull final IAgentMovingGenerator p_minergenerator,
+                             @Nonnull final ISolid.ISolidGenerator p_solidgenerator )
     {
         // force-exit must be disabled for avoid error exiting
         final LwjglApplicationConfiguration l_config = new LwjglApplicationConfiguration();
@@ -380,7 +390,7 @@ public final class CScreen extends ApplicationAdapter implements IScreen, InputP
         l_config.width = p_width.intValue();
         l_config.height = p_height.intValue();
 
-        final CScreen l_screen = new CScreen( p_sprites, p_tilemap, p_minergenerator );
+        final CScreen l_screen = new CScreen( p_sprites, p_tilemap, p_minergenerator, p_solidgenerator );
         SCREEN.compareAndSet( null,  l_screen );
         new LwjglApplication( l_screen, l_config );
     }

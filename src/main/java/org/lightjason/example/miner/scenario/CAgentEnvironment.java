@@ -128,7 +128,8 @@ public final class CAgentEnvironment extends IBaseAgentScenario<IAgentEnvironmen
             p_height,
             m_visibleobjects,
             new CTileMap( m_grid.get().rows(), m_grid.get().columns(), 20 ),
-            m_minergenerator
+            m_minergenerator,
+            m_solidgenerator
         );
 
         this.trigger( TRIGGERWORLDSTART );
@@ -175,13 +176,6 @@ public final class CAgentEnvironment extends IBaseAgentScenario<IAgentEnvironmen
             m_solidgenerator.generate( p_xupperleft, p_yupperleft, p_width, p_height )
                             .gridposition( m_grid.get() )
         );
-
-        /*
-        IntStream.range( p_xstart.intValue(), p_xstart.intValue() + p_size.intValue() )
-                 .parallel()
-                 .filter( x -> x >= 0 && x < m_grid.get().columns() )
-                 .forEach( x -> m_grid.get().setQuick( p_ystart.intValue(), x, l_solid ) );
-         */
     }
 
     /**

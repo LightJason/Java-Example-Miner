@@ -34,6 +34,7 @@ import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.IntStream;
 
 
 /**
@@ -45,14 +46,36 @@ public final class CSolid implements ISolid
      * sprite
      */
     private final Sprite m_sprite;
+    /**
+     * x-upper postion
+     */
+    private final Number m_xupperleft;
+    /**
+     * y-upper postion
+     */
+    private final Number m_yupperleft;
+    /**
+     * width
+     */
+    private final Number m_width;
+    /**
+     * height
+     */
+    private final Number m_height;
 
     /**
      * ctor
      * @param p_sprite sprite
      */
-    private CSolid( @Nonnull final Sprite p_sprite )
+    private CSolid( @Nonnull final Sprite p_sprite, @Nonnull final Number p_xupperleft,
+                    @Nonnull final Number p_yupperleft, @Nonnull final Number p_width,
+                    @Nonnull final Number p_height )
     {
         m_sprite = p_sprite;
+        m_xupperleft = p_xupperleft;
+        m_yupperleft = p_yupperleft;
+        m_width = p_width;
+        m_height = p_height;
     }
 
     @Override
@@ -64,6 +87,9 @@ public final class CSolid implements ISolid
     @Override
     public ISolid gridposition( @Nonnull final ObjectMatrix2D p_grid )
     {
+        IntStream.range( m_xupperleft.intValue(), m_xupperleft.intValue() + m_width.intValue() )
+                 .forEach( i -> IntStream.range( m_yupperleft.intValue(), m_yupperleft.intValue() + m_height.intValue() )
+                                         .forEach( j -> p_grid.setQuick( j, i, this ) ) );
         return this;
     }
 
@@ -142,8 +168,8 @@ public final class CSolid implements ISolid
         }
 
         @Override
-        public ISolid generate( @Nonnull final Number p_xupperleft, @Nonnull final Number p_yupperleft, @Nonnull final Number p_width,
-                                @Nonnull final Number p_height )
+        public ISolid generate( @Nonnull final Number p_xupperleft, @Nonnull final Number p_yupperleft,
+                                @Nonnull final Number p_width, @Nonnull final Number p_height )
         {
             final Sprite l_sprite = new Sprite( m_texture, 0, 0, m_cellsize.intValue(), m_cellsize.intValue() );
             l_sprite.setSize( m_cellsize.floatValue() * p_width.floatValue(), m_cellsize.floatValue() * p_height.floatValue() );
@@ -151,7 +177,7 @@ public final class CSolid implements ISolid
             l_sprite.setPosition( p_xupperleft.floatValue(), p_yupperleft.floatValue() );
             l_sprite.setScale( m_unit.floatValue() );
 
-            return new CSolid( l_sprite );
+            return new CSolid( l_sprite, p_xupperleft, p_yupperleft, p_width, p_height );
         }
     }
 }

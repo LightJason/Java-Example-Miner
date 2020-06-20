@@ -8,6 +8,7 @@
 
 +!world/start <-
     .generic/print("world start");
+    .solid/create(15, 15, 20, 20);
     .miner/create
     .
 
