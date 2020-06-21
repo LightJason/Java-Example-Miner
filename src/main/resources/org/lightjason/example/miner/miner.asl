@@ -2,49 +2,41 @@
 
 +!main <-
     .generic/print("miner starts running");
-    !step/forward
+    !step
 .
 
-+!step/forward <-
-    .generic/print("forward");
++!step <-
     .move/forward;
-    !step/forward
+    !step
 .
 
--!step/forward <-
-    .generic/print("forward fail");
+-!step <-
     !step/right
 .
 
 +!step/right <-
-    .generic/print("right");
     .move/right;
-    !step/forward
+    !step
 .
 
 -!step/right <-
-    .generic/print("right fail");
     !step/left
 .
 
 +!step/left <-
-    .generic/print("left");
     .move/left;
-    !step/forward
+    !step
 .
 
 -!step/left <-
-    .generic/print("left fail");
     !step/back
 .
 
 +!step/back <-
-    .generic/print("back");
     .move/backward;
-    !step/forward
+    !step
 .
 
 -!step/back <-
-    .generic/print("back fail");
-    !step/forward
+    !step
 .
