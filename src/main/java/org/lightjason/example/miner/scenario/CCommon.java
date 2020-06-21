@@ -28,12 +28,14 @@ import cern.colt.matrix.tdouble.algo.DoubleFormatter;
 import cern.colt.matrix.tobject.ObjectMatrix2D;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
+import org.lightjason.example.miner.ui.CScreen;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -184,4 +186,26 @@ public final class CCommon
                                                 .map( y -> new ImmutablePair<>( y, x ) ) );
     }
 
+    /**
+     * wait until objects are initialize
+     */
+    public static void waitForInitialize( @Nonnull final Supplier<Object> p_getter )
+    {
+        int l_loop = 0;
+
+        while ( Objects.isNull( p_getter.get() ) && l_loop < CScreen.WAITLOOPS )
+        {
+            l_loop++;
+            try
+            {
+                Thread.sleep( CScreen.WAITTIME );
+            }
+            catch ( final InterruptedException l_exception )
+            {
+                // ignore any error
+            }
+        }
+
+        Objects.requireNonNull( p_getter.get() );
+    }
 }

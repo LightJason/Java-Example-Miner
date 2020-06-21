@@ -103,7 +103,7 @@ public final class CAgentMiner extends IBaseAgentMoving
             Objects.requireNonNull( p_objects[0] );
             final ObjectMatrix2D l_grid = (ObjectMatrix2D) p_objects[0];
 
-            this.waitForInitialize();
+            CCommon.waitForInitialize( () -> m_visibleobjects );
 
             final IAgentMoving l_agent = new CAgentMiner(
                 m_configuration,

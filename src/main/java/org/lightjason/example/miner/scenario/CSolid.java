@@ -119,6 +119,10 @@ public final class CSolid implements ISolid
          * unit
          */
         private Number m_unit;
+        /**
+         * visible objects
+         */
+        private Set<ISprite> m_visibleobjects;
 
         /**
          * ctor
@@ -152,6 +156,7 @@ public final class CSolid implements ISolid
         {
             m_unit = p_unit;
             m_cellsize = p_cellsize;
+            m_visibleobjects = p_sprites;
 
             m_pixmap = new Pixmap( m_cellsize.intValue(), m_cellsize.intValue(), Pixmap.Format.RGBA8888 );
             m_pixmap.setColor( m_color );
@@ -171,13 +176,17 @@ public final class CSolid implements ISolid
         public ISolid generate( @Nonnull final Number p_xupperleft, @Nonnull final Number p_yupperleft,
                                 @Nonnull final Number p_width, @Nonnull final Number p_height )
         {
+            CCommon.waitForInitialize( () -> m_visibleobjects );
+
             final Sprite l_sprite = new Sprite( m_texture, 0, 0, m_cellsize.intValue(), m_cellsize.intValue() );
             l_sprite.setSize( m_cellsize.floatValue() * p_width.floatValue(), m_cellsize.floatValue() * p_height.floatValue() );
             l_sprite.setOrigin( 1.5f / m_cellsize.floatValue(), 1.5f / m_cellsize.floatValue() );
             l_sprite.setPosition( p_xupperleft.floatValue(), p_yupperleft.floatValue() );
             l_sprite.setScale( m_unit.floatValue() );
 
-            return new CSolid( l_sprite, p_xupperleft, p_yupperleft, p_width, p_height );
+            final ISolid l_solid = new CSolid( l_sprite, p_xupperleft, p_yupperleft, p_width, p_height );
+            m_visibleobjects.add( l_solid );
+            return l_solid;
         }
     }
 }

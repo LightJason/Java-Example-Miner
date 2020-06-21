@@ -172,10 +172,8 @@ public final class CAgentEnvironment extends IBaseAgentScenario<IAgentEnvironmen
                              @Nonnull final Number p_width, @Nonnull final Number p_height  )
     {
         Objects.requireNonNull( m_grid.get() );
-        m_visibleobjects.add(
-            m_solidgenerator.generate( p_xupperleft, p_yupperleft, p_width, p_height )
-                            .gridposition( m_grid.get() )
-        );
+        m_solidgenerator.generate( p_xupperleft, p_yupperleft, p_width, p_height )
+                        .gridposition( m_grid.get() );
     }
 
     /**

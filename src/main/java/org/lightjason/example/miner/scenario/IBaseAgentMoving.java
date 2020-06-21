@@ -39,7 +39,6 @@ import org.lightjason.agentspeak.generator.ILambdaStreamingGenerator;
 import org.lightjason.example.miner.CApplication;
 import org.lightjason.example.miner.runtime.IRuntime;
 import org.lightjason.example.miner.runtime.ISleeper;
-import org.lightjason.example.miner.ui.CScreen;
 import org.lightjason.example.miner.ui.ISprite;
 import org.lightjason.example.miner.ui.ITileMap;
 
@@ -221,7 +220,8 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
          */
         protected IBaseMovingAgentGenerator( @Nonnull final InputStream p_asl, @Nonnull final IActionGenerator p_actions,
                                              @Nonnull final ILambdaStreamingGenerator p_lambda,
-                                             @Nonnull final IRuntime p_runtime, @Nonnull final ISleeper p_sleeper, @Nonnull final String p_image )
+                                             @Nonnull final IRuntime p_runtime, @Nonnull final ISleeper p_sleeper, @Nonnull final String p_image
+        )
         {
             super( p_asl, p_actions, p_lambda, p_runtime, p_sleeper );
             m_image = p_image;
@@ -247,6 +247,7 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
 
         /**
          * overwritten for initialization
+         *
          * @param p_sprites set with sprites
          * @param p_cellsize
          * @param p_unit unit scale
@@ -281,27 +282,5 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
             Objects.requireNonNull( m_texture.get() ).dispose();
         }
 
-        /**
-         * wait until objects are initialize
-         */
-        protected final void waitForInitialize()
-        {
-            int l_loop = 0;
-
-            while ( Objects.isNull( m_visibleobjects ) && l_loop < CScreen.WAITLOOPS )
-            {
-                l_loop++;
-                try
-                {
-                    Thread.sleep( CScreen.WAITTIME );
-                }
-                catch ( final InterruptedException l_exception )
-                {
-                    // ignore any error
-                }
-            }
-
-            Objects.requireNonNull( m_visibleobjects );
-        }
     }
 }
