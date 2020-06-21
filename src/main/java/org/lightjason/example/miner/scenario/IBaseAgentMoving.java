@@ -102,9 +102,15 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
         m_sprite = p_sprite;
         m_visibleobjects = p_visibleobjects;
 
+        /*
+        CCommon.randomPostion( m_grid, m_position );
         CCommon.setGrid( m_grid, m_position, this );
         while ( !CCommon.setGrid( m_grid, m_position, this ) )
             CCommon.randomPostion( m_grid, m_position );
+        */
+        m_position.setQuick( 0,m_grid.rows() - 1 );
+        m_position.setQuick( 1,m_grid.columns() - 1 );
+        CCommon.setGrid( m_grid, m_position, this );
 
         org.lightjason.example.miner.ui.CCommon.setSprite( m_sprite, m_position );
     }
