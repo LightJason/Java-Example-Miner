@@ -11,14 +11,15 @@
     !step/forward
 .
 
--!step/froward <-
+-!step/forward <-
     .generic/print("forward fail");
     !step/right
 .
 
 +!step/right <-
     .generic/print("right");
-    .move/right
+    .move/right;
+    !step/forward
 .
 
 -!step/right <-
@@ -28,7 +29,8 @@
 
 +!step/left <-
     .generic/print("left");
-    .move/left
+    .move/left;
+    !step/forward
 .
 
 -!step/left <-
@@ -38,7 +40,8 @@
 
 +!step/back <-
     .generic/print("back");
-    .move/backward
+    .move/backward;
+    !step/forward
 .
 
 -!step/back <-
