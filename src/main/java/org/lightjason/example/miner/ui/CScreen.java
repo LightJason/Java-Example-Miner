@@ -39,6 +39,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.BufferUtils;
 import com.badlogic.gdx.utils.ScreenUtils;
 import edu.umd.cs.findbugs.annotations.NonNull;
+import org.lightjason.example.miner.scenario.EGem;
 import org.lightjason.example.miner.scenario.IAgentMovingGenerator;
 import org.lightjason.example.miner.scenario.ISolid;
 
@@ -159,6 +160,10 @@ public final class CScreen extends ApplicationAdapter implements IScreen, InputP
         // initialize external visiblility structure
         m_minergenerator.spriteinitialize( m_sprites, m_tilemap.cellsize(), l_unit );
         m_solidgenerator.spriteinitialize( m_sprites, m_tilemap.cellsize(), l_unit );
+
+        EGem.RUBY.spriteinitialize( m_sprites, m_tilemap.cellsize(), l_unit );
+        EGem.AMETHYST.spriteinitialize( m_sprites, m_tilemap.cellsize(), l_unit );
+        EGem.SAPPHIRINE.spriteinitialize( m_sprites, m_tilemap.cellsize(), l_unit );
 
         // set input processor
         Gdx.input.setInputProcessor( this );

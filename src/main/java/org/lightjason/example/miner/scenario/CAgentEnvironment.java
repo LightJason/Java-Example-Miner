@@ -23,6 +23,7 @@
 
 package org.lightjason.example.miner.scenario;
 
+import cern.colt.matrix.tdouble.impl.DenseDoubleMatrix1D;
 import cern.colt.matrix.tobject.ObjectMatrix2D;
 import cern.colt.matrix.tobject.impl.SparseObjectMatrix2D;
 import org.lightjason.agentspeak.action.binding.IAgentAction;
@@ -112,7 +113,7 @@ public final class CAgentEnvironment extends IBaseAgentScenario<IAgentEnvironmen
     }
 
     /**
-     * runs the world
+     * action - runs the world
      *
      * @param p_width screen width
      * @param p_height screen height
@@ -136,7 +137,7 @@ public final class CAgentEnvironment extends IBaseAgentScenario<IAgentEnvironmen
     }
 
     /**
-     * creates the world map
+     * action - creates the world map
      *
      * @param p_width world width
      * @param p_height world height
@@ -149,7 +150,7 @@ public final class CAgentEnvironment extends IBaseAgentScenario<IAgentEnvironmen
     }
 
     /**
-     * adds a miner
+     * action - adds a miner
      */
     @IAgentActionFilter
     @IAgentActionName( name = "miner/create" )
@@ -159,7 +160,58 @@ public final class CAgentEnvironment extends IBaseAgentScenario<IAgentEnvironmen
     }
 
     /**
-     * creates a solid element
+     * action - create ruby gem
+     *
+     * @param p_xposition x-position
+     * @param p_yposition y-position
+     */
+    @IAgentActionFilter
+    @IAgentActionName( name = "gem/ruby/create" )
+    private void rubycreate( @Nonnull final Number p_xposition, @Nonnull final Number p_yposition )
+    {
+        this.creategem( EGem.RUBY, p_xposition, p_yposition );
+    }
+
+    /**
+     * action - create amethyst gem
+     *
+     * @param p_xposition x-position
+     * @param p_yposition y-position
+     */
+    @IAgentActionFilter
+    @IAgentActionName( name = "gem/amethyst/create" )
+    private void amethystcreate( @Nonnull final Number p_xposition, @Nonnull final Number p_yposition )
+    {
+        this.creategem( EGem.AMETHYST, p_xposition, p_yposition );
+    }
+
+    /**
+     * action - create sapphirine gem
+     *
+     * @param p_xposition x-position
+     * @param p_yposition y-position
+     */
+    @IAgentActionFilter
+    @IAgentActionName( name = "gem/sapphirine/create" )
+    private void sapphirinecreate( @Nonnull final Number p_xposition, @Nonnull final Number p_yposition )
+    {
+        this.creategem( EGem.SAPPHIRINE, p_xposition, p_yposition );
+    }
+
+    /**
+     * create gem instance
+     *
+     * @param p_gem gem
+     * @param p_xposition x-position
+     * @param p_yposition y-position
+     */
+    private void creategem( @Nonnull final EGem p_gem, @Nonnull final Number p_xposition, @Nonnull final Number p_yposition )
+    {
+        p_gem.apply( new DenseDoubleMatrix1D( new double[]{p_yposition.doubleValue(), p_xposition.doubleValue()} ), m_grid.get() );
+    }
+
+    /**
+     * action - creates a solid element
      *
      * @param p_xupperleft x-position upper-left corner
      * @param p_yupperleft y-position upper-left corner
@@ -177,7 +229,7 @@ public final class CAgentEnvironment extends IBaseAgentScenario<IAgentEnvironmen
     }
 
     /**
-     * get agent energy
+     * action - get agent energy
      *
      * @param p_agent agent
      * @return engery level
@@ -190,7 +242,7 @@ public final class CAgentEnvironment extends IBaseAgentScenario<IAgentEnvironmen
     }
 
     /**
-     * take energy from the agent
+     * action - take energy from the agent
      *
      * @param p_agent agent
      * @param p_value value
@@ -204,7 +256,7 @@ public final class CAgentEnvironment extends IBaseAgentScenario<IAgentEnvironmen
     }
 
     /**
-     * add energy to the agent
+     * action - add energy to the agent
      *
      * @param p_agent agent
      * @param p_value value

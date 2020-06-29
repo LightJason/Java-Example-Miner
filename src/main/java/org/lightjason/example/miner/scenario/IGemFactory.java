@@ -23,14 +23,16 @@
 
 package org.lightjason.example.miner.scenario;
 
+import cern.colt.matrix.tdouble.DoubleMatrix1D;
+import cern.colt.matrix.tobject.ObjectMatrix2D;
 import org.lightjason.example.miner.ui.ISpriteGenerator;
 
-import java.util.function.Supplier;
+import java.util.function.BiFunction;
 
 
 /**
  * gem factory interface
  */
-public interface IGemFactory extends Supplier<IGem>, ISpriteGenerator
+public interface IGemFactory extends BiFunction<DoubleMatrix1D, ObjectMatrix2D, IGem>, ISpriteGenerator
 {
 }

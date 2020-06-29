@@ -108,8 +108,8 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
         while ( !CCommon.setGrid( m_grid, m_position, this ) )
             CCommon.randomPostion( m_grid, m_position );
         */
-        m_position.setQuick( 0,m_grid.rows() - 1 );
-        m_position.setQuick( 1,m_grid.columns() - 1 );
+        m_position.setQuick( 0, m_grid.rows() - 1 );
+        m_position.setQuick( 1, m_grid.columns() - 1 );
         CCommon.setGrid( m_grid, m_position, this );
 
         org.lightjason.example.miner.ui.CCommon.setSprite( m_sprite, m_position );
@@ -255,7 +255,7 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
          * overwritten for initialization
          *
          * @param p_sprites set with sprites
-         * @param p_cellsize
+         * @param p_cellsize cellsize
          * @param p_unit unit scale
          * @bug not working in a Jar file because path is incorrect, must be refactored for Maven build
          * @todo refactoring for Maven build
