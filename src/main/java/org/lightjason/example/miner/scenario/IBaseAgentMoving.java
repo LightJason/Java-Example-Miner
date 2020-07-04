@@ -182,6 +182,10 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
 
         synchronized ( m_goal )
         {
+            final IGem l_gem = CCommon.positionHasAndGetGem( m_grid, l_new, m_visibleobjects );
+            if ( Objects.nonNull( l_gem ) )
+                System.out.println( "gem taken: " + l_gem );
+
             if ( !CCommon.setGrid( m_grid, l_new, this ) )
                 throw new RuntimeException(
                     MessageFormat.format( "postion [{0} / {1}] not empty", l_new.getQuick( 0 ), l_new.getQuick( 1 ) )

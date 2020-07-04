@@ -29,10 +29,12 @@ import cern.colt.matrix.tobject.ObjectMatrix2D;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.lightjason.example.miner.ui.CScreen;
+import org.lightjason.example.miner.ui.ISprite;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -89,6 +91,29 @@ public final class CCommon
     }
 
     /**
+     * checks a position if it contains a gem
+     *
+     * @param p_grid grid instance
+     * @param p_position position
+     * @return gem or null
+     */
+    @Nullable
+    @SuppressWarnings( "unchecked" )
+    public static IGem positionHasAndGetGem( @Nonnull final ObjectMatrix2D p_grid, @Nonnull final DoubleMatrix1D p_position,
+                                             @Nonnull final Set<ISprite> p_visibles )
+    {
+        final Object l_object = getGrid( p_grid, p_position );
+        if ( Objects.nonNull( l_object ) && l_object instanceof IGem )
+        {
+            p_grid.setQuick( yposition( p_position ).intValue(), xposition( p_position ).intValue(), null );
+            p_visibles.remove( l_object );
+            return (IGem) l_object;
+        }
+
+        return null;
+    }
+
+    /**
      * set the new position values into the position vector
      * @param p_position position vector
      * @param p_xvalue new x value
@@ -109,7 +134,7 @@ public final class CCommon
      * @param p_position position vector
      * @return object or null
      */
-    @Nonnull
+    @Nullable
     public static Object getGrid( @Nonnull final ObjectMatrix2D p_grid, @Nonnull final DoubleMatrix1D p_position )
     {
         return p_grid.getQuick( yposition( p_position ).intValue(), xposition( p_position ).intValue() );
