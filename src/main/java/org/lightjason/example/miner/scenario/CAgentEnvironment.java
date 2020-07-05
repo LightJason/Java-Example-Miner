@@ -45,6 +45,7 @@ import javax.annotation.Nullable;
 import java.io.InputStream;
 import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArraySet;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -196,6 +197,36 @@ public final class CAgentEnvironment extends IBaseAgentScenario<IAgentEnvironmen
     private void sapphirinecreate( @Nonnull final Number p_xposition, @Nonnull final Number p_yposition )
     {
         this.creategem( EGem.SAPPHIRINE, p_xposition, p_yposition );
+    }
+
+    /**
+     * action - random gem position by name
+     *
+     * @param p_name gem name
+     */
+    @IAgentActionFilter
+    @IAgentActionName( name = "gem/randombyname" )
+    private void randomgembyname( @Nonnull final String p_name )
+    {
+        this.creategem(
+            EGem.valueOf( p_name ),
+            ThreadLocalRandom.current().nextInt( m_grid.get().columns() ),
+            ThreadLocalRandom.current().nextInt( m_grid.get().rows() )
+        );
+    }
+
+    /**
+     * action - random gem
+     */
+    @IAgentActionFilter
+    @IAgentActionName( name = "gem/random" )
+    private void randomgem()
+    {
+        this.creategem(
+            EGem.values()[ThreadLocalRandom.current().nextInt( EGem.values().length )],
+            ThreadLocalRandom.current().nextInt( m_grid.get().columns() ),
+            ThreadLocalRandom.current().nextInt( m_grid.get().rows() )
+        );
     }
 
     /**

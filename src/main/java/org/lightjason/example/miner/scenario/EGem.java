@@ -187,5 +187,16 @@ public enum EGem implements IGemFactory
         {
             return m_sprite;
         }
+
+        /**
+         * factory
+         *
+         * @param p_value name
+         * @return gem instance
+         */
+        public static EGem of( @Nonnull final String p_value )
+        {
+            return EGem.valueOf( p_value.toUpperCase( Locale.ROOT ) );
+        }
     }
 }
