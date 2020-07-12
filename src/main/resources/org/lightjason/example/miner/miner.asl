@@ -41,7 +41,10 @@
     !step
 .
 
++!goal/position(P) <-
+    .generic/print("goal", P)
+.
 
-+!perceive/gem(position(X,Y), type(T), value(V)) <-
-    .generic/print("perceive gem", X, Y, T, V)
++!perceive/gem(position(P), type(T), value(V)) <-
+    .generic/print("perceive gem", P, T, V)
 .

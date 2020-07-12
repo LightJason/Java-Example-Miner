@@ -23,9 +23,12 @@
 
 package org.lightjason.example.miner.scenario;
 
+import cern.colt.function.tdouble.DoubleDoubleFunction;
 import cern.colt.matrix.tdouble.DoubleMatrix1D;
+import cern.colt.matrix.tdouble.algo.DenseDoubleAlgebra;
 import cern.colt.matrix.tdouble.algo.DoubleFormatter;
 import cern.colt.matrix.tobject.ObjectMatrix2D;
+import cern.jet.math.tdouble.DoubleFunctions;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.lightjason.example.miner.ui.CScreen;
@@ -255,27 +258,27 @@ public final class CCommon
     }
 
     /**
-     * generate coordinates
+     * calclulates the 1-norm between two vectors
      *
-     * @param p_xcenter x-center
-     * @param p_ycenter y-center
-     * @param p_size size
-     * @param p_xfilter x-coordinate filter
-     * @param p_yfilter y-coordinate filter
-     * @return stream with number pairs
+     * @param p_one first vector
+     * @param p_second second vector
+     * @return 1-norm value
      */
-    public static Stream<Pair<Number, Number>> coordinates( @Nonnull final Number p_xcenter, @Nonnull final Number p_ycenter, @Nonnull final Number p_size,
-                                                             @Nonnull final Predicate<Number> p_xfilter, @Nonnull final Predicate<Number> p_yfilter )
+    public static Number norm1( @Nonnull final DoubleMatrix1D p_one, @Nonnull final DoubleMatrix1D p_second )
     {
-        return IntStream.range( p_xcenter.intValue() - p_size.intValue(), p_xcenter.intValue() + p_size.intValue() )
-                        .parallel()
-                        .boxed()
-                        .filter( p_xfilter )
-                        .flatMap( x -> IntStream.range( p_ycenter.intValue() - p_size.intValue(), p_ycenter.intValue() + p_size.intValue() )
-                                                .parallel()
-                                                .boxed()
-                                                .filter( p_yfilter )
-                                                .map( y -> new ImmutablePair<>( y, x ) ) );
+        return DenseDoubleAlgebra.DEFAULT.norm1( p_one.copy().assign( p_second, DoubleFunctions.minus ) );
+    }
+
+    /**
+     * calclulates the 2-norm between two vectors
+     *
+     * @param p_one first vector
+     * @param p_second second vector
+     * @return 2-norm value
+     */
+    public static Number norm2( @Nonnull final DoubleMatrix1D p_one, @Nonnull final DoubleMatrix1D p_second )
+    {
+        return DenseDoubleAlgebra.DEFAULT.norm2( p_one.copy().assign( p_second, DoubleFunctions.minus ) );
     }
 
     /**

@@ -54,8 +54,8 @@ import java.net.URISyntaxException;
 import java.text.MessageFormat;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.IntStream;
 
 
 /**
@@ -75,7 +75,7 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
     /**
      * current goal position
      */
-    private final DoubleMatrix1D m_goal = new DenseDoubleMatrix1D( 2 );
+    private final DoubleMatrix1D m_goal = new DenseDoubleMatrix1D( new double[]{5, 10} );
     /**
      * current position
      */
@@ -137,16 +137,37 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
     @Override
     public IAgentMoving call() throws Exception
     {
-         CCommon.positionStream( m_position, m_viewrange.get() )
-         .filter( i -> CCommon.isInGrid( m_grid, i.getRight(), i.getLeft() ) )
-         .map( i -> new ImmutablePair<>( i, CCommon.getGrid( m_grid, i.getRight(), i.getLeft() ) ) )
-         .filter( i -> Objects.nonNull( i.getRight() ) )
-         .forEach( i -> this.triggerobject( i.getLeft().getRight(), i.getLeft().getLeft(), i.getRight() ) );
+        // create perceiving items
+        CCommon.positionStream( m_position, m_viewrange.get() )
+               .filter( i -> CCommon.isInGrid( m_grid, i.getRight(), i.getLeft() ) )
+               .map( i -> new ImmutablePair<>( i, CCommon.getGrid( m_grid, i.getRight(), i.getLeft() ) ) )
+               .filter( i -> Objects.nonNull( i.getRight() ) )
+               .forEach( i -> this.triggerobject(
+                   new DenseDoubleMatrix1D( new double[]{
+                       i.getLeft().getRight().doubleValue(),
+                       i.getLeft().getLeft().doubleValue()}
+                   ), i.getRight() ) );
+
+        // check goal position
+        System.out.println("distance to goal " + CCommon.norm2( m_position, m_goal ).intValue() );
+        if ( CCommon.norm2( m_position, m_goal ).intValue() == 0 )
+        {
+            System.out.println("goal position");
+            this.trigger(
+                CTrigger.of(
+                    ITrigger.EType.ADDGOAL,
+                    CLiteral.of(
+                        "goal/position",
+                        CRawTerm.of( m_position )
+                    )
+                )
+            );
+        }
 
         return super.call();
     }
 
-    private void triggerobject( @Nonnull final Number p_xposition, @Nonnull final Number p_yposition, @Nonnull final Object p_object  )
+    private void triggerobject( @Nonnull final DoubleMatrix1D p_position, @Nonnull final Object p_object )
     {
         final IGem l_gem = EGem.cast( p_object );
         if ( Objects.nonNull( l_gem ) )
@@ -156,17 +177,15 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
                     ITrigger.EType.ADDGOAL,
                     CLiteral.of(
                         "perceive/gem",
-                        CLiteral.of(
-                            "position",
-                            CRawTerm.of( p_xposition ),
-                            CRawTerm.of( p_yposition )
-                        ),
+                        CLiteral.of( "position", CRawTerm.of( p_position ) ),
                         CLiteral.of( "type", CRawTerm.of( l_gem.type().name() ) ),
                         CLiteral.of( "value", CRawTerm.of( l_gem.value() ) )
                     )
                 )
             );
         }
+
+        // @todo add trader trigger
     }
 
     @IAgentActionFilter
@@ -176,12 +195,7 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
         if ( p_xpos.intValue() < 0 || p_xpos.intValue() >= m_grid.columns() || p_ypos.intValue() < 0 || p_ypos.intValue() >= m_grid.rows() )
             throw new RuntimeException( "position outside grid" );
 
-        final DoubleMatrix1D l_new = new DenseDoubleMatrix1D( new double[]{p_ypos.doubleValue(), p_xpos.doubleValue()} );
-
-        //if ( DenseDoubleAlgebra.DEFAULT.norm2( l_new.copy().assign( m_position, DoubleFunctions.minus ) ) > m_viewrange.get().doubleValue() )
-        //    throw new RuntimeException( "position outside of the view range" );
-
-        m_goal.assign( l_new );
+        m_goal.assign( new DenseDoubleMatrix1D( new double[]{p_ypos.doubleValue(), p_xpos.doubleValue()} ) );
     }
 
     @IAgentActionFilter
@@ -219,7 +233,7 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
      */
     private void walk( @Nonnull final EMovementDirection p_direction )
     {
-        final DoubleMatrix1D l_new = p_direction.apply( m_position, m_goal, 0.3 );
+        final DoubleMatrix1D l_new = p_direction.apply( m_position, m_goal, ThreadLocalRandom.current().nextDouble(5) );
 
         synchronized ( m_goal )
         {
