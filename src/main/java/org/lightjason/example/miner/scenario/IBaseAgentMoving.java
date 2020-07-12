@@ -155,7 +155,7 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
                 CTrigger.of(
                     ITrigger.EType.ADDGOAL,
                     CLiteral.of(
-                        "found/gem",
+                        "perceive/gem",
                         CLiteral.of(
                             "position",
                             CRawTerm.of( p_xposition ),
