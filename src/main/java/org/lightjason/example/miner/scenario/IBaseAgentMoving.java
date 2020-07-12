@@ -29,6 +29,7 @@ import cern.colt.matrix.tobject.ObjectMatrix2D;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.lightjason.agentspeak.action.binding.IAgentAction;
 import org.lightjason.agentspeak.action.binding.IAgentActionFilter;
 import org.lightjason.agentspeak.action.binding.IAgentActionName;
@@ -36,6 +37,10 @@ import org.lightjason.agentspeak.action.grid.EMovementDirection;
 import org.lightjason.agentspeak.configuration.IAgentConfiguration;
 import org.lightjason.agentspeak.generator.IActionGenerator;
 import org.lightjason.agentspeak.generator.ILambdaStreamingGenerator;
+import org.lightjason.agentspeak.language.CLiteral;
+import org.lightjason.agentspeak.language.CRawTerm;
+import org.lightjason.agentspeak.language.execution.instantiable.plan.trigger.CTrigger;
+import org.lightjason.agentspeak.language.execution.instantiable.plan.trigger.ITrigger;
 import org.lightjason.example.miner.CApplication;
 import org.lightjason.example.miner.runtime.IRuntime;
 import org.lightjason.example.miner.runtime.ISleeper;
@@ -50,6 +55,7 @@ import java.text.MessageFormat;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.IntStream;
 
 
 /**
@@ -77,7 +83,7 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
     /**
      * view range
      */
-    private final AtomicReference<Number> m_viewrange = new AtomicReference<>( 5 );
+    private final AtomicReference<Number> m_viewrange = new AtomicReference<>( 1 );
     /**
      * sprite
      */
@@ -126,6 +132,41 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
     {
         m_viewrange.getAndUpdate( i -> i.doubleValue() + p_value.doubleValue() );
         return this;
+    }
+
+    @Override
+    public IAgentMoving call() throws Exception
+    {
+         CCommon.positionStream( m_position, m_viewrange.get() )
+         .filter( i -> CCommon.isInGrid( m_grid, i.getRight(), i.getLeft() ) )
+         .map( i -> new ImmutablePair<>( i, CCommon.getGrid( m_grid, i.getRight(), i.getLeft() ) ) )
+         .filter( i -> Objects.nonNull( i.getRight() ) )
+         .forEach( i -> this.triggerobject( i.getLeft().getRight(), i.getLeft().getLeft(), i.getRight() ) );
+
+        return super.call();
+    }
+
+    private void triggerobject( @Nonnull final Number p_xposition, @Nonnull final Number p_yposition, @Nonnull final Object p_object  )
+    {
+        final IGem l_gem = EGem.cast( p_object );
+        if ( Objects.nonNull( l_gem ) )
+        {
+            this.trigger(
+                CTrigger.of(
+                    ITrigger.EType.ADDGOAL,
+                    CLiteral.of(
+                        "found/gem",
+                        CLiteral.of(
+                            "position",
+                            CRawTerm.of( p_xposition ),
+                            CRawTerm.of( p_yposition )
+                        ),
+                        CLiteral.of( "type", CRawTerm.of( l_gem.type().name() ) ),
+                        CLiteral.of( "value", CRawTerm.of( l_gem.value() ) )
+                    )
+                )
+            );
+        }
     }
 
     @IAgentActionFilter

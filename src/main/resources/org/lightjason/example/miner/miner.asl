@@ -40,3 +40,8 @@
 -!step/back <-
     !step
 .
+
+
++!perceive/gem(position(X,Y), type(T), value(V)) <-
+    .generic/print("perceive gem", X, Y, T, V)
+.

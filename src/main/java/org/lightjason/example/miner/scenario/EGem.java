@@ -34,6 +34,7 @@ import org.lightjason.example.miner.ui.ISprite;
 
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.net.URISyntaxException;
 import java.text.MessageFormat;
 import java.util.Locale;
@@ -84,7 +85,13 @@ public enum EGem implements IGemFactory
         final IGem l_gem = new CGem( l_sprite, this, ThreadLocalRandom.current().nextDouble() );
 
         if ( !CCommon.setGrid( p_grid, p_position, l_gem ) )
-            throw new RuntimeException( "gem cannot be set into create" );
+            throw new RuntimeException(
+                MessageFormat.format(
+                "gem cannot be set into [{0} / {1}], position not empty",
+                    CCommon.xposition( p_position ).intValue(),
+                    CCommon.yposition( p_position ).intValue()
+                )
+            );
 
         org.lightjason.example.miner.ui.CCommon.setSprite( l_sprite, p_position );
         m_visibleobjects.add( l_gem );
@@ -128,6 +135,19 @@ public enum EGem implements IGemFactory
         Objects.requireNonNull( m_texture.get() ).dispose();
     }
 
+    /**
+     * check casting for gems
+     *
+     * @param p_object any object
+     * @return gem
+     */
+    @Nullable
+    public static IGem cast( @Nonnull final Object p_object )
+    {
+        return p_object instanceof IGem
+            ? (IGem) p_object
+            : null;
+    }
 
 
     /**
@@ -164,7 +184,7 @@ public enum EGem implements IGemFactory
 
         @Nonnull
         @Override
-        public Number value( @Nonnull final IAgentScenario<?> p_agent )
+        public Number value()
         {
             return m_value;
         }

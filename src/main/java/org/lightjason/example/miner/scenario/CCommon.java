@@ -69,6 +69,20 @@ public final class CCommon
     }
 
     /**
+     * checks if a position is within the grid
+     *
+     * @param p_grid grid
+     * @param p_xposition x-position
+     * @param p_yposition y-position
+     * @return boolean if the position is within the grid definition
+     */
+    public static boolean isInGrid( @Nonnull final ObjectMatrix2D p_grid, @Nonnull final Number p_xposition, @Nonnull final Number p_yposition )
+    {
+        return p_xposition.intValue() >= 0 && p_xposition.intValue() < p_grid.columns()
+            && p_yposition.intValue() >= 0 && p_yposition.intValue() < p_grid.rows();
+    }
+
+    /**
      * returns the x position of the position vector
      *
      * @param p_position position vector
@@ -114,6 +128,45 @@ public final class CCommon
     }
 
     /**
+     * creates a stream based on the position vector over all position tuples
+     *
+     * @param p_position center position
+     * @param p_range range
+     * @return stream with coordinate tuples
+     */
+    @Nonnull
+    public static Stream<Pair<Number, Number>> positionStream( @Nonnull final DoubleMatrix1D p_position, @Nonnull final Number p_range )
+    {
+        final Number l_xleftrange = xposition( p_position ).intValue() - p_range.intValue();
+        final Number l_ytoprange = yposition( p_position ).intValue() - p_range.intValue();
+
+        final Number l_xrightrange = xposition( p_position ).intValue() + p_range.intValue();
+        final Number l_ybottomrange = yposition( p_position ).intValue() + p_range.intValue();
+
+        return Stream.concat(
+            Stream.concat(
+                IntStream.range( l_xleftrange.intValue(), 0 )
+                         .boxed()
+                         .flatMap( x -> Stream.of( new ImmutablePair<>( x, l_ytoprange ), new ImmutablePair<>( x, l_ybottomrange ) ) ),
+
+                IntStream.range( 1, l_xrightrange.intValue() )
+                         .boxed()
+                         .flatMap( x -> Stream.of( new ImmutablePair<>( x, l_ytoprange ), new ImmutablePair<>( x, l_ybottomrange ) ) )
+            ),
+
+            Stream.concat(
+                IntStream.range( l_ytoprange.intValue(), 0 )
+                         .boxed()
+                         .flatMap( y -> Stream.of( new ImmutablePair<>( l_xleftrange, y ), new ImmutablePair<>( l_xrightrange, y ) ) ),
+
+                IntStream.range( 1, l_ybottomrange.intValue() )
+                         .boxed()
+                         .flatMap( y -> Stream.of( new ImmutablePair<>( l_xleftrange, y ), new ImmutablePair<>( l_xrightrange, y ) ) )
+            )
+        );
+    }
+
+    /**
      * set the new position values into the position vector
      * @param p_position position vector
      * @param p_xvalue new x value
@@ -138,6 +191,20 @@ public final class CCommon
     public static Object getGrid( @Nonnull final ObjectMatrix2D p_grid, @Nonnull final DoubleMatrix1D p_position )
     {
         return p_grid.getQuick( yposition( p_position ).intValue(), xposition( p_position ).intValue() );
+    }
+
+    /**
+     * gets an object from the grid
+     *
+     * @param p_grid grid
+     * @param p_xvalue x-position
+     * @param p_yvalue y-position
+     * @return object or null
+     */
+    @Nullable
+    public static Object getGrid( @Nonnull final ObjectMatrix2D p_grid, @Nonnull final Number p_xvalue, @Nonnull final Number p_yvalue )
+    {
+        return p_grid.getQuick( p_yvalue.intValue(), p_xvalue.intValue() );
     }
 
     /**

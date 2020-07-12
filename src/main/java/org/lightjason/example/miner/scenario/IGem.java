@@ -37,11 +37,10 @@ public interface IGem extends ISprite
     /**
      * returns the value of the gem based on the agent
      *
-     * @param p_agent agent
      * @return value
      */
     @Nonnull
-    Number value( @Nonnull final IAgentScenario<?> p_agent );
+    Number value();
 
     /**
      * returns gem type
