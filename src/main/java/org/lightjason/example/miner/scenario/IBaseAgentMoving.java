@@ -149,10 +149,10 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
                    ), i.getRight() ) );
 
         // check goal position
-        System.out.println("distance to goal " + CCommon.norm2( m_position, m_goal ).intValue() );
+        System.out.println( "distance to goal " + CCommon.norm2( m_position, m_goal ).intValue() );
         if ( CCommon.norm2( m_position, m_goal ).intValue() == 0 )
         {
-            System.out.println("goal position");
+            System.out.println( "goal position" );
             this.trigger(
                 CTrigger.of(
                     ITrigger.EType.ADDGOAL,
@@ -233,7 +233,7 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
      */
     private void walk( @Nonnull final EMovementDirection p_direction )
     {
-        final DoubleMatrix1D l_new = p_direction.apply( m_position, m_goal, ThreadLocalRandom.current().nextDouble(5) );
+        final DoubleMatrix1D l_new = p_direction.apply( m_position, m_goal, ThreadLocalRandom.current().nextDouble( 5 ) );
 
         synchronized ( m_goal )
         {
