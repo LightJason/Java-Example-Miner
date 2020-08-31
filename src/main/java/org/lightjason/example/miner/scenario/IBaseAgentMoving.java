@@ -26,7 +26,6 @@ package org.lightjason.example.miner.scenario;
 import cern.colt.matrix.tdouble.DoubleMatrix1D;
 import cern.colt.matrix.tdouble.impl.DenseDoubleMatrix1D;
 import cern.colt.matrix.tobject.ObjectMatrix2D;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -41,7 +40,6 @@ import org.lightjason.agentspeak.language.CLiteral;
 import org.lightjason.agentspeak.language.CRawTerm;
 import org.lightjason.agentspeak.language.execution.instantiable.plan.trigger.CTrigger;
 import org.lightjason.agentspeak.language.execution.instantiable.plan.trigger.ITrigger;
-import org.lightjason.example.miner.CApplication;
 import org.lightjason.example.miner.runtime.IRuntime;
 import org.lightjason.example.miner.runtime.ISleeper;
 import org.lightjason.example.miner.ui.ISprite;
@@ -50,7 +48,6 @@ import org.lightjason.example.miner.ui.ITileMap;
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import java.io.InputStream;
-import java.net.URISyntaxException;
 import java.text.MessageFormat;
 import java.util.Objects;
 import java.util.Set;
@@ -323,22 +320,9 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
         public final void spriteinitialize( @Nonnull final Set<ISprite> p_sprites, @Nonnegative final int p_cellsize, @Nonnegative final float p_unit )
         {
             // https://github.com/libgdx/libgdx/wiki/File-handling#file-storage-types
-
-            try
-            {
-                m_visibleobjects = p_sprites;
-                m_unit.compareAndSet( null, p_unit );
-                m_texture.compareAndSet( null, new Texture(
-                    Gdx.files.absolute(
-                        CApplication.getPath( "org/lightjason/example/miner/" + m_image ).toAbsolutePath().toString()
-                    )
-                ) );
-
-            }
-            catch ( final URISyntaxException l_exception )
-            {
-                throw new RuntimeException( l_exception );
-            }
+            m_visibleobjects = p_sprites;
+            m_unit.compareAndSet( null, p_unit );
+            m_texture.compareAndSet( null, new Texture( org.lightjason.example.miner.ui.CCommon.copyToGdxLocal( m_image ) ) );
         }
 
         @Override

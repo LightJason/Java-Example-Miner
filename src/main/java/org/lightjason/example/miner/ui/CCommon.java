@@ -24,9 +24,19 @@
 package org.lightjason.example.miner.ui;
 
 import cern.colt.matrix.tdouble.DoubleMatrix1D;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import org.apache.commons.io.IOUtils;
+import org.lightjason.example.miner.CApplication;
 
 import javax.annotation.Nonnull;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.UncheckedIOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 
 /**
@@ -53,5 +63,32 @@ public final class CCommon
             org.lightjason.example.miner.scenario.CCommon.xposition( p_position ).intValue(),
             org.lightjason.example.miner.scenario.CCommon.yposition( p_position ).intValue()
         );
+    }
+
+    /**
+     * copy a file from the jar to the gdx local storage
+     *
+     * @param p_input path within the jar
+     * @return gdx file handle
+     */
+    public static FileHandle copyToGdxLocal( @Nonnull final String p_input )
+    {
+        final FileHandle l_handle = Gdx.files.local( p_input.replace( "/", "_" ) );
+        if ( l_handle.exists() )
+            return l_handle;
+
+        try
+            (
+                final InputStream l_inputstream = CApplication.class.getResourceAsStream( p_input );
+                final OutputStream l_outputstream = Files.newOutputStream( Paths.get( l_handle.path() ) )
+            )
+        {
+            IOUtils.copy( l_inputstream, l_outputstream );
+            return l_handle;
+        }
+        catch ( final IOException l_exception )
+        {
+            throw new UncheckedIOException( l_exception );
+        }
     }
 }
