@@ -24,8 +24,10 @@
 package org.lightjason.example.miner.scenario;
 
 import cern.colt.matrix.tdouble.DoubleMatrix1D;
+import cern.colt.matrix.tdouble.algo.DenseDoubleAlgebra;
 import cern.colt.matrix.tdouble.impl.DenseDoubleMatrix1D;
 import cern.colt.matrix.tobject.ObjectMatrix2D;
+import cern.jet.math.tdouble.DoubleFunctions;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -51,7 +53,6 @@ import java.io.InputStream;
 import java.text.MessageFormat;
 import java.util.Objects;
 import java.util.Set;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicReference;
 
 
@@ -186,7 +187,14 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
     }
 
     @IAgentActionFilter
-    @IAgentActionName( name = "walk/goal" )
+    @IAgentActionName( name = "goal/set" )
+    private void setgoal( final DoubleMatrix1D p_goal )
+    {
+        m_goal.assign( p_goal );
+    }
+
+    @IAgentActionFilter
+    @IAgentActionName( name = "goal/xy" )
     private void setgoal( @Nonnull final Number p_xpos, @Nonnull final Number p_ypos )
     {
         if ( p_xpos.intValue() < 0 || p_xpos.intValue() >= m_grid.columns() || p_ypos.intValue() < 0 || p_ypos.intValue() >= m_grid.rows() )
@@ -230,7 +238,10 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
      */
     private void walk( @Nonnull final EMovementDirection p_direction )
     {
-        final DoubleMatrix1D l_new = p_direction.apply( m_position, m_goal, ThreadLocalRandom.current().nextDouble( 5 ) );
+        final DoubleMatrix1D l_new = p_direction.apply(
+            m_position, m_goal,
+            Math.max( 0.1, DenseDoubleAlgebra.DEFAULT.norm2( m_goal.copy().assign( m_position, DoubleFunctions.minus ) ) * 0.01 )
+        );
 
         synchronized ( m_goal )
         {
