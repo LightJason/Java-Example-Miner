@@ -51,6 +51,9 @@ import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import java.io.InputStream;
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
@@ -86,6 +89,10 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
      * sprite
      */
     private final Sprite m_sprite;
+    /**
+     * list of goals
+     */
+    private final List<DoubleMatrix1D> m_goallist = Collections.synchronizedList( new ArrayList<>() )
 
 
     /**
@@ -187,20 +194,30 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
     }
 
     @IAgentActionFilter
-    @IAgentActionName( name = "goal/set" )
-    private void setgoal( final DoubleMatrix1D p_goal )
+    @IAgentActionName( name = "goal/next" )
+    private void newgoal()
     {
-        m_goal.assign( p_goal );
+        if ( m_goallist.isEmpty() )
+            throw new RuntimeException( "goal list is empty" );
+
+        m_goal.assign( m_goallist.remove( 0 ) )
     }
 
     @IAgentActionFilter
-    @IAgentActionName( name = "goal/xy" )
+    @IAgentActionName( name = "goal/add" )
+    private void setgoal( final DoubleMatrix1D p_goal )
+    {
+        m_goallist.add( p_goal );
+    }
+
+    @IAgentActionFilter
+    @IAgentActionName( name = "goal/addxy" )
     private void setgoal( @Nonnull final Number p_xpos, @Nonnull final Number p_ypos )
     {
         if ( p_xpos.intValue() < 0 || p_xpos.intValue() >= m_grid.columns() || p_ypos.intValue() < 0 || p_ypos.intValue() >= m_grid.rows() )
             throw new RuntimeException( "position outside grid" );
 
-        m_goal.assign( new DenseDoubleMatrix1D( new double[]{p_ypos.doubleValue(), p_xpos.doubleValue()} ) );
+        m_goallist.add( new DenseDoubleMatrix1D( new double[]{p_ypos.doubleValue(), p_xpos.doubleValue()} ) );
     }
 
     @IAgentActionFilter
