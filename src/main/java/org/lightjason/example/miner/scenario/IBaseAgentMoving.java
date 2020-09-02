@@ -92,7 +92,7 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
     /**
      * list of goals
      */
-    private final List<DoubleMatrix1D> m_goallist = Collections.synchronizedList( new ArrayList<>() )
+    private final List<DoubleMatrix1D> m_goallist = Collections.synchronizedList( new ArrayList<>() );
 
 
     /**
@@ -200,7 +200,7 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
         if ( m_goallist.isEmpty() )
             throw new RuntimeException( "goal list is empty" );
 
-        m_goal.assign( m_goallist.remove( 0 ) )
+        m_goal.assign( m_goallist.remove( 0 ) );
     }
 
     @IAgentActionFilter
