@@ -47,5 +47,5 @@
 
 +!perceive/gem(position(P), type(T), value(V)) <-
     .generic/print("perceive gem", P, T, V);
-    .goal/set(P)
+    .goal/add(P)
 .
