@@ -93,6 +93,10 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
      * list of goals
      */
     private final List<DoubleMatrix1D> m_goallist = Collections.synchronizedList( new ArrayList<>() );
+    /**
+     * goal precision
+     */
+    private final AtomicReference<Number> m_goalprecision = new AtomicReference<>( 1 );
 
 
     /**
@@ -155,9 +159,9 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
 
         // check goal position
         System.out.println( "distance to goal " + CCommon.norm2( m_position, m_goal ).intValue() );
-        if ( CCommon.norm2( m_position, m_goal ).intValue() == 0 )
+        if ( CCommon.isFloatEqual( CCommon.norm2( m_position, m_goal ), m_goalprecision.get() ) )
         {
-            System.out.println( "goal position" );
+            System.out.println( "goal position reached" );
             this.trigger(
                 CTrigger.of(
                     ITrigger.EType.ADDGOAL,
@@ -255,9 +259,11 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
      */
     private void walk( @Nonnull final EMovementDirection p_direction )
     {
+        final Number l_speed = Math.max( 0.5, DenseDoubleAlgebra.DEFAULT.norm2( m_goal.copy().assign( m_position, DoubleFunctions.minus ) ) * 0.01 );
+        System.out.println( "Speed: " + l_speed );
         final DoubleMatrix1D l_new = p_direction.apply(
             m_position, m_goal,
-            Math.max( 0.1, DenseDoubleAlgebra.DEFAULT.norm2( m_goal.copy().assign( m_position, DoubleFunctions.minus ) ) * 0.01 )
+            l_speed
         );
 
         synchronized ( m_goal )

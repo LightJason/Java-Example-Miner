@@ -42,7 +42,8 @@
 .
 
 +!goal/position(P) <-
-    .generic/print("goal", P)
+    .generic/print("goal", P);
+    .goal/next
 .
 
 +!perceive/gem(position(P), type(T), value(V)) <-

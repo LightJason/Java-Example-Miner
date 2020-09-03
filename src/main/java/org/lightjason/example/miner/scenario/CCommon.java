@@ -48,11 +48,14 @@ import java.util.stream.Stream;
  */
 public final class CCommon
 {
-
     /**
      * formatter definition
      */
     public static final DoubleFormatter FORMATTER;
+    /**
+     * epsilon value for deefinition float values are equal
+     */
+    private static final Number FLOATEPSION = 0.0001;
 
     static
     {
@@ -277,6 +280,18 @@ public final class CCommon
     public static Number norm2( @Nonnull final DoubleMatrix1D p_one, @Nonnull final DoubleMatrix1D p_second )
     {
         return DenseDoubleAlgebra.DEFAULT.norm2( p_one.copy().assign( p_second, DoubleFunctions.minus ) );
+    }
+
+    /**
+     * check for float equality
+     *
+     * @param p_number1 1st number
+     * @param p_number2 2nd number
+     * @return equality
+     */
+    public static boolean isFloatEqual( @Nonnull final Number p_number1, @Nonnull final Number p_number2 )
+    {
+        return Math.abs( p_number1.doubleValue() - p_number2.doubleValue() ) <= FLOATEPSION.doubleValue();
     }
 
     /**
