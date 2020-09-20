@@ -216,10 +216,13 @@ public final class CCommon
      */
     public static boolean setGrid( @Nonnull final ObjectMatrix2D p_grid, @Nonnull final DoubleMatrix1D p_position, @Nullable final Object p_object )
     {
-        if ( Objects.nonNull( p_grid.getQuick( yposition( p_position ).intValue(), xposition( p_position ).intValue() ) ) )
+        final Number l_xposition = xposition( p_position );
+        final Number l_yposition = yposition( p_position );
+
+        if ( !isInGrid( p_grid, l_xposition, l_yposition ) || Objects.nonNull( p_grid.getQuick( l_yposition.intValue(), l_xposition.intValue() ) ) )
             return false;
 
-        p_grid.setQuick( yposition( p_position ).intValue(), xposition( p_position ).intValue(), p_object );
+        p_grid.setQuick( l_yposition.intValue(), l_xposition.intValue(), p_object );
         return true;
     }
 

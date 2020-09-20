@@ -162,10 +162,8 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
                    ), i.getRight() ) );
 
         // check goal position
-        System.out.println( "distance to goal " + CCommon.norm2( m_position, m_goal ).intValue() );
         if ( CCommon.isFloatEqual( CCommon.norm2( m_position, m_goal ), m_goalprecision.get().doubleValue(), FLOATEPSION ) )
         {
-            System.out.println( "goal position reached" );
             this.trigger(
                 CTrigger.of(
                     ITrigger.EType.ADDGOAL,
@@ -264,7 +262,6 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
     private void walk( @Nonnull final EMovementDirection p_direction )
     {
         final Number l_speed = Math.max( 0.5, DenseDoubleAlgebra.DEFAULT.norm2( m_goal.copy().assign( m_position, DoubleFunctions.minus ) ) * 0.01 );
-        System.out.println( "Speed: " + l_speed );
         final DoubleMatrix1D l_new = p_direction.apply(
             m_position, m_goal,
             l_speed
@@ -278,7 +275,7 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
 
             if ( !CCommon.setGrid( m_grid, l_new, this ) )
                 throw new RuntimeException(
-                    MessageFormat.format( "postion [{0} / {1}] not empty", l_new.getQuick( 0 ), l_new.getQuick( 1 ) )
+                    MessageFormat.format( "postion [{0}] not empty / outside", CCommon.FORMATTER.toString( l_new ) )
                 );
 
             CCommon.setGrid( m_grid, m_position, null );
