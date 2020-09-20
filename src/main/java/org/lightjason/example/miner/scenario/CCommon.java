@@ -52,10 +52,6 @@ public final class CCommon
      * formatter definition
      */
     public static final DoubleFormatter FORMATTER;
-    /**
-     * epsilon value for deefinition float values are equal
-     */
-    private static final Number FLOATEPSION = 0.0001;
 
     static
     {
@@ -289,9 +285,9 @@ public final class CCommon
      * @param p_number2 2nd number
      * @return equality
      */
-    public static boolean isFloatEqual( @Nonnull final Number p_number1, @Nonnull final Number p_number2 )
+    public static boolean isFloatEqual( @Nonnull final Number p_number1, @Nonnull final Number p_number2, @Nonnull final Number p_epsilon )
     {
-        return Math.abs( p_number1.doubleValue() - p_number2.doubleValue() ) <= FLOATEPSION.doubleValue();
+        return Math.abs( p_number1.doubleValue() - p_number2.doubleValue() ) <= p_epsilon.doubleValue();
     }
 
     /**

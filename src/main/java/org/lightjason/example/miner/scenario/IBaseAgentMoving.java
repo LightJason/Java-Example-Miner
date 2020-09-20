@@ -70,6 +70,10 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
      */
     private static final long serialVersionUID = 4912224902488924621L;
     /**
+     * epsilon value for deefinition float values are equal
+     */
+    private static final Number FLOATEPSION = 0.75;
+    /**
      * grid structure
      */
     private final ObjectMatrix2D m_grid;
@@ -159,7 +163,7 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
 
         // check goal position
         System.out.println( "distance to goal " + CCommon.norm2( m_position, m_goal ).intValue() );
-        if ( CCommon.isFloatEqual( CCommon.norm2( m_position, m_goal ), m_goalprecision.get() ) )
+        if ( CCommon.isFloatEqual( CCommon.norm2( m_position, m_goal ), m_goalprecision.get().doubleValue(), FLOATEPSION ) )
         {
             System.out.println( "goal position reached" );
             this.trigger(
