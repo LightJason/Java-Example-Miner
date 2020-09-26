@@ -24,12 +24,11 @@
 package org.lightjason.example.miner.scenario;
 
 import cern.colt.matrix.tdouble.DoubleMatrix1D;
-import cern.colt.matrix.tdouble.algo.DenseDoubleAlgebra;
 import cern.colt.matrix.tdouble.impl.DenseDoubleMatrix1D;
 import cern.colt.matrix.tobject.ObjectMatrix2D;
-import cern.jet.math.tdouble.DoubleFunctions;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.google.common.util.concurrent.AtomicDouble;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.lightjason.agentspeak.action.binding.IAgentAction;
 import org.lightjason.agentspeak.action.binding.IAgentActionFilter;
@@ -101,6 +100,10 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
      * goal precision
      */
     private final AtomicReference<Number> m_goalprecision = new AtomicReference<>( 1 );
+    /**
+     * counts of non used
+     */
+    private final AtomicDouble m_speed = new AtomicDouble( 0.5 );
 
 
     /**
@@ -261,11 +264,8 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
      */
     private void walk( @Nonnull final EMovementDirection p_direction )
     {
-        final Number l_speed = Math.max( 0.5, DenseDoubleAlgebra.DEFAULT.norm2( m_goal.copy().assign( m_position, DoubleFunctions.minus ) ) * 0.01 );
-        final DoubleMatrix1D l_new = p_direction.apply(
-            m_position, m_goal,
-            l_speed
-        );
+        // m_speed.getAndSet( DenseDoubleAlgebra.DEFAULT.norm2( m_goal.copy().assign( m_position, DoubleFunctions.minus ) ) );
+        final DoubleMatrix1D l_new = p_direction.apply( m_position, m_goal, m_speed.get() );
 
         synchronized ( m_goal )
         {
@@ -274,9 +274,7 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
                 System.out.println( "gem taken: " + l_gem );
 
             if ( !CCommon.setGrid( m_grid, l_new, this ) )
-                throw new RuntimeException(
-                    MessageFormat.format( "postion [{0}] not empty / outside", CCommon.FORMATTER.toString( l_new ) )
-                );
+                throw new RuntimeException( MessageFormat.format( "position [{0}] not empty / outside", CCommon.FORMATTER.toString( l_new ) ) );
 
             CCommon.setGrid( m_grid, m_position, null );
         }

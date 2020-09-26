@@ -286,11 +286,24 @@ public final class CCommon
      *
      * @param p_number1 1st number
      * @param p_number2 2nd number
+     * @param p_epsilon floa epsilon
      * @return equality
      */
     public static boolean isFloatEqual( @Nonnull final Number p_number1, @Nonnull final Number p_number2, @Nonnull final Number p_epsilon )
     {
         return Math.abs( p_number1.doubleValue() - p_number2.doubleValue() ) <= p_epsilon.doubleValue();
+    }
+
+    /**
+     * checks if two 1d vectors are equal
+     *
+     * @param p_first first vector
+     * @param p_second second vector
+     * @return equality
+     */
+    public static boolean positionEqual( @Nonnull final DoubleMatrix1D p_first, @Nonnull final DoubleMatrix1D p_second )
+    {
+        return xposition( p_first ).intValue() == xposition( p_second ).intValue() && yposition( p_first ).intValue() == yposition( p_second ).intValue();
     }
 
     /**
