@@ -218,8 +218,9 @@ public final class CCommon
     {
         final Number l_xposition = xposition( p_position );
         final Number l_yposition = yposition( p_position );
+        final Object l_object = p_grid.getQuick( l_yposition.intValue(), l_xposition.intValue() );
 
-        if ( !isInGrid( p_grid, l_xposition, l_yposition ) || Objects.nonNull( p_grid.getQuick( l_yposition.intValue(), l_xposition.intValue() ) ) )
+        if ( !isInGrid( p_grid, l_xposition, l_yposition ) || ( Objects.nonNull( l_object ) && !l_object.equals( p_object ) ) )
             return false;
 
         p_grid.setQuick( l_yposition.intValue(), l_xposition.intValue(), p_object );

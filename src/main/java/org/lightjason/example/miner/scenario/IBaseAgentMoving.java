@@ -24,8 +24,10 @@
 package org.lightjason.example.miner.scenario;
 
 import cern.colt.matrix.tdouble.DoubleMatrix1D;
+import cern.colt.matrix.tdouble.algo.DenseDoubleAlgebra;
 import cern.colt.matrix.tdouble.impl.DenseDoubleMatrix1D;
 import cern.colt.matrix.tobject.ObjectMatrix2D;
+import cern.jet.math.tdouble.DoubleFunctions;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.google.common.util.concurrent.AtomicDouble;
@@ -264,8 +266,22 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
      */
     private void walk( @Nonnull final EMovementDirection p_direction )
     {
-        // m_speed.getAndSet( DenseDoubleAlgebra.DEFAULT.norm2( m_goal.copy().assign( m_position, DoubleFunctions.minus ) ) );
-        final DoubleMatrix1D l_new = p_direction.apply( m_position, m_goal, m_speed.get() );
+        final double l_distance = DenseDoubleAlgebra.DEFAULT.norm2( m_goal.copy().assign( m_position, DoubleFunctions.minus ) );
+        final DoubleMatrix1D l_new = p_direction.apply(
+            m_position,
+            m_goal,
+            m_speed.getAndSet(
+                1.0 / Math.min( 5.0, l_distance )
+            )
+        );
+        System.out.println( MessageFormat.format(
+            "speed: {0}   -   goal: {1}  -   current position: {2}   -   new position: {3}   -   distance: {4}",
+            m_speed.get(),
+            CCommon.FORMATTER.toString( m_goal ),
+            CCommon.FORMATTER.toString( m_position ),
+            CCommon.FORMATTER.toString( l_new ),
+            l_distance
+        ) );
 
         synchronized ( m_goal )
         {
