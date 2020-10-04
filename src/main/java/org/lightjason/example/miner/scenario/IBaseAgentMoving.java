@@ -24,13 +24,10 @@
 package org.lightjason.example.miner.scenario;
 
 import cern.colt.matrix.tdouble.DoubleMatrix1D;
-import cern.colt.matrix.tdouble.algo.DenseDoubleAlgebra;
 import cern.colt.matrix.tdouble.impl.DenseDoubleMatrix1D;
 import cern.colt.matrix.tobject.ObjectMatrix2D;
-import cern.jet.math.tdouble.DoubleFunctions;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.google.common.util.concurrent.AtomicDouble;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.lightjason.agentspeak.action.binding.IAgentAction;
 import org.lightjason.agentspeak.action.binding.IAgentActionFilter;
@@ -102,10 +99,6 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
      * goal precision
      */
     private final AtomicReference<Number> m_goalprecision = new AtomicReference<>( 1 );
-    /**
-     * counts of non used
-     */
-    private final AtomicDouble m_speed = new AtomicDouble( 0.5 );
 
 
     /**
@@ -157,6 +150,7 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
     {
         // create perceiving items
         CCommon.positionStream( m_position, m_viewrange.get() )
+               .parallel()
                .filter( i -> CCommon.isInGrid( m_grid, i.getRight(), i.getLeft() ) )
                .map( i -> new ImmutablePair<>( i, CCommon.getGrid( m_grid, i.getRight(), i.getLeft() ) ) )
                .filter( i -> Objects.nonNull( i.getRight() ) )
@@ -266,21 +260,12 @@ public abstract class IBaseAgentMoving extends IBaseAgentScenario<IAgentMoving> 
      */
     private void walk( @Nonnull final EMovementDirection p_direction )
     {
-        final double l_distance = DenseDoubleAlgebra.DEFAULT.norm2( m_goal.copy().assign( m_position, DoubleFunctions.minus ) );
-        final DoubleMatrix1D l_new = p_direction.apply(
-            m_position,
-            m_goal,
-            m_speed.getAndSet(
-                1.0 / Math.min( 5.0, l_distance )
-            )
-        );
+        final DoubleMatrix1D l_new = p_direction.position( m_position, m_goal, 0.35 );
         System.out.println( MessageFormat.format(
-            "speed: {0}   -   goal: {1}  -   current position: {2}   -   new position: {3}   -   distance: {4}",
-            m_speed.get(),
+            "goal: {0}  -   current position: {1}   -   new position: {2}",
             CCommon.FORMATTER.toString( m_goal ),
             CCommon.FORMATTER.toString( m_position ),
-            CCommon.FORMATTER.toString( l_new ),
-            l_distance
+            CCommon.FORMATTER.toString( l_new )
         ) );
 
         synchronized ( m_goal )

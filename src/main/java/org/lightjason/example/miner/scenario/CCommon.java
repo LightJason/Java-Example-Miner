@@ -308,6 +308,21 @@ public final class CCommon
     }
 
     /**
+     * random position relative to current position
+     *
+     * @param p_position current position
+     * @param p_maxdistance maximum distance
+     * @return modified position
+     */
+    public static DoubleMatrix1D randomCurrentPosition( @Nonnull final DoubleMatrix1D p_position, @Nonnull final Number p_maxdistance )
+    {
+        return p_position.assign(
+            new double[]{ThreadLocalRandom.current().nextInt( 0, p_maxdistance.intValue() ) * 2 - p_maxdistance.intValue(),
+                ThreadLocalRandom.current().nextInt( 0, p_maxdistance.intValue() ) * 2 - p_maxdistance.intValue()}
+        );
+    }
+
+    /**
      * wait until objects are initialize
      */
     public static void waitForInitialize( @Nonnull final Supplier<Object> p_getter )
